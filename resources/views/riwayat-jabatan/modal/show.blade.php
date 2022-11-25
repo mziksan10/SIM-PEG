@@ -1,4 +1,6 @@
-@foreach($data_riwayatjabatan as $item)    
+@foreach($data_riwayatjabatan as $item)
+    @if($item->pegawai === null)
+    @elseif($item->pegawai)
     <div class="modal fade" tabindex="-1" id="showModal{{ $item->id }}">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -62,4 +64,5 @@
         </div>
     </div>
     </div>
+    @endif
 @endforeach

@@ -16,18 +16,12 @@
 
         <div class="form-group">
             <label>Username</label>
-            <input type="text" class="form-control form-control-user @error('username') is-invalid @enderror" name="username" value="{{ old('username', $item->username) }}">
+            <input type="text" class="form-control form-control-user @error('username') is-invalid @enderror" name="username" value="{{ old('username', $item->username) }}" disabled>
             @error('username')
             <div class="invalid-feedback ml-3">{{ $message }}</div>
             @enderror
         </div>
         <div class="form-group">
-            <label>Email</label>
-            <input type="email" class="form-control form-control-user @error('email') is-invalid @enderror" name="email" value="{{ old('email', $item->email) }}">
-            @error('email')
-            <div class="invalid-feedback ml-3">{{ $message }}</div>
-            @enderror
-        </div>
         <label>Role</label>
         <select name="role" class="form-control @error('role') is-invalid @enderror">
             <option value="">Pilih..</option>
@@ -42,6 +36,14 @@
         @error('role')
         <div class="invalid-feedback ml-3">{{ $message }}</div>
         @enderror
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" class="form-control form-control-user @error('password') is-invalid @enderror" name="password">
+            @error('password')
+            <div class="invalid-feedback ml-3">{{ $message }}</div>
+            @enderror
+        </div>
         
         </div>
         <div class="modal-footer">

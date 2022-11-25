@@ -6,16 +6,7 @@
 <h1 class="h3 mb-0 text-gray-800">Data {{ $title }}</h1>
 </div>
 <div class="form-col">
-    <form action="/import/user/" method="POST" enctype="multipart/form-data">
-    @csrf
-    <div class="input-group">
-        <input type="file" name="file" class="form-control">
-        <div class="input-group-append">
-        <button class="btn btn-warning mr-1" type="submit"><i class="fas fa-upload fa-sm"></i> Impor</button>
-        </div>
-        <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#createModal"><i class="fas fa-plus fa-sm text-white-50"></i> Add</button>
-    </div>
-    </form>
+    <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#createModal"><i class="fas fa-plus fa-sm text-white-50"></i> Add</button>
 </div>
 </div>
 
@@ -44,7 +35,6 @@
             <div class="row">
                 <div class="col-8 d-flex justify-content-start">
                     <a href="/user" class="btn btn-primary"><i class="fas fa-sync fa-sm"></i></a>
-                    <a href="/export/user/" class="btn btn-success ml-1"><i class="fas fa-file-excel fa-sm"></i></a>
                 </div>
                 <div class="col-4">
                     <form action="/user" method="GET">
@@ -66,7 +56,8 @@
                     <thead>
                         <tr class="bg-primary my-font-white">
                             <th>No</th>
-                            <th>Username</th>
+                            <th>Username / NIP</th>
+                            <th>Email</th>
                             <th style="text-align: center">Status</th>
                             <th style="text-align: center">Aksi</th>
                         </tr>
@@ -76,6 +67,7 @@
                         <tr>
                             <td>{{ $data_user->firstItem() + $loop->index }}</td>
                             <td>{{ $item->username }}</td>
+                            <td>{{ $item->email }}</td>
                             <td style="text-align: center">
                             @if( $item->role == 'admin' || $item->role == 'user' )
                             <div class="badge badge-success">Aktif</div>

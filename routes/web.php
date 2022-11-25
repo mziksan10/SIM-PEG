@@ -42,7 +42,6 @@ Route::group(['middleware' => ['auth', 'checkrole:admin']], function (){
     Route::post('/import/pegawai/', [PegawaiController::class, 'import'])->name('import-pegawai');
     Route::get('/report/pegawai/', [PegawaiController::class, 'report']);
     Route::post('/pegawai/cari-jabatan', [PegawaiController::class, 'cariJabatan'])->name('cariJabatan');
-    // Route::get('/autocomplete', [PegawaiController::class, 'autocomplete'])->name('autocomplete');
     Route::get('/ajax_autocomplete', [PegawaiController::class, 'ajax_autocomplete']);
     // Route Golongan
     Route::resource('/golongan', GolonganController::class);
@@ -63,9 +62,9 @@ Route::group(['middleware' => ['auth', 'checkrole:admin']], function (){
     Route::resource('/riwayat-jabatan', RiwayatJabatanController::class);
     // Route Cuti
     Route::resource('/cuti', CutiController::class);
-    Route::get('/pegawai-list', [CutiController::class, 'pegawaiList']);
     // Route Pengguna
     Route::resource('/user', UserController::class);
+    Route::get('/pegawai-list', [CutiController::class, 'pegawaiList']);
 });
 
 Route::group(['middleware' => ['auth', 'checkrole:user']], function (){

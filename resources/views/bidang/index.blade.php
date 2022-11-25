@@ -48,7 +48,7 @@
                 <div class="col-4">
                     <form action="/bidang" method="GET">
                         <div class="input-group"> 
-                            <input type="text" class="form-control small" placeholder="Search for.." name="search" value="{{ request('search') }}">
+                            <input type="text" class="form-control small" placeholder="Search for Kode / Nama Bidang.." name="search" value="{{ request('search') }}">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="submit">
                                     <i class="fas fa-search fa-sm"></i>
@@ -65,7 +65,7 @@
                     <thead>
                         <tr class="bg-primary my-font-white">
                             <th>No</th>
-                            <th>Kode Bidang</th>
+                            <th>Kode</th>
                             <th>Nama Bidang</th>
                             <th>Dibuat Pada</th>
                             <th>Diubah Pada</th>
@@ -78,8 +78,8 @@
                             <td>{{ $data_bidang->firstItem() + $loop->index }}</td>
                             <td>{{ $item->kode_bidang }}</td>
                             <td>{{ $item->nama_bidang }}</td>
-                            <td>{{ $item->created_at }}</td>
-                            <td>{{ $item->updated_at }}</td>
+                            <td>{{ date("d-m-Y", strtotime($item->created_at)) }}</td>
+                            <td>{{ date("d-m-Y", strtotime($item->updated_at)) }}</td>
                             <td style="text-align: center">
                                 <button class="btn-circle btn-sm btn-warning" data-toggle="modal" data-target="#editModal{{ $item->id }}"><i class="fas fa-edit fa-sm"></i></button>
                                 <form action="/bidang/{{ $item->id }}" method="post" class="d-inline">

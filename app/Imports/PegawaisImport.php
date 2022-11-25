@@ -34,7 +34,7 @@ class PegawaisImport implements ToModel, WithHeadingRow
             'jurusan' => $row['jurusan'],
             'bank' => $row['bank'],
             'no_rekening' => $row['no_rekening'],
-            'tanggal_masuk' => $row['no_rekening'],
+            'tanggal_masuk' => $row['tanggal_masuk'],
             'status' => $row['status'],
         ]);
     }

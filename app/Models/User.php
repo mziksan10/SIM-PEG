@@ -40,7 +40,7 @@ class User extends Authenticatable
     ];
 
         
-    private static $role = ['admin', 'user', 'guest'];
+    private static $role = ['user', 'guest'];
     
     public static function data_role(){
         return self::$role;

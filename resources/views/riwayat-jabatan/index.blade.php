@@ -34,7 +34,7 @@
                 <div class="col-4">
                     <form action="/riwayat-jabatan" method="GET">
                         <div class="input-group"> 
-                            <input type="text" class="form-control small" placeholder="Search for NIP / Bidang / Jabatan.." name="search" value="{{ request('search') }}">
+                            <input type="text" class="form-control small" placeholder="Search for NIP.." name="search" value="{{ request('search') }}">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="submit">
                                     <i class="fas fa-search fa-sm"></i>
@@ -54,28 +54,40 @@
                             <th>NIP</th>
                             <th>Bidang</th>
                             <th>Jabatan</th>
+                            <th>Golongan</th>
                             <th>Tanggal SK</th>
                             <th style="text-align: center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                     @foreach ($data_riwayatjabatan as $item)
-                        <tr>
-                            <td>{{ $data_riwayatjabatan->firstItem() + $loop->index }}</td>
-                            <td>{{ $item->pegawai->nip }}</td>
-                            <td>{{ $item->bidang->nama_bidang }}</td>
-                            <td>{{ $item->jabatan->nama_jabatan }}</td>
-                            <td>{{ $item->tanggal_sk }}</td>
-                            <td style="text-align: center">
-                                <button class="btn-circle btn-sm btn-primary" data-toggle="modal" data-target="#showModal{{ $item->id }}"><i class="fas fa-eye fa-sm"></i></button>
-                                <form action="/bidang/{{ $item->id }}" method="post" class="d-inline">
-                                    @method('delete')
-                                    @csrf
-                                    <button class="btn-circle btn-sm btn-danger border-0" onclick="return confirm('Apakah kamu yakin?')"><i class="fas fa-trash fa-sm"></i></button>
-                                </form>
-                            </td>
-                        </tr>
-                        @endforeach
+                    @if($item->pegawai === null)
+                    @elseif($item->pegawai)
+                    <tr>
+                        <td>{{ $data_riwayatjabatan->firstItem() + $loop->index }}</td>
+                        <td>{{ $item->pegawai->nip }}</td>
+                        <td>{{ $item->bidang->nama_bidang }}</td>
+                        <td>{{ $item->jabatan->nama_jabatan }}</td>
+                        <td>
+                        {{ $item->golongan->golongan . " - " }}
+                        @if( $item->golongan->status == 'Kontrak')
+                        <div class="badge badge-warning">Kontrak</div>
+                        @elseif( $item->golongan->status == 'Tetap')
+                        <div class="badge badge-primary">Tetap</div>
+                        @endif
+                        </td>
+                        <td>{{ $item->tanggal_sk }}</td>
+                        <td style="text-align: center">
+                            <button class="btn-circle btn-sm btn-primary" data-toggle="modal" data-target="#showModal{{ $item->id }}"><i class="fas fa-eye fa-sm"></i></button>
+                            <form action="/bidang/{{ $item->id }}" method="post" class="d-inline">
+                                @method('delete')
+                                @csrf
+                                <button class="btn-circle btn-sm btn-danger border-0" onclick="return confirm('Apakah kamu yakin?')"><i class="fas fa-trash fa-sm"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endif
+                    @endforeach
                     </tbody>
                 </table>
             </div>

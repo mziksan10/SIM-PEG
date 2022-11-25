@@ -44,7 +44,7 @@ class UserController extends Controller
     {
         $cariData = DB::select("SELECT * FROM pegawais where nip = '$request->username' ");
         if($cariData == false){
-        return redirect('/user')->with('failed', 'Data user gagal diinput!');
+            return redirect('/user')->with('failed', 'Data user gagal diinput!');
         }
         $validatedData = $request->validate([
             'username' => 'required|max:255|min:3|unique:users',
@@ -90,13 +90,19 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $rules = [];
-        $validatedData = $request->validate($rules);
-        if($request->username != $user->username && $request->password != $user->password){
-            $rules['username'] = 'required|max:255|min:3|unique:users';
-            $rules['email'] = 'required|unique:users|email';
+        $rules = [
+            'role' => 'required'
+        ];
+
+        if($request->password){
+            $rules['password'] = 'max:255|min:5';
+            $validatedData = $request->validate($rules);
+            $validatedData['password'] = Hash::make($request->password);
+            User::where('id', $user->id)->update($validatedData);
+            return redirect('/user')->with('success', 'Data user berhasil diubah!');
         }
-        $validatedData['role'] = $request->role;
+
+        $validatedData = $request->validate($rules);
         User::where('id', $user->id)->update($validatedData);
         return redirect('/user')->with('success', 'Data user berhasil diubah!');
     }

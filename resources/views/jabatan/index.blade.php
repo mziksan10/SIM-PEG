@@ -48,7 +48,7 @@
                 <div class="col-4">
                     <form action="/jabatan" method="GET">
                         <div class="input-group"> 
-                            <input type="text" class="form-control small" placeholder="Search for Kode/Nama Jabatan.." name="search" value="{{ request('search') }}">
+                            <input type="text" class="form-control small" placeholder="Search for Kode / Nama Jabatan.." name="search" value="{{ request('search') }}">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="submit">
                                     <i class="fas fa-search fa-sm"></i>
@@ -68,6 +68,8 @@
                             <th>Kode</th>
                             <th>Jabatan</th>
                             <th>Bidang</th>
+                            <th>Dibuat Pada</th>
+                            <th>Diubah Pada</th>
                             <th style="text-align: center">Aksi</th>
                         </tr>
                     </thead>
@@ -78,6 +80,8 @@
                             <td>{{ $item->kode_jabatan }}</td>
                             <td>{{ $item->nama_jabatan }}</td>
                             <td>{{ $item->bidang->nama_bidang }}</td>
+                            <td>{{ date("d-m-Y", strtotime($item->created_at)) }}</td>
+                            <td>{{ date("d-m-Y", strtotime($item->updated_at)) }}</td>
                             <td style="text-align: center">
                                 <button class="btn-circle btn-sm btn-warning" data-toggle="modal" data-target="#editModal{{ $item->id }}"><i class="fas fa-edit fa-sm"></i></button>
                                 <form action="/jabatan/{{ $item->id }}" method="post" class="d-inline">

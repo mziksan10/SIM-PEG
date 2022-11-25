@@ -14,8 +14,24 @@
 
         <div class="form-group">
             <label>NIP</label>
-            <input type="text" class="form-control form-control-user @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}">
+            <input type="search" id="nip" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}">
             @error('username')
+            <div class="invalid-feedback ml-3">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="form-group">
+        <label>Role</label>
+            <select name="role" class="form-control @error('role') is-invalid @enderror">
+                <option value="">Pilih..</option>
+                @foreach($role as $r)
+                @if(old('role') == $r)
+                <option value="{{ $r }}" selected>{{ $r }}</option>
+                @else
+                <option value="{{ $r }}">{{ $r }}</option>
+                @endif
+                @endforeach
+            </select>
+            @error('role')
             <div class="invalid-feedback ml-3">{{ $message }}</div>
             @enderror
         </div>
@@ -26,20 +42,6 @@
             <div class="invalid-feedback ml-3">{{ $message }}</div>
             @enderror
         </div>
-        <label>Role</label>
-        <select name="role" class="form-control @error('role') is-invalid @enderror">
-            <option value="">Pilih..</option>
-            @foreach($role as $r)
-            @if(old('role') == $r)
-            <option value="{{ $r }}" selected>{{ $r }}</option>
-            @else
-            <option value="{{ $r }}">{{ $r }}</option>
-            @endif
-            @endforeach
-        </select>
-        @error('role')
-        <div class="invalid-feedback ml-3">{{ $message }}</div>
-        @enderror
 
         </div>
         <div class="modal-footer">

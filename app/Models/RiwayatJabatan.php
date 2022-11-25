@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Pegawai;
 use App\Models\Jabatan;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,10 +14,8 @@ class RiwayatJabatan extends Model
     
     public function scopeFilter($query, array $filters){
         return $query->when($filters['search'] ?? false, function($query, $search){
-            $query->where('nip', 'like', '%' . $search . '%')->orWhereHas('jabatan', function($query) use($search){
-                $query->where('nama_jabatan', 'like', '%' . $search . '%');
-            })->orWhereHas('bidang', function($query) use($search){
-                $query->where('nama_bidang', 'like', '%' . $search . '%');
+            $query->WhereHas('pegawai', function($query) use($search){
+                $query->where('nip', 'like', '%' . $search . '%');
             });
         });
     }
