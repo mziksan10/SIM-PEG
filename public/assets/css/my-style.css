@@ -1,0 +1,28 @@
+.auth-background {
+  background-image: url("/assets/img/gedung-piksi-gray.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  }
+
+.login-image {
+  background-image: url("/assets/img/bg_login.jpg");
+  background-position: center;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  }
+  
+.register-image {
+  background-image: url("/assets/img/bg_register.jpg");
+  background-position: center;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  }
+
+.my-font-white {
+  color: white;
+}
+
+.ui-menu{
+  z-index: 3000 !important;
+}

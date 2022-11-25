@@ -1,0 +1,46 @@
+@foreach($data_golongan as $item)   
+    <div class="modal fade" tabindex="-1" id="showModal{{ $item->id }}">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Detail</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <table class="table">
+            <tr>
+                <th>Golongan</th>
+                <td> : </td>
+                <td>{{ $item->golongan }}</td>
+            </tr>
+            <tr>
+                <th>Pendidikan</th>
+                <td> : </td>
+                <td>{{ $item->pendidikan }}</td>
+            </tr>
+            <tr>
+                <th>Masa kerja</th>
+                <td> : </td>
+                <td>{{ $item->masa_kerja }} Tahun</td>
+            </tr>
+            <tr>
+                <th>Gaji pokok</th>
+                <td> : </td>
+                <td>Rp. {{ number_format($item->gaji_pokok, 2,',','.') }},-</td>
+            </tr>            
+            <tr>
+                <th>Status</th>
+                <td> : </td>
+                <td>{{ $item->status }}</td>
+            </tr>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        </div>
+    </div>
+    </div>
+@endforeach
