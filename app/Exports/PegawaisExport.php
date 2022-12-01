@@ -63,6 +63,7 @@ class PegawaisExport implements FromCollection, WithHeadings, WithMapping
     public function headings() : array{
         return [
             'NIP',
+            'NIK',
             'Nama',
             'Tempat Lahir',
             'Tanggal Lahir',
