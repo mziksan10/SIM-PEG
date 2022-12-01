@@ -66,6 +66,7 @@ class PegawaiController extends Controller
 
         $validatedData = $request->validate([
             'nip' => 'required|unique:pegawais',
+            'nik' => 'required',
             'nama' => 'required|max:255',
             'tempat_lahir' => 'required|max:60',
             'tanggal_lahir' => 'required',
@@ -144,6 +145,7 @@ class PegawaiController extends Controller
     public function update(Request $request, Pegawai $pegawai)
     {
         $rules = [
+            'nik' => 'required',
             'nama' => 'required|max:255',
             'tempat_lahir' => 'required|max:60',
             'tanggal_lahir' => 'required',

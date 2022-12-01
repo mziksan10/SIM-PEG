@@ -35,13 +35,22 @@
                                 <div class="invalid-feedback ml-3">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group col-md-5">
-                                <label>NIP</label>
-                                <input type="text" class="form-control @error('nip') is-invalid @enderror" name="nip" value="{{ old('nip', $pegawai->nip) }}">
-                                @error('nip')
-                                <div class="invalid-feedback ml-3">{{ $message }}</div>
-                                @enderror
-                              </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                            <label>NIP</label>
+                            <input type="text" class="form-control @error('nip') is-invalid @enderror" name="nip" value="{{ old('nip', $pegawai->nip) }}">
+                            @error('nip')
+                            <div class="invalid-feedback ml-3">{{ $message }}</div>
+                            @enderror
+                            </div>
+                            <div class="form-group col-md-6">
+                            <label>NIK</label>
+                            <input type="text" class="form-control @error('nik') is-invalid @enderror" name="nik" value="{{ old('nik', $pegawai->nik) }}">
+                            @error('nik')
+                            <div class="invalid-feedback ml-3">{{ $message }}</div>
+                            @enderror
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Nama Lengkap</label>

@@ -20,7 +20,7 @@ class PegawaisImport implements ToModel, WithHeadingRow
             'nip' => $row['nip'],
             'nama' => $row['nama'],
             'tempat_lahir' => $row['tempat_lahir'],
-            'tanggal_lahir' => $row['tanggal_lahir'],
+            'tanggal_lahir' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['tanggal_lahir']),
             'jenis_kelamin' => $row['jenis_kelamin'],
             'alamat' => $row['alamat'],
             'desa' => $row['desa'],
@@ -34,7 +34,7 @@ class PegawaisImport implements ToModel, WithHeadingRow
             'jurusan' => $row['jurusan'],
             'bank' => $row['bank'],
             'no_rekening' => $row['no_rekening'],
-            'tanggal_masuk' => $row['tanggal_masuk'],
+            'tanggal_masuk' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['tanggal_masuk']),
             'status' => $row['status'],
         ]);
     }
