@@ -55,6 +55,8 @@ class RiwayatJabatanController extends Controller
             'tanggal_sk' => 'required',
         ]);
         $validatedData['pegawai_id'] = $pegawaiId[0]->id;
+        $statusUpdate['status'] = 'Aktif';
+        Pegawai::where('id', $pegawaiId[0]->id)->update($statusUpdate);
         RiwayatJabatan::create($validatedData);
         return redirect('/riwayat-jabatan')->with('success', 'Data pegawai cuti berhasil diinput!');
     }

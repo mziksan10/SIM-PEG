@@ -21,6 +21,7 @@ class DataDiriController extends Controller
             'data_jabatan' => Jabatan::all(),
             'data_golongan' => Golongan::all(),
             'data_berkas' => Pegawai::find($pegawai[0]->id)->berkas()->filter(request(['search']))->paginate('5'),
+            'data_riwayatJabatan' => Pegawai::find($pegawai[0]->id)->riwayatJabatan_()->get(),
             'jenis_berkas' => Pegawai::data_jenis_berkas(),
         ]);
     }

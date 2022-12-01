@@ -212,6 +212,41 @@
                 </div>
             </div>
         </div>
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <div class="row">
+                    <div class="col-8 d-flex justify-content-start">
+                        <h6 class="font-weight-bold text-primary mt-auto"><i class="fas fa-history"></i> Riwayat Jabatan</h6>
+                    </div>
+                    <div class="col-4">
+                        <div class="float-right">
+                            <!-- Kosong -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+              <table class="table small">
+                    <tr>
+                        <th>No</th>
+                        <th>Bidang</th>
+                        <th>jabtan</th>
+                        <th>Golongan</th>
+                        <th>Tanggal SK</th>
+                    </tr>
+              @foreach($data_riwayatJabatan as $item)
+                    <tr>
+                        <td>{{ $loop->iteration . "." }}</td>
+                        <td>{{ $item->bidang->nama_bidang }}</td>
+                        <td>{{ $item->jabatan->nama_jabatan }}</td>
+                        <td>{{ $item->golongan->golongan . "-" . $item->golongan->status}}</td>
+                        <td>{{ $item->tanggal_sk }}</td>
+                    </tr>
+              @endforeach
+                </table>
+            </div>
+        </div>
         
         @if(session()->has('success'))                                
         <div class="alert alert-success alert-dismissible fade show" role="alert">

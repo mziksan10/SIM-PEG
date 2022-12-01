@@ -55,6 +55,10 @@ class Pegawai extends Model
         return $this->hasOne(RiwayatJabatan::class)->latestOfMany();
     }
 
+    public function riwayatJabatan_(){
+        return $this->hasMany(RiwayatJabatan::class);
+    }
+
     public function berkas(){
         return $this->hasMany(Berkas::class);
     }

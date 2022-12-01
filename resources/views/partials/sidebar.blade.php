@@ -25,11 +25,12 @@
             <i class="fas fa-user"></i>
             <span>Data diri</span></a>
     </li>
-    @if(request()->is('pengguna*'))
-    <li class="nav-item active">
-    @else
     <li class="nav-item">
-    @endif
+        <a class="nav-link" href="#">
+            <i class="fas fa-paper-plane"></i>
+            <span>Pengajuan cuti</span></a>
+    </li>
+    <li class="nav-item">
         <a class="nav-link" href="#" data-toggle="collapse" data-target="#setting" aria-expanded="true" aria-controls="setting">
             <i class="fas fa-user-cog"></i>
             <span>Setting</span>
@@ -37,7 +38,7 @@
         <div id="setting" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Sub menu:</h6>
-                <a class="collapse-item" href="/user">Reset password</a>
+                <a class="collapse-item" href="#">Reset password</a>
             </div>
         </div>
     </li>
@@ -71,13 +72,13 @@
             <span>Riwayat jabatan</span></a>
     </li>
 
-    <li class="nav-item {{ request()->is('cuti*') ? 'active' : '' }}">
-        <a class="nav-link" href="/cuti">
-            <i class="fas fa-user-clock"></i>
+    <li class="nav-item">
+        <a class="nav-link" href="#">
+            <i class="fas fa-paper-plane"></i>
             <span>Cuti pegawai</span></a>
     </li>
 
-    @if(request()->is('pengguna*'))
+    @if(request()->is('user*'))
     <li class="nav-item active">
     @else
     <li class="nav-item">

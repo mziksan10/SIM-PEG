@@ -9,9 +9,9 @@
 @if(session()->has('success'))                                
 <div class="alert alert-success alert-dismissible fade show" role="alert">
 @if(session()->get('nama') === null)
-    <small>{{ session('success') }} <b>{{ auth()->user()->username }} !</b> anda login sebagai <b>{{ auth()->user()->role }}</b>.</small>
+    <small>{{ session('success') }} <b>{{ ucwords(auth()->user()->username) }} !</b> anda login sebagai <b>{{ auth()->user()->role }}</b>.</small>
 @elseif(session()->get('nama'))
-<small>{{ session('success') }} <b>{{ session()->get('nama') }} !</b> anda login sebagai <b>{{ auth()->user()->role }}</b>.</small>
+<small>{{ session('success') }} <b>{{ ucwords(session()->get('nama')) }} !</b> anda login sebagai <b>{{ auth()->user()->role }}</b>.</small>
 @endif
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>

@@ -108,6 +108,7 @@ class PegawaiController extends Controller
             'data_jabatan' => Jabatan::all(),
             'data_golongan' => Golongan::all(),
             'data_berkas' => Pegawai::find($pegawai->id)->berkas()->filter(request(['search']))->paginate('5'),
+            'data_riwayatJabatan' => Pegawai::find($pegawai->id)->riwayatJabatan_()->get(),
             'jenis_berkas' => Pegawai::data_jenis_berkas(),
         ]);
     }
@@ -197,6 +198,7 @@ class PegawaiController extends Controller
             Storage::delete($pegawai->foto);
         }
         
+        RiwayatJabatan::where('pegawai_id', $pegawai->id)->delete();
         Pegawai::destroy($pegawai->id);
         return redirect('/pegawai')->with('success', 'Data pegawai berhasil dihapus!');
     }
@@ -224,28 +226,5 @@ class PegawaiController extends Controller
                             ])->setPaper('A4', 'potrait');
     	return $pdf->download('laporan-data-pegawai.pdf');
     }
-
-    // public function autocomplete(Request $request){
-    //     $filter_data = Golongan::select('id', 'golongan', 'status')
-    //                 ->where('golongan', 'like', '%'.$request->get('query').'%')
-    //                 ->orderBy('golongan')->get();
-    //     foreach ($filter_data as $item) {
-    //         $return_array[]= $item->golongan . " - " . $item->status;
-    //     }
-    //     return response()->json($return_array);
-    // }
-
-    // public function ajax_autocomplete(Request $request){
-    // 	$golongan = [];
-
-    //     if($request->get('q')){
-    //         $search = $request->q;
-    //         $golongan = Golongan::select('id', 'golongan', 'status')
-    //         		->where('golongan', 'LIKE', '%'.$search.'%')
-    //         		->orderBy('golongan')->get();
-    //     }
-        
-    //     return response()->json($golongan);
-    // }
 
 }
