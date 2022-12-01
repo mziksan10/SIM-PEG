@@ -35,6 +35,7 @@ class PegawaisExport implements FromCollection, WithHeadings, WithMapping
         }
         return[
             "'" . $pegawai->nip,
+            "'" . $pegawai->nik,
             $pegawai->nama,
             $pegawai->tempat_lahir,
             $pegawai->tanggal_lahir,

@@ -18,6 +18,7 @@ class PegawaisImport implements ToModel, WithHeadingRow
     {
         return new Pegawai([
             'nip' => $row['nip'],
+            'nik' => $row['nik'],
             'nama' => $row['nama'],
             'tempat_lahir' => $row['tempat_lahir'],
             'tanggal_lahir' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['tanggal_lahir']),
