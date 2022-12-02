@@ -96,15 +96,39 @@ class PresensiController extends Controller
 
     public function absen_masuk(Request $request)
     {
-        $jam_masuk = strtotime('07:45:00');
         $data['jam_masuk'] = date('H:i:s');
         $data['tanggal'] = date('Y-m-d');
         $data['pegawai_id'] = session()->get('pegawai_id');
 
-        if (strtotime($data['jam_masuk']) >= strtotime(date('H:i:s', $jam_masuk))) {
-            $data['keterangan'] = 'Masuk';
+        // Aturan Masuk Sesi ke- 1
+        $jam_masuk_sesi1 = strtotime('07:45:00');
+        $jms1_late1 = strtotime('08:00:00');
+        $jms1_late2 = strtotime('08:15:00');
+        $jms1_batas = strtotime('08:20:00');
+
+        // Aturan Masuk Sesi ke- 2
+        $jam_masuk_sesi2 = strtotime('11:00:00');
+        $jms2_late1 = strtotime('11:15:00');
+        $jms2_late2 = strtotime('11:30:00');
+        $jms2_batas = strtotime('11:35:00');
+
+        // Validasi Absen Masuk
+        if(strtotime($data['jam_masuk']) >= strtotime(date('H:i:s', $jam_masuk_sesi1)) && strtotime($data['jam_masuk']) < strtotime(date('H:i:s', $jms1_late1))){
+            $data['status'] = 'Sesi 1 - Normal';
+        }elseif(strtotime($data['jam_masuk']) >= strtotime(date('H:i:s', $jms1_late1)) && strtotime($data['jam_masuk']) < strtotime(date('H:i:s', $jms1_late2))){
+            $data['status'] = 'Sesi 1 - Late 1';
+        }elseif(strtotime($data['jam_masuk']) >= strtotime(date('H:i:s', $jms1_late2)) && strtotime($data['jam_masuk']) < strtotime(date('H:i:s', $jms1_batas))){
+            $data['status'] = 'Sesi 1 - Late 2';      
+        }elseif(strtotime($data['jam_masuk']) > strtotime(date('H:i:s', $jam_masuk_sesi2))){
+            return redirect()->back()->with('failed','Sesi 1 telah berakhir!');
+        }elseif(strtotime($data['jam_masuk']) >= strtotime(date('H:i:s', $jam_masuk_sesi2)) && strtotime($data['jam_masuk']) < strtotime(date('H:i:s', $jms2_late1))){
+            $data['status'] = 'Sesi 2 - Normal';
+        }elseif(strtotime($data['jam_masuk']) >= strtotime(date('H:i:s', $jms2_late1)) && strtotime($data['jam_masuk']) < strtotime(date('H:i:s', $jms2_late2))){
+            $data['status'] = 'Sesi 2 - Late 1';
+        }elseif(strtotime($data['jam_masuk']) >= strtotime(date('H:i:s', $jms2_late2)) && strtotime($data['jam_masuk']) < strtotime(date('H:i:s', $jms2_batas))){
+            $data['status'] = 'Sesi 2 - Late 2';      
         }else{
-            return redirect()->back()->with('failed', 'Absen masuk gagal!');
+            return redirect()->back()->with('failed','Sesi 2 telah berakhir!');
         }
 
         Presensi::create($data);
@@ -113,18 +137,26 @@ class PresensiController extends Controller
 
     public function absen_pulang(Presensi $presensi)
     {
-        $presensi = Presensi::wherePegawaiId(session()->get('pegawai_id'))->whereTanggal(date('Y-m-d'));
-        $jam_keluar = strtotime('17:00:00');
+        $presensi = Presensi::wherePegawaiId(session()->get('pegawai_id'))->whereTanggal(date('Y-m-d'))->first();
+        // Aturan Pulang Sesi ke- 1
+        $jam_pulang_sesi1 = strtotime('17:00:00');
+        
+        // Aturan Pulang Sesi ke- 1
+        $jam_pulang_sesi2 = strtotime('20:00:00');
+
         $data['jam_keluar'] = date('H:i:s');
+        $diff = strtotime($data['jam_keluar']) - strtotime($presensi->jam_masuk);
+        $jam = floor($diff / (60 * 60));
+        $menit = $diff - $jam * (60 * 60);
 
-        if($presensi->whereKeterangan('Normal')->first()){
-            return redirect()->back()->with('failed', 'Sesi telah berkahir!');
+        if($jam >= 9){
+            $data['keterangan'] = 'Normal'; 
+        }elseif($jam <= 8){
+            return redirect()->back()->with('failed','Anda belum bisa absen pulang!');
         }
-
-        if (strtotime($data['jam_keluar']) >= strtotime(config('autran-presensi.jam_masuk'))) {
-            $data['keterangan'] = 'Normal';
-        }else{
-            return redirect()->back()->with('failed', 'Absen pulang gagal!');
+        
+        if($presensi->keterangan == 'Normal'){
+            return redirect()->back()->with('failed','Anda sudah absen pulang!');
         }
 
         Presensi::wherePegawaiId(session()->get('pegawai_id'))->whereTanggal(date('Y-m-d'))->update($data);

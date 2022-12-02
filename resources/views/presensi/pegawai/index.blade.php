@@ -81,7 +81,7 @@
                         <td>{{ $item->tanggal }}</td>
                         <td style="text-align: center">{{ $item->jam_masuk }}</td>
                         <td style="text-align: center">{{ $item->jam_keluar }}</td>
-                        <td style="text-align: center"></td>
+                        <td style="text-align: center">{{ $item->status }}</td>
                         <td style="text-align: center">{{ $item->keterangan }}</td>
                         </tr>
                         @endforeach
