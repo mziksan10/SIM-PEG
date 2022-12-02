@@ -4,9 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Auth;
 
-class CheckRole
+class CheckIP
 {
     /**
      * Handle an incoming request.
@@ -15,17 +14,13 @@ class CheckRole
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle($request, Closure $next, ...$role)
+    public function handle(Request $request, Closure $next)
     {
-        if(in_array($request->user()->role,$role)){
+        if ($request->ip() >= '127.0.0.*') {
             return $next($request);
-        }elseif($request->user()->role == "admin"){
-            return $next($request);
-        }elseif($request->user()->role == "guest"){
-            auth()->logout();
-            return redirect('/');
         }
-        return redirect('/');
+        
+        return redirect()->back()->with('failed', 'Gunakan alamat IP Address yang telah terdaftar di sistem!');
 
     }
 }

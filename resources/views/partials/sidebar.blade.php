@@ -25,11 +25,16 @@
             <i class="fas fa-user"></i>
             <span>Data diri</span></a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item {{ request()->is('presensi-pegawai*') ? 'active' : '' }}">
+        <a class="nav-link" href="/presensi-pegawai">
+            <i class="fas fa-paper-plane"></i>
+            <span>Presensi</span></a>
+    </li>
+    <!-- <li class="nav-item">
         <a class="nav-link" href="#">
             <i class="fas fa-paper-plane"></i>
             <span>Pengajuan cuti</span></a>
-    </li>
+    </li> -->
     <li class="nav-item">
         <a class="nav-link" href="#" data-toggle="collapse" data-target="#setting" aria-expanded="true" aria-controls="setting">
             <i class="fas fa-user-cog"></i>
@@ -72,11 +77,11 @@
             <span>Riwayat jabatan</span></a>
     </li>
 
-    <li class="nav-item">
+    <!-- <li class="nav-item">
         <a class="nav-link" href="#">
             <i class="fas fa-paper-plane"></i>
             <span>Cuti pegawai</span></a>
-    </li>
+    </li> -->
 
     @if(request()->is('user*'))
     <li class="nav-item active">

@@ -17,7 +17,7 @@ class LoginController extends Controller
     }
 
     public function authenticate(Request $request){
-        $cariData = DB::select("SELECT nama, foto FROM pegawais where nip = '$request->username' ");
+        $cariData = DB::select("SELECT id, nama, foto FROM pegawais where nip = '$request->username' ");
         $credentials = $request->validate([
             'username' => 'required',
             'password' => 'required',
@@ -28,6 +28,7 @@ class LoginController extends Controller
                 return redirect()->intended('/')->with('success', 'Halo selamat datang');
             }
         }elseif($cariData == true){
+            Session::put('pegawai_id', $cariData[0]->id);
             Session::put('nama', $cariData[0]->nama);
             Session::put('foto', $cariData[0]->foto);
             if(Auth::attempt($credentials)){

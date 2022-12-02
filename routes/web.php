@@ -13,6 +13,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CutiController;
 use App\Http\Controllers\DataDiriController;
 use App\Http\Controllers\RiwayatJabatanController;
+use App\Http\Controllers\PresensiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,4 +72,9 @@ Route::group(['middleware' => ['auth', 'checkrole:user']], function (){
     // Route Dashboard
     Route::get('/', [DashboardController::class, 'index']);
     Route::get('/data-diri', [DataDiriController::class, 'index']);
+    Route::group(['middleware' => ['auth', 'checkip']], function (){
+        Route::get('/presensi-pegawai', [PresensiController::class, 'index_']);
+        Route::post('/presensi-pegawai', [PresensiController::class, 'absen_masuk']);
+        Route::put('/presensi-pegawai', [PresensiController::class, 'absen_pulang']);
+    });
 });

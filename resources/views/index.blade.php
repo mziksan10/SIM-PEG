@@ -17,6 +17,10 @@
       <span aria-hidden="true">&times;</span>
     </button>
 </div>
+@elseif(session()->has('failed')) 
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <small>{{ session('failed') }}</small>
+</div>
 @endif
 
 @if(auth()->user()->role == 'admin')
