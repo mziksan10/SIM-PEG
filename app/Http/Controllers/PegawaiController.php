@@ -229,4 +229,17 @@ class PegawaiController extends Controller
     	return $pdf->download('laporan-data-pegawai.pdf');
     }
 
+    public function index_()
+    {
+        $pegawai = Pegawai::select('*')->where('id', session()->get('pegawai_id'))->get();
+        return view('pegawai/pegawai/index',[
+            'title'  => 'Profil',
+            'pegawai'  => $pegawai[0],
+            'data_bidang' => Bidang::all(),
+            'data_jabatan' => Jabatan::all(),
+            'data_golongan' => Golongan::all(),
+            'data_riwayatJabatan' => Pegawai::find(session()->get('pegawai_id'))->riwayatJabatan_()->get(),
+        ]);
+    }
+
 }

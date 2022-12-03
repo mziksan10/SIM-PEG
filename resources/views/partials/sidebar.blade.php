@@ -20,10 +20,15 @@
     </li>
 
     @if(auth()->user()->role == 'user')
-    <li class="nav-item {{ request()->is('data-diri*') ? 'active' : '' }}">
-        <a class="nav-link" href="/data-diri">
+    <li class="nav-item {{ request()->is('profil*') ? 'active' : '' }}">
+        <a class="nav-link" href="/profil">
             <i class="fas fa-user"></i>
-            <span>Data diri</span></a>
+            <span>Profil</span></a>
+    </li>
+    <li class="nav-item {{ request()->is('pemberkasan-pegawai*') ? 'active' : '' }}">
+        <a class="nav-link" href="/pemberkasan-pegawai">
+            <i class="fas fa-paper-plane"></i>
+            <span>Pemberkasan</span></a>
     </li>
     <li class="nav-item {{ request()->is('presensi-pegawai*') ? 'active' : '' }}">
         <a class="nav-link" href="/presensi-pegawai">

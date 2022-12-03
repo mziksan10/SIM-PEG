@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Berkas;
+use App\Models\Pegawai;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Storage;
@@ -18,7 +19,11 @@ class BerkasController extends Controller
      */
     public function index()
     {
-        //
+        return view ('pemberkasan/index',[
+            'title' => 'Pemberkasan',
+            'data_berkas' => Pegawai::latest()->filter(request(['search']))->paginate('5')->withQueryString(),
+            'jenis_berkas' => Berkas::data_jenis_berkas(),
+        ]);
     }
 
     /**
@@ -49,7 +54,7 @@ class BerkasController extends Controller
             $validatedData['file'] = request()->file('file')->store('berkas-pegawai');  
         }
         Berkas::create($validatedData);
-        return redirect('/pegawai/' . $request->pegawai_id)->with('success', 'Data berkas berhasil diinput!');
+        return redirect()->back()->with('success', 'Data berkas berhasil diinput!');
     }
 
     /**
@@ -101,5 +106,14 @@ class BerkasController extends Controller
         }
         Berkas::destroy($berkas->id);
         return Redirect::back()->with('success', 'Data berkas berhasil dihapus!');
+    }
+
+    public function index_()
+    {
+        return view ('pemberkasan/pegawai/index',[
+            'title' => 'Pemberkasan',
+            'data_berkas' => Pegawai::find(session()->get('pegawai_id'))->berkas()->filter(request(['search']))->paginate('5'),
+            'jenis_berkas' => Berkas::data_jenis_berkas(),
+        ]);
     }
 }
