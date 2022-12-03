@@ -15,23 +15,19 @@
         <div class="card-body">
             <h1 id="jam" class="card-title"></h1>
             <p class="card-text">{{ date('l, d F Y') }}</b></p>
-            @if($presensi->get())
-            @foreach($presensi->get() as $p)
-            @if($p == null)
+            @if($presensi == null)
             <form action="/presensi-pegawai" method="POST">
             @csrf
             <button class="btn btn-primary mb-4" type="submit">Absen Masuk</button>
             </form>
-            @elseif($p->keterangan == null)
+            @elseif($presensi->keterangan == null)
             <form action="/presensi-pegawai" method="POST">
             @method('put')
             @csrf
             <button class="btn btn-danger mb-4" type="submit">Absen Pulang</button>
             </form>
-            @elseif($p->keterangan != null)
+            @elseif($presensi->keterangan != null)
             <!-- Kosong -->
-            @endif
-            @endforeach
             @endif
             <div class="table-responsive container">
             <table class="table" width="100%" cellspacing="0">
