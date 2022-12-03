@@ -115,22 +115,25 @@ class PresensiController extends Controller
         $jms2_max = strtotime('11:35:00');
 
         // Validasi Absen Masuk
+
         if(strtotime($data['jam_masuk']) >= strtotime(date('H:i:s', $jms1_min)) && strtotime($data['jam_masuk']) >= strtotime(date('H:i:s', $jam_masuk_sesi1)) && strtotime($data['jam_masuk']) < strtotime(date('H:i:s', $jms1_late1))){
             $data['status'] = 'Sesi 1 - Normal';
         }elseif(strtotime($data['jam_masuk']) >= strtotime(date('H:i:s', $jms1_late1)) && strtotime($data['jam_masuk']) < strtotime(date('H:i:s', $jms1_late2))){
             $data['status'] = 'Sesi 1 - Late 1';
         }elseif(strtotime($data['jam_masuk']) >= strtotime(date('H:i:s', $jms1_late2)) && strtotime($data['jam_masuk']) <= strtotime(date('H:i:s', $jms1_max))){
             $data['status'] = 'Sesi 1 - Late 2';      
-        }elseif(strtotime($data['jam_masuk']) > strtotime(date('H:i:s', $jam_masuk_sesi2))){
-            return redirect()->back()->with('failed','Sesi 1 telah berakhir!');
         }elseif(strtotime($data['jam_masuk']) >= strtotime(date('H:i:s', $jms2_min)) && strtotime($data['jam_masuk']) >= strtotime(date('H:i:s', $jam_masuk_sesi2)) && strtotime($data['jam_masuk']) < strtotime(date('H:i:s', $jms2_late1))){
             $data['status'] = 'Sesi 2 - Normal';
         }elseif(strtotime($data['jam_masuk']) >= strtotime(date('H:i:s', $jms2_late1)) && strtotime($data['jam_masuk']) < strtotime(date('H:i:s', $jms2_late2))){
             $data['status'] = 'Sesi 2 - Late 1';
         }elseif(strtotime($data['jam_masuk']) >= strtotime(date('H:i:s', $jms2_late2)) && strtotime($data['jam_masuk']) <= strtotime(date('H:i:s', $jms2_max))){
             $data['status'] = 'Sesi 2 - Late 2';      
+        }elseif(strtotime($data['jam_masuk']) <= strtotime(date('H:i:s', $jms1_max))){
+            return redirect()->back()->with('failed','Sesi 1 telah berkahir!');
+        }elseif(strtotime($data['jam_masuk']) <= strtotime(date('H:i:s', $jms2_max))){
+            return redirect()->back()->with('failed','Sesi 2 telah berkahir!');
         }else{
-            return redirect()->back()->with('failed','Sesi 2 telah berakhir!');
+            return redirect()->back()->with('failed','Sesi telah berkahir!');
         }
 
         Presensi::create($data);
