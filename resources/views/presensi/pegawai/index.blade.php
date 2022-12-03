@@ -13,6 +13,7 @@
             <small class="text-muted"><i>Hallo {{ ucwords(session()->get('nama')) }}!</i></small>
         </div>
         <div class="card-body">
+            <img class="img-thumbnail rounded-circle mb-3 mt-3" style="width:100px; height:100px" src="{{asset('storage/' . session()->get('foto'))}}">
             <h1 id="jam" class="card-title"></h1>
             <p class="card-text">{{ date('l, d F Y') }}</b></p>
             @if($presensi == null)

@@ -34,12 +34,12 @@
                     <div class="row">
                         <div class="col-3">
                             @if($pegawai->foto)
-                            <div style="max-height: 300px; max-width: 200px; overflow: hidden;">
-                            <img src="{{asset('storage/' . $pegawai->foto)}}" class="img-thumbnail">
+                            <div style="max-height: 300px; max-width: 250px; overflow: hidden;">
+                            <img src="{{asset('storage/' . $pegawai->foto)}}" style="height: 300px; width: 250px;" class="img-thumbnail">
                             </div>
                             @else
-                            <div style="max-height: 400px; max-width: 200px; overflow: hidden;">
-                            <img src="{{asset('/assets/img/user_default.png')}}" class="img-thumbnail">
+                            <div style="max-height: 300px; max-width: 250px; overflow: hidden;">
+                            <img src="{{asset('/assets/img/user_default.png')}}" style="height: 300px; width: 250px;" class="img-thumbnail">
                             </div>
                             @endif
                         </div>
