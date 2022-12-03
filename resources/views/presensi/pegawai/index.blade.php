@@ -15,6 +15,7 @@
         <div class="card-body">
             <h1 id="jam" class="card-title"></h1>
             <p class="card-text">{{ date('l, d F Y') }}</b></p>
+            @if($presensi->get())
             @foreach($presensi->get() as $p)
             @if($p == null)
             <form action="/presensi-pegawai" method="POST">
@@ -31,6 +32,7 @@
             <!-- Kosong -->
             @endif
             @endforeach
+            @endif
             <div class="table-responsive container">
             <table class="table" width="100%" cellspacing="0">
                     <tr>
