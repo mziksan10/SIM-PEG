@@ -38,6 +38,10 @@
                         </div>
                         <div class="col-9">
                             <table class="table small">
+                                 <tr>
+                                    <th>NIK</th>
+                                    <td>: {{ $pegawai->nik }}</td>
+                                </tr>
                                 <tr>
                                     <th>Nama</th>
                                     <td>: {{ $pegawai->nama }}</td>
