@@ -20,7 +20,7 @@ class CheckIP
             return $next($request);
         }
         
-        return redirect()->back()->with('failed', 'Gunakan alamat IP Address yang telah terdaftar di sistem!');
+        return redirect('/')->with('failed', 'Gunakan alamat IP Address yang telah terdaftar di sistem!');
 
     }
 }
