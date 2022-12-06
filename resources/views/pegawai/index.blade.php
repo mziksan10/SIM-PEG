@@ -62,7 +62,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" width="100%" cellspacing="0">
+                <table class="table table-bordered" width="100%" cellspacing="0" style="text-align: center">
                     <thead>
                         <tr class="bg-primary my-font-white">
                             <th>No</th>
@@ -95,8 +95,8 @@
                             <td>{{ $item->nip }}</td>
                             <td>{{ $item->nama }}</td>
                             @if($item->riwayatJabatan === null)
-                            <td style="text-align:center"><div class="badge badge-warning">Belum Terdaftar</div></td>
-                            <td style="text-align:center"><div class="badge badge-warning">Belum Terdaftar</div></td>
+                            <td><div class="badge badge-warning">Belum Terdaftar</div></td>
+                            <td><div class="badge badge-warning">Belum Terdaftar</div></td>
                             @elseif($item->riwayatJabatan)
                             <td>{{ $item->riwayatJabatan->bidang->nama_bidang }}</td>
                             <td>{{ $item->riwayatJabatan->jabatan->nama_jabatan }}</td>

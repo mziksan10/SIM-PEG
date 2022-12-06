@@ -61,8 +61,11 @@ Route::group(['middleware' => ['auth', 'checkrole:admin']], function (){
     Route::resource('/berkas', BerkasController::class);
     // Route Pengguna
     Route::resource('/riwayat-jabatan', RiwayatJabatanController::class);
+    // Route Presensi
+    Route::resource('/presensi', PresensiController::class);
+    Route::get('/export/presensi/', [PresensiController::class, 'export']);
     // Route Cuti
-    Route::resource('/cuti', CutiController::class);
+    // Route::resource('/cuti', CutiController::class);
     // Route Pengguna
     Route::resource('/user', UserController::class);
     Route::get('/pegawai-list', [CutiController::class, 'pegawaiList']);

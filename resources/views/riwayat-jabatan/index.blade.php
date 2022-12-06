@@ -47,7 +47,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" width="100%" cellspacing="0">
+                <table class="table table-bordered" width="100%" cellspacing="0" style="text-align: center">
                     <thead>
                         <tr class="bg-primary my-font-white">
                             <th>No</th>
@@ -56,7 +56,7 @@
                             <th>Jabatan</th>
                             <th>Golongan</th>
                             <th>Tanggal SK</th>
-                            <th style="text-align: center">Aksi</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -77,7 +77,7 @@
                         @endif
                         </td>
                         <td>{{ $item->tanggal_sk }}</td>
-                        <td style="text-align: center">
+                        <td>
                             <button class="btn-circle btn-sm btn-primary" data-toggle="modal" data-target="#showModal{{ $item->id }}"><i class="fas fa-eye fa-sm"></i></button>
                             <form action="/bidang/{{ $item->id }}" method="post" class="d-inline">
                                 @method('delete')

@@ -15,7 +15,7 @@
         <div class="card-body">
             <img class="img-thumbnail rounded-circle mb-3 mt-3" style="width:100px; height:100px" src="{{asset('storage/' . session()->get('foto'))}}">
             <h1 id="jam" class="card-title"></h1>
-            <p class="card-text">{{ date('l, d F Y') }}</b></p>
+            <p class="card-text">{{ date('l, d F Y') }}</p>
             @if($presensi == null)
             <form action="/presensi-pegawai" method="POST">
             @csrf

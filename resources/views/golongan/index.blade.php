@@ -62,14 +62,14 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" width="100%" cellspacing="0">
+                <table class="table table-bordered" width="100%" cellspacing="0" style="text-align: center">
                     <thead>
                         <tr class="bg-primary my-font-white">
                             <th>No</th>
                             <th>Golongan</th>
                             <th>Pendidikan</th>
-                            <th style="text-align: center">Status</th>
-                            <th style="text-align: center">Aksi</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -79,11 +79,11 @@
                             <td>{{ $item->golongan }}</td>
                             <td>{{ $item->pendidikan }}</td>
                             @if($item->status == "Tetap")
-                            <td style="text-align: center"><div class="badge badge-warning">{{ $item->status }}</div></td>
+                            <td><div class="badge badge-warning">{{ $item->status }}</div></td>
                             @elseif($item->status == "Kontrak")
-                            <td style="text-align: center"><div class="badge badge-primary">{{ $item->status }}</div></td>
+                            <td><div class="badge badge-primary">{{ $item->status }}</div></td>
                             @endif
-                            <td style="text-align: center">
+                            <td>
                                 <button class="btn-circle btn-sm btn-primary" data-toggle="modal" data-target="#showModal{{ $item->id }}"><i class="fas fa-eye fa-sm"></i></button>
                                 <button class="btn-circle btn-sm btn-warning" data-toggle="modal" data-target="#editModal{{ $item->id }}"><i class="fas fa-edit fa-sm"></i></button>
                                 <form action="/golongan/{{ $item->id }}" method="post" class="d-inline">

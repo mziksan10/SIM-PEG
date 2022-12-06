@@ -43,8 +43,8 @@
         <div id="setting" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Sub menu:</h6>
-                <a class="collapse-item" href="#">Ganti foto</a>
-                <a class="collapse-item" href="#">Reset password</a>
+                <a class="collapse-item" href="#">Ganti Foto</a>
+                <a class="collapse-item" href="#">Reset Password</a>
             </div>
         </div>
     </li>
@@ -75,14 +75,14 @@
     <li class="nav-item {{ request()->is('riwayat-jabatan*') ? 'active' : '' }}">
         <a class="nav-link" href="/riwayat-jabatan">
             <i class="fas fa-briefcase"></i>
-            <span>Riwayat jabatan</span></a>
+            <span>Riwayat Jabatan</span></a>
     </li>
 
-    <!-- <li class="nav-item">
-        <a class="nav-link" href="#">
-            <i class="fas fa-paper-plane"></i>
-            <span>Cuti pegawai</span></a>
-    </li> -->
+    <li class="nav-item {{ request()->is('presensi*') ? 'active' : '' }}">
+        <a class="nav-link" href="/presensi">
+            <i class="fas fa-clipboard-list"></i>
+            <span>Rekap Presensi</span></a>
+    </li>
 
     @if(request()->is('user*'))
     <li class="nav-item active">

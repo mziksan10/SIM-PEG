@@ -61,7 +61,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" width="100%" cellspacing="0">
+                <table class="table table-bordered" width="100%" cellspacing="0" style="text-align: center">
                     <thead>
                         <tr class="bg-primary my-font-white">
                             <th>No</th>
@@ -69,7 +69,7 @@
                             <th>Nama Bidang</th>
                             <th>Dibuat Pada</th>
                             <th>Diubah Pada</th>
-                            <th style="text-align: center">Aksi</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -80,7 +80,7 @@
                             <td>{{ $item->nama_bidang }}</td>
                             <td>{{ date("d-m-Y", strtotime($item->created_at)) }}</td>
                             <td>{{ date("d-m-Y", strtotime($item->updated_at)) }}</td>
-                            <td style="text-align: center">
+                            <td>
                                 <button class="btn-circle btn-sm btn-warning" data-toggle="modal" data-target="#editModal{{ $item->id }}"><i class="fas fa-edit fa-sm"></i></button>
                                 <form action="/bidang/{{ $item->id }}" method="post" class="d-inline">
                                     @method('delete')

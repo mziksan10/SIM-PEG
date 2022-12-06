@@ -12,7 +12,7 @@
 
     <!-- Topbar Navbar -->
     <ul class="navbar-nav ml-auto">
-        <div style="padding:22px 0;"><span class="mr-2 d-none d-lg-inline text-gray-600 small">Tanggal : {{ date('d M Y') }}</span></div>
+        <div style="padding:22px 0;"><span class="mr-2 d-none d-lg-inline text-gray-600 small">Date : {{ date('d/m/Y') }}</span></div>
         <div class="topbar-divider d-none d-sm-block"></div>
 
         <!-- Nav Item - User Information -->
