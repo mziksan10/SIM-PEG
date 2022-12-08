@@ -57,10 +57,10 @@ Route::group(['middleware' => ['auth', 'checkrole:admin']], function (){
     Route::resource('/jabatan', JabatanController::class);
     Route::get('/export/jabatan/', [JabatanController::class, 'export']);
     Route::post('/import/jabatan/', [JabatanController::class, 'import'])->name('import-jabatan');
-    // Route Berkas
-    Route::resource('/berkas', BerkasController::class);
     // Route Pengguna
     Route::resource('/riwayat-jabatan', RiwayatJabatanController::class);
+    // Route Berkas
+    Route::resource('/pemberkasan', BerkasController::class);
     // Route Presensi
     Route::resource('/presensi', PresensiController::class);
     Route::get('/export/presensi/', [PresensiController::class, 'export']);

@@ -76,7 +76,7 @@
                         <div class="badge badge-primary">Tetap</div>
                         @endif
                         </td>
-                        <td>{{ $item->tanggal_sk }}</td>
+                        <td>{{ date('d/m/Y', strtotime($item->tanggal_sk)) }}</td>
                         <td>
                             <button class="btn-circle btn-sm btn-primary" data-toggle="modal" data-target="#showModal{{ $item->id }}"><i class="fas fa-eye fa-sm"></i></button>
                             <form action="/bidang/{{ $item->id }}" method="post" class="d-inline">

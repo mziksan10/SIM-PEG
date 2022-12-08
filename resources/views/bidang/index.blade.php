@@ -43,7 +43,7 @@
             <div class="row">
                 <div class="col-8 d-flex justify-content-start">
                     <a href="/bidang" class="btn btn-primary"><i class="fas fa-sync fa-sm"></i></a>
-                    <a href="/export/bidang/" class="btn btn-success ml-1"><i class="fas fa-file-excel fa-sm"></i></a>
+                    <a href="/export/bidang/" class="btn btn-success ml-1"><i class="fas fa-file-excel fa-sm"></i> Excel</a>
                 </div>
                 <div class="col-4">
                     <form action="/bidang" method="GET">

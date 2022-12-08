@@ -18,8 +18,7 @@ class PresensiController extends Controller
     public function index()
     {
         return view('presensi/index',[
-                'title' => 'Rekap Presensi',
-                // 'data_presensi' => Presensi::whereMonth('tanggal', Carbon::now()->month)->get(),
+                'title' => 'Presensi',
                 'data_presensi' => Presensi::latest()->filter(request(['search']))->paginate('5')->withQueryString()
         ]);
     }

@@ -3,6 +3,7 @@
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">{{ $title }}</h1>
+    <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#createModal"><i class="fas fa-plus fa-sm text-white-50"></i> Add</button>
 </div>
 
 <!-- Content Row -->
@@ -10,56 +11,13 @@
     <div class="col">
         <div class="card shadow mb-4">
             <div class="card-header">
-                <form action="/berkas" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <input type="hidden" name="pegawai_id" value="{{ session()->get('pegawai_id') }}">
-                    <div class="row">
-                        <div class="col-3">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                <span class="input-group-text">Jenis Berkas</span>
-                                </div>
-                                <select name="jenis_berkas" class="form-control @error('jenis_berkas') is-invalid @enderror" autofocus>
-                                    <option value="" selected>--Pilih--</option>
-                                    @foreach($jenis_berkas as $item)
-                                    <option value="{{ $item }}">{{ $item }}</option>
-                                    @endforeach
-                                </select>
-                                @error('jenis_berkas')
-                                <div class="invalid-feedback ml-3">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <div class="form-group">
-                                <input type="text" class="form-control @error('keterangan') is-invalid @enderror" placeholder="Keterangan" name="keterangan">
-                            </div>
-                            @error('keterangan')
-                            <div class="invalid-feedback ml-3">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="col">
-                            <div class="input-group">
-                                <input type="file" name="file" class="form-control @error('file') is-invalid @enderror">
-                                <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit"><i class="fas fa-upload fa-sm"></i> Upload</button>
-                                </div>
-                                @error('file')
-                                <div class="invalid-feedback ml-3">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                <hr class="d-none d-md-block mt-0">
                 <div class="row d-flex justify-content-end">
                     <div class="col-8 d-flex justify-content-start">
-                        <a href="/pemberkasan-pegawai" class="btn btn-primary mr-2"><i class="fas fa-sync fa-sm"></i></a>
-                        <h6 class="font-weight-bold text-primary mt-auto">Data Pemberkasan</h6>
+                        <a href="/pemberkasan" class="btn btn-primary mr-2"><i class="fas fa-sync fa-sm"></i></a>
                     </div>
                     <div class="col-4">
                         <div class="float-right">
-                            <form action="/pemberkasan-pegawai" method="GET">
+                            <form action="/pemberkasan" method="GET">
                                 <div class="input-group"> 
                                     <input type="text" class="form-control small" placeholder="Search for.." name="search" value="{{ request('search') }}">
                                     <div class="input-group-append">
@@ -75,14 +33,16 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                <table class="table table-bordered" width="100%" cellspacing="0" style="text-align: center">
+                    <table class="table table-bordered" width="100%" cellspacing="0" style="text-align: center">
                         <thead>
                             <tr class="bg-primary my-font-white">
                                 <th>No</th>
+                                <th>NIP</th>
+                                <th>Nama</th>
                                 <th>Jenis Berkas</th>
                                 <th>Keterangan</th>
-                                <th>Di Buat</th>
-                                <th>Di Ubah</th>
+                                <th>Tanggal DiBuat</th>
+                                <th>Tanggal DiUbah</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -90,12 +50,15 @@
                             @foreach($data_berkas as $item)
                             <tr>
                                 <td>{{ $data_berkas->firstItem() + $loop->index }}</td>
+                                <td>{{ $item->pegawai->nip }}</td>
+                                <td>{{ $item->pegawai->nama }}</td>
                                 <td>{{ $item->jenis_berkas }}</td>
                                 <td>{{ $item->keterangan }}</td>
-                                <td>{{ date('d/m/y', strtotime($item->created_at)) }}</td>
-                                <td>{{ date('d/m/y', strtotime($item->updated_at)) }}</td>
+                                <td>{{ date('d/m/Y', strtotime($item->created_at)) }}</td>
+                                <td>{{ date('d/m/Y', strtotime($item->updated_at)) }}</td>
                                 <td>
                                     <a href="{{asset('storage/' . $item->file)}}" class="btn-circle btn-sm btn-primary" target="_blank"><i class="fas fa-eye fa-sm"></i></a>
+                                    <button class="btn-circle btn-sm btn-warning" data-toggle="modal" data-target="#editModal{{ $item->id }}"><i class="fas fa-edit fa-sm"></i></button>
                                     <form action="/berkas/{{ $item->id }}" method="post" class="d-inline">
                                         @method('delete')
                                         @csrf

@@ -41,12 +41,14 @@
                         <span class="input-group-text">To</span>
                     </div>
                     <input type="date" class="form-control col-4" name="toDate">
-                    <button type="submit" class="btn btn-success ml-1"><i class="fas fa-file-excel fa-sm"></i></button>
+                    <div class="input-group-append">
+                    <button type="submit" class="btn btn-success"><i class="fas fa-file-excel fa-sm"></i></button>
+                    </div>
                     </div>
                     </form>                    
                 </div>
                 <div class="col-4">
-                    <form action="/export/presensi" method="GET">
+                    <form action="/presensi" method="GET">
                         <div class="input-group"> 
                             <input type="date" class="form-control small" name="search" value="{{ request('search') }}">
                             <div class="input-group-append">
@@ -103,4 +105,5 @@
     </div>
     </div>
 </div>
+
 @endsection

@@ -77,11 +77,15 @@
             <i class="fas fa-briefcase"></i>
             <span>Riwayat Jabatan</span></a>
     </li>
-
+    <li class="nav-item {{ request()->is('pemberkasan*') ? 'active' : '' }}">
+        <a class="nav-link" href="/pemberkasan">
+            <i class="fas fa-archive"></i>
+            <span>Pemberkasan</span></a>
+    </li>
     <li class="nav-item {{ request()->is('presensi*') ? 'active' : '' }}">
         <a class="nav-link" href="/presensi">
             <i class="fas fa-clipboard-list"></i>
-            <span>Rekap Presensi</span></a>
+            <span>Presensi</span></a>
     </li>
 
     @if(request()->is('user*'))

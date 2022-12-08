@@ -22,4 +22,8 @@ class Berkas extends Model
             ->orWhere('keterangan', 'like', '%' . $search . '%');  
         });
     }
+
+    public function pegawai(){
+        return $this->belongsTo(Pegawai::class);
+    }   
 }

@@ -21,7 +21,7 @@ class BerkasController extends Controller
     {
         return view ('pemberkasan/index',[
             'title' => 'Pemberkasan',
-            'data_berkas' => Pegawai::latest()->filter(request(['search']))->paginate('5')->withQueryString(),
+            'data_berkas' => Berkas::latest()->filter(request(['search']))->paginate('5')->withQueryString(),
             'jenis_berkas' => Berkas::data_jenis_berkas(),
         ]);
     }

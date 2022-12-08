@@ -43,8 +43,8 @@
             <div class="row">
                 <div class="col-8 d-flex justify-content-start">
                     <a href="/golongan" class="btn btn-primary"><i class="fas fa-sync fa-sm"></i></a>
-                    <a href="/export/golongan/" class="btn btn-success ml-1"><i class="fas fa-file-excel fa-sm"></i></a>
-                    <a href="/report/golongan/" class="btn btn-danger ml-1" target="_blank"><i class="fas fa-file-pdf fa-sm"></i></a>
+                    <a href="/export/golongan/" class="btn btn-success ml-1"><i class="fas fa-file-excel fa-sm"></i> Excel</a>
+                    <a href="/report/golongan/" class="btn btn-danger ml-1" target="_blank"><i class="fas fa-file-pdf fa-sm"></i> PDF</a>
                 </div>
                 <div class="col-4">
                     <form action="/golongan" method="GET">
