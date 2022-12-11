@@ -1,4 +1,4 @@
-<form action="/pemberkasan-pegawai" method="POST" enctype="multipart/form-data">
+<form action="/pemberkasan" method="POST" enctype="multipart/form-data">
 @csrf
 
     <div class="modal fade" tabindex="-1" id="createModal">
@@ -11,7 +11,15 @@
             </button>
         </div>
         <div class="modal-body">
-        <input type="hidden" name="pegawai_id" value="{{ session()->get('pegawai_id') }}">
+        <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>NIP</label>
+            <input type="search" id="nip" class="form-control @error('nip') is-invalid @enderror" name="nip" value="{{ old('nip') }}">
+            @error('nip')
+            <div class="invalid-feedback ml-3">{{ $message }}</div>
+            @enderror
+        </div>
+        </div>
         <div class="form-row">
         <div class="col-12">
         <label>Upload Berkas</label>

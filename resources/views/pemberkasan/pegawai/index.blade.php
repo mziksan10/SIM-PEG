@@ -77,7 +77,7 @@
                                 <td>{{ date('d/m/y', strtotime($item->updated_at)) }}</td>
                                 <td>
                                     <a href="{{asset('storage/' . $item->file)}}" class="btn-circle btn-sm btn-primary" target="_blank"><i class="fas fa-eye fa-sm"></i></a>
-                                    <form action="/berkas/{{ $item->id }}" method="post" class="d-inline">
+                                    <form action="/pemberkasan-pegawai/{{ $item->id }}" method="post" class="d-inline">
                                         @method('delete')
                                         @csrf
                                         <button class="btn-circle btn-sm btn-danger border-0" onclick="return confirm('Apakah kamu yakin?')"><i class="fas fa-trash fa-sm"></i></button>

@@ -82,5 +82,7 @@ Route::group(['middleware' => ['auth', 'checkrole:user']], function (){
         Route::put('/presensi-pegawai', [PresensiController::class, 'absen_pulang']);
     });
     // Route Berkas
-    Route::resource('/berkas', BerkasController::class);
+    Route::get('/pemberkasan-pegawai', [BerkasController::class, 'index_']);
+    Route::post('/pemberkasan-pegawai', [BerkasController::class, 'store_']);
+    Route::delete('/pemberkasan-pegawai/{id}', [BerkasController::class, 'destroy_']);
 });

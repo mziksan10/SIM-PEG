@@ -81,4 +81,6 @@
         </div>
     </div>
 </div>
+
+@include('pemberkasan/modal/create')
 @endsection
