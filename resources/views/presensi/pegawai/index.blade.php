@@ -31,21 +31,23 @@
             <!-- Kosong -->
             @endif
             <div class="table-responsive container">
-            <table class="table" width="100%" cellspacing="0">
+            <table class="table" width="100%" cellspacing="0" style="text-align: center">
                     <tr>
                         <th>Tanggal</th>
-                        <th style="text-align: center">Jam Masuk</th>
-                        <th style="text-align: center">Jam Keluar</th>
-                        <th style="text-align: center">Status</th>
-                        <th style="text-align: center">Keterangan</th>
+                        <th>Jam Masuk</th>
+                        <th>Jam Keluar</th>
+                        <th>Sesi</th>
+                        <th>Status</th>
+                        <th>Keterangan</th>
                     </tr>
                     @foreach($data_presensi as $item)
                     <tr>
                     <td>{{ $item->tanggal }}</td>
-                    <td style="text-align: center">{{ $item->jam_masuk }}</td>
-                    <td style="text-align: center">{{ $item->jam_keluar }}</td>
-                    <td style="text-align: center">{{ $item->status }}</td>
-                    <td style="text-align: center">{{ $item->keterangan }}</td>
+                    <td>{{ $item->jam_masuk }}</td>
+                    <td>{{ $item->jam_keluar }}</td>
+                    <td>{{ $item->sesi }}</td>
+                    <td>{{ $item->status }}</td>
+                    <td>{{ $item->keterangan }}</td>
                     </tr>
                     @endforeach
             </table>

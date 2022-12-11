@@ -160,11 +160,6 @@ class PresensiController extends Controller
     public function absen_pulang(Presensi $presensi)
     {
         $presensi = Presensi::wherePegawaiId(session()->get('pegawai_id'))->whereTanggal(date('Y-m-d'))->first();
-        // Aturan Pulang Sesi ke- 1
-        $jam_pulang_sesi1 = strtotime('17:00:00');
-        
-        // Aturan Pulang Sesi ke- 1
-        $jam_pulang_sesi2 = strtotime('20:00:00');
 
         $data['jam_keluar'] = date('H:i:s');
         $diff = strtotime($data['jam_keluar']) - strtotime($presensi->jam_masuk);
@@ -172,7 +167,7 @@ class PresensiController extends Controller
         $menit = $diff - $jam * (60 * 60);
 
         if($jam >= 10){
-            $data['keterangan'] = 'Lembur ' . $jam . 'jam'; 
+            $data['keterangan'] = 'Lembur ' . floor($jam - 9).' jam '.floor( $menit / 60 ). ' menit'; 
         }elseif($jam == 9){
             $data['keterangan'] = 'Normal';
         }elseif($jam <= 8){
