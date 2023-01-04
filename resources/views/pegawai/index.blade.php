@@ -6,16 +6,7 @@
     <h1 class="h3 mb-0 text-gray-800">{{ $title }}</h1>
     </div>
     <div class="form-col">
-        <form action="{{ route('import-pegawai') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <div class="input-group">
-            <input type="file" name="file" class="form-control">
-            <div class="input-group-append">
-            <button class="btn btn-warning mr-1" type="submit"><i class="fas fa-upload fa-sm"></i> Import</button>
-            </div>
-            <a href="/pegawai/create/" class="btn btn btn-primary shadow"><i class="fas fa-plus fa-sm text-white-50"></i> Add</a>
-        </div>
-        </form>
+    <a href="/pegawai/create/" class="btn btn btn-primary shadow"><i class="fas fa-plus fa-sm text-white-50"></i> Add</a>
     </div>
 </div>
 

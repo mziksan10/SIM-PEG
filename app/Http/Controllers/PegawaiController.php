@@ -38,6 +38,12 @@ class PegawaiController extends Controller
      */
     public function create()
     {
+        $selectNIP = Pegawai::select('nip')->latest('tanggal_masuk')->first();
+        if($selectNIP == null){
+            $createNIP = '130041' . date('dmy') . '0001';     
+        }elseif($selectNIP->get()){
+            $createNIP = '130041' . date('dmy') . substr($selectNIP->get()[0]->nip, -4) + 1;
+        }
         return view('/pegawai/create', [
             'title' => 'Input Pegawai',
             'photo' => 'logo_piksi.png',
@@ -45,7 +51,8 @@ class PegawaiController extends Controller
             'data_jabatan' => Jabatan::all(),
             'data_golongan' => Golongan::all()->sortBy('golongan'),
             'pendidikan' => Pegawai::data_pendidikan(),
-            'jenis_kelamin' => Pegawai::data_jenis_kelamin()
+            'jenis_kelamin' => Pegawai::data_jenis_kelamin(),
+            'nip_baru' => $createNIP,
         ]);
     }
 
@@ -63,9 +70,7 @@ class PegawaiController extends Controller
     
     public function store(Request $request)
     {
-
         $validatedData = $request->validate([
-            'nip' => 'required|unique:pegawais',
             'nik' => 'required',
             'nama' => 'required|max:255',
             'tempat_lahir' => 'required|max:60',
@@ -83,13 +88,14 @@ class PegawaiController extends Controller
             'jurusan' => 'max:60',
             'no_rekening' => 'max:20',
             'bank' => 'max:5',
-            'tanggal_masuk' => 'required',
             'foto' => 'image|file|max:3072',
         ]);
         if(request()->file('foto')){ 
             $validatedData['foto'] = request()->file('foto')->store('foto-profil');  
         }
         $validatedData['status'] = 'Non Aktif';
+        $validatedData['tanggal_masuk'] = date_create()->format('Y-m-d');
+        $validatedData['nip'] = $request->nip;
         Pegawai::create($validatedData);
         return redirect('/pegawai')->with('success', 'Data pegawai berhasil diinput!');
     }

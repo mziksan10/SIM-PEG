@@ -86,7 +86,7 @@
                             <td>{{ $item->tanggal }}</td>
                             <td>{{ $item->jam_masuk }}</td>
                             <td>{{ $item->jam_keluar }}</td>
-                            <td></td>
+                            <td>{{ $item->sesi }}</td>
                             <td>{{ $item->status }}</td>
                             <td>{{ $item->keterangan }}</td>
                         </tr>

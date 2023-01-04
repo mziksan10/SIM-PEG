@@ -2,7 +2,23 @@
 @section('container')
     <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
+<div class="form-col">
     <h1 class="h3 mb-0 text-gray-800">{{ $title }}</h1>
+    </div>
+    <div class="form-col">
+        <form action="{{ route('import-pegawai') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <div class="input-group">
+            <div class="input-group-prepend">
+            <span class="input-group-text ml-1">Import</span>
+            </div>
+            <input type="file" name="file" class="form-control">
+            <div class="input-group-append">
+            <button class="btn btn-warning mr-1" type="submit"><i class="fas fa-upload fa-sm"></i></button>
+            </div>
+        </div>
+        </form>
+    </div>
 </div>
 
 <!-- Content Row -->
@@ -10,49 +26,53 @@
     <div class="col">
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Formulir {{ $title }}</h6>
+            <div class="card-header">
             </div>
             <div class="card-body">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <small>
+                    <b>Perhatian</b>
+                    <ul>
+                        <li>Untuk menambahkan data pegawai lama gunakan fitur import pegawai.</li>
+                        <li>NIP sudah di generate secara otomatis oleh sistem.</li>
+                        <li>Ukuran foto tidak boleh lebih dari 3 MB.</li>
+                        <li>Penulisan nama gelar harus benar.</li>
+                    </ul>
+                </small>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
                 <div class="col-lg-8">
                     <form action="/pegawai" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-row">
-                            <img class="img-preview img-fluid mb-2" style="max-height: 227px; max-width: 151px; overflow: hidden;">
+                            <img class="img-preview img-thumbnail rounded-circle mb-2" style="max-height: 227px; max-width: 151px; overflow: hidden;">
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-md-7">
-                                <label>PAS Foto</label>
-                                <input type="file" class="form-control @error('foto') is-invalid @enderror" name="foto" id="foto" autofocus onchange="previewImage()">
-                                <small class="form-text text-muted ml-2"><i>*ukuran foto tidak boleh lebih dari 3 MB.</i></small>
-                                @error('foto')
-                                <div class="invalid-feedback ml-3">{{ $message }}</div>
-                                @enderror
-                            </div>
+                        <div class="form-group col-md-4">
+                            <label>NIP</label>
+                            <input type="text" class="form-control @error('nip') is-invalid @enderror" name="nip" value="@if(!old('nip')) {{ $nip_baru }} @else {{ old('nip') }} @endif" readonly="readonly">
+                            @error('nip')
+                            <div class="invalid-feedback ml-3">{{ $message }}</div>
+                            @enderror
+                        </div>
                         </div>
                         <div class="form-row">
-                        <div class="form-group col-md-6">
-                                <label>NIP</label>
-                                <input type="text" class="form-control @error('nip') is-invalid @enderror" name="nip" value="{{ old('nip') }}">
-                                @error('nip')
-                                <div class="invalid-feedback ml-3">{{ $message }}</div>
-                                @enderror
-                        </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-4">
                                 <label>NIK</label>
-                                <input type="text" class="form-control @error('nik') is-invalid @enderror" name="nik" value="{{ old('nik') }}">
+                                <input type="text" class="form-control @error('nik') is-invalid @enderror" name="nik" value="{{ old('nik') }}" autofocus>
                                 @error('nik')
                                 <div class="invalid-feedback ml-3">{{ $message }}</div>
                                 @enderror
                         </div>
-                        </div>
-                        <div class="form-group">
+                        <div class="form-group col-md-8">
                             <label>Nama Lengkap</label>
                             <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{ old('nama') }}">
-                            <small class="form-text text-muted ml-2"><i>*lengkapi dengan gelar jika ada.</i></small>
                             @error('nama')
                             <div class="invalid-feedback ml-3">{{ $message }}</div>
                             @enderror
+                        </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-7">
@@ -133,14 +153,14 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-md-5">
+                            <div class="form-group col-md-4">
                                 <label>No. HP</label>
                                 <input type="text" class="form-control @error('no_hp') is-invalid @enderror" name="no_hp" value="{{ old('no_hp') }}"">
                                 @error('no_hp')
                                 <div class="invalid-feedback ml-3">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group col-md-7">
+                            <div class="form-group col-md-4">
                                 <label>Email</label>
                                 <input type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}"">
                                 @error('email')
@@ -174,27 +194,29 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-6">
+                            <div class="form-group col-4">
                                 <label>No. Rekening</label>
                                 <input type="text" class="form-control @error('no_rekening') is-invalid @enderror" name="no_rekening" value="{{ old('no_rekening') }}">
                                 @error('no_rekening')
                                 <div class="invalid-feedback ml-3">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group col-3">
+                            <div class="form-group col-2">
                                 <label>BANK</label>
                                 <input type="text" class="form-control @error('bank') is-invalid @enderror" name="bank" value="{{ old('bank') }}">
                                 @error('bank')
                                 <div class="invalid-feedback ml-3">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group col-3">
-                                <label>Tanggal Masuk</label>
-                                <input type="date" class="form-control @error('tanggal_masuk') is-invalid @enderror" name="tanggal_masuk" value="{{ old('tanggal_masuk') }}">
-                                @error('tanggal_masuk')
-                                <div class="invalid-feedback ml-3">{{ $message }}</div>
-                                @enderror
-                            </div>
+                        </div>
+                        <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label>PAS Foto</label>
+                            <input type="file" class="form-control @error('foto') is-invalid @enderror" name="foto" id="foto" onchange="previewImage()">
+                            @error('foto')
+                            <div class="invalid-feedback ml-3">{{ $message }}</div>
+                            @enderror
+                        </div>
                         </div>
                         <button type="submit" class="btn btn-primary">Kirim</button>
                       </form>
