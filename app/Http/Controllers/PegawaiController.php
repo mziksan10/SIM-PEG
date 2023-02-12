@@ -195,7 +195,7 @@ class PegawaiController extends Controller
             'foto' => 'image|file|max:1024',
         ];
         $validatedData = $request->validate($rules);
-        if($request->status){
+        if($request->status != $pegawai->status){
             $selectNIP = Pegawai::select('nip')->where('status', '1')->latest('tanggal_masuk')->first();
             if($selectNIP == null){
                 $createNIP = '130041' . date('dmy') . '1' . '001'; 

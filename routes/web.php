@@ -66,7 +66,7 @@ Route::group(['middleware' => ['auth', 'checkrole:admin']], function (){
     // Route Pemberkasan
     Route::resource('/riwayat-pemberkasan', BerkasController::class);
     // Route Presensi
-    Route::resource('/presensi', PresensiController::class);
+    Route::resource('/rekap-presensi', PresensiController::class);
     Route::put('/ubah_presensi/{id}', [PresensiController::class, 'ubah_presensi']);
     Route::get('/export/presensi/', [PresensiController::class, 'export']);
     // Route Pengguna

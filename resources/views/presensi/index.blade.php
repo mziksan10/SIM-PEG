@@ -9,9 +9,9 @@
 <form action="/export/presensi" method="GET">
 @csrf
 <div class="input-group">
-<a href="/presensi" class="btn btn-primary"><i class="fas fa-sync fa-sm"></i></a>
+<a href="/rekap-presensi" class="btn btn-primary"><i class="fas fa-sync fa-sm"></i></a>
 <div class="input-group-prepend">
-    <span class="input-group-text ml-1">From</span>
+    <span class="input-group-text ml-2">From</span>
 </div>
 <input type="date" class="form-control col-4" name="fromDate">
 <div class="input-group-prepend">
@@ -19,9 +19,8 @@
 </div>
 <input type="date" class="form-control col-4" name="toDate">
 <div class="input-group-append">
-<button type="submit" class="btn btn-success"><i class="fas fa-file-excel fa-sm"></i></button>
+<button type="submit" class="btn btn-success"><i class="fas fa-file-excel fa-sm"></i> Export</button>
 </div>
-<button type="button" class="btn btn btn-primary shadow ml-1" data-toggle="modal" data-target="#createModal"><i class="fas fa-cog fa-sm"></i> Setting</button>
 </div>
 </form> 
 </div>

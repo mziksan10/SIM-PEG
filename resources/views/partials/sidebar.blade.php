@@ -40,7 +40,7 @@
             <i class="fas fa-user-cog"></i>
             <span>Setting</span>
         </a>
-        <div id="setting" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="">
+        <div id="setting" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Sub menu:</h6>
                 <a class="collapse-item" href="#">Ganti Foto</a>
@@ -56,11 +56,11 @@
     @else
     <li class="nav-item">
     @endif
-        <a class="nav-link" href="#" data-toggle="collapse" data-target="#master-data" aria-expanded="true" aria-controls="master-data">
+        <a class="nav-link collapsed collapsed" href="#" data-toggle="collapse" data-target="#master-data" aria-expanded="false" aria-controls="master-data">
             <i class="fas fa-database"></i>
             <span>Data Master</span>
         </a>
-        <div id="master-data" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar" style="">
+        <div id="master-data" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Sub menu:</h6>
                 <a class="collapse-item" href="/pegawai">Data Pegawai</a>
@@ -76,11 +76,11 @@
     @else
     <li class="nav-item">
     @endif
-        <a class="nav-link" href="#" data-toggle="collapse" data-target="#kelola-riwayat" aria-expanded="true" aria-controls="kelola-riwayat">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#kelola-riwayat" aria-expanded="false" aria-controls="kelola-riwayat">
         <i class="fas fa-user-cog"></i>
             <span>Kelola Kepegawaian</span>
         </a>
-        <div id="kelola-riwayat" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar" style="">
+        <div id="kelola-riwayat" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Sub menu:</h6>
                 <a class="collapse-item" href="/riwayat-pendidikan">Riwayat Pendidikan</a>
@@ -90,10 +90,23 @@
         </div>
         
     </li>
-    <li class="nav-item {{ request()->is('presensi*') ? 'active' : '' }}">
-        <a class="nav-link" href="/presensi">
-            <i class="fas fa-clipboard-list"></i>
-            <span>Presensi</span></a>
+    @if(request()->is('aturan-presensi*') || request()->is('rekap-presensi*'))
+    <li class="nav-item active">
+    @else
+    <li class="nav-item">
+    @endif
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#kelola-presensi" aria-expanded="false" aria-controls="kelola-presensi">
+        <i class="fas fa-clock"></i>
+            <span>Kelola Presensi</span>
+        </a>
+        <div id="kelola-presensi" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Sub menu:</h6>
+                <a class="collapse-item" href="/aturan-presensi">Aturan Presensi</a>
+                <a class="collapse-item" href="/rekap-presensi">Rekap Presensi</a>
+            </div>
+        </div>
+        
     </li>
 
     @if(request()->is('user*'))
@@ -101,11 +114,11 @@
     @else
     <li class="nav-item">
     @endif
-        <a class="nav-link" href="#" data-toggle="collapse" data-target="#setting" aria-expanded="true" aria-controls="setting">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#setting" aria-expanded="false" aria-controls="setting">
             <i class="fas fa-cog"></i>
             <span>Setting</span>
         </a>
-        <div id="setting" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="">
+        <div id="setting" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Sub menu:</h6>
                 <a class="collapse-item" href="/user">User & Role</a>
