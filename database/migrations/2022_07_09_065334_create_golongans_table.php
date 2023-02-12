@@ -16,8 +16,9 @@ return new class extends Migration
         Schema::create('golongans', function (Blueprint $table) {
             $table->id();
             $table->string('golongan');
-            $table->string('pendidikan');
-            $table->string('masa_kerja');
+            $table->string('jenjang');
+            $table->string('min_masa_kerja');
+            $table->string('max_masa_kerja')->nullable();
             $table->string('gaji_pokok');
             $table->string('status');
             $table->timestamps();

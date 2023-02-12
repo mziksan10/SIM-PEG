@@ -33,6 +33,9 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <!-- DataTables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.13.1/datatables.min.css"/>
+
 </head>
 
 <body id="page-top">
@@ -123,66 +126,11 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
-    <!-- Scrip kondisi pemilihan bidang & jabatan -->
-    <script>
-        $(function () {
-            $.ajaxSetup({
-                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
-            });
-            $('#bidang_id').on('change', function () {
-                $.ajax({
-                    url: '{{ route('cariJabatan') }}',
-                    method: 'POST',
-                    data: {bidang_id: $(this).val()},
-                    success: function (response) {
-                        $('#jabatan_id').empty();
+    <!-- Scrip DataTables -->
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.13.1/datatables.min.js"></script>
 
-                        $.each(response, function (id, nama_jabatan) {
-                            $('#jabatan_id').append(new Option(nama_jabatan, id))
-                        })
-                    }
-                })
-            });
-        });
-    </script>
-
-    <script>
-        var availableTags = [];
-        $.ajax({
-            type: "GET",
-            url: "/pegawai-list",
-            success: function(response){
-                // console.log(response);
-                startAutoComplete(response);
-            }
-        })
-        function startAutoComplete(availableTags){
-            $( "#nip" ).autocomplete({
-            source: availableTags
-            });
-        }
-    </script>
-
-    <script type="text/javascript">
-        window.onload = function() { jam(); }
-        
-        function jam() {
-            var e = document.getElementById('jam'),
-            d = new Date(), h, m, s;
-            h = d.getHours();
-            m = set(d.getMinutes());
-            s = set(d.getSeconds());
-        
-            e.innerHTML = h +':'+ m +':'+ s;
-        
-            setTimeout('jam()', 1000);
-        }
-        
-        function set(e) {
-            e = e < 10 ? '0'+ e : e;
-            return e;
-        }
-    </script>
+    <!-- MY SCRIPT JS -->
+    <script type="text/javascript" src="/assets/js/my-script.js"></script>
 
 </body>
 

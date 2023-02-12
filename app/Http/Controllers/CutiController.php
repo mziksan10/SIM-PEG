@@ -99,15 +99,4 @@ class CutiController extends Controller
     {
         //
     }
-
-    public function pegawaiList(){
-        $pegawai = Pegawai::select('nip', 'nama')->get();
-        $data = [];
-
-        foreach ($pegawai as $item){
-            $data[] = $item['nip'];
-        }
-
-        return $data;
-    }
 }

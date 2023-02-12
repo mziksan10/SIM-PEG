@@ -13,6 +13,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CutiController;
 use App\Http\Controllers\DataDiriController;
 use App\Http\Controllers\RiwayatJabatanController;
+use App\Http\Controllers\RiwayatPendidikanController;
 use App\Http\Controllers\PresensiController;
 
 /*
@@ -39,11 +40,11 @@ Route::group(['middleware' => ['auth', 'checkrole:admin']], function (){
     Route::get('/', [DashboardController::class, 'index']);
     // Route Pegawai
     Route::resource('/pegawai', PegawaiController::class);
+    Route::get('/create-pegawai-tetap/pegawai', [PegawaiController::class, 'createPegawaiTetap']);
+    Route::get('/create-pegawai-kontrak/pegawai', [PegawaiController::class, 'createPegawaiKontrak']);
     Route::get('/export/pegawai/', [PegawaiController::class, 'export']);
     Route::post('/import/pegawai/', [PegawaiController::class, 'import'])->name('import-pegawai');
     Route::get('/report/pegawai/', [PegawaiController::class, 'report']);
-    Route::post('/pegawai/cari-jabatan', [PegawaiController::class, 'cariJabatan'])->name('cariJabatan');
-    Route::get('/ajax_autocomplete', [PegawaiController::class, 'ajax_autocomplete']);
     // Route Golongan
     Route::resource('/golongan', GolonganController::class);
     Route::get('/export/golongan/', [GolonganController::class, 'export']);
@@ -57,23 +58,31 @@ Route::group(['middleware' => ['auth', 'checkrole:admin']], function (){
     Route::resource('/jabatan', JabatanController::class);
     Route::get('/export/jabatan/', [JabatanController::class, 'export']);
     Route::post('/import/jabatan/', [JabatanController::class, 'import'])->name('import-jabatan');
-    // Route Pengguna
+    // Route Riwayat Jabatan
     Route::resource('/riwayat-jabatan', RiwayatJabatanController::class);
-    // Route Berkas
-    Route::resource('/pemberkasan', BerkasController::class);
+    Route::post('/import/riwayat-jabatan/', [RiwayatJabatanController::class, 'import'])->name('import-riwayat-jabatan');
+    // Route Riwayat Pendidikan
+    Route::resource('/riwayat-pendidikan', RiwayatPendidikanController::class);
+    // Route Pemberkasan
+    Route::resource('/riwayat-pemberkasan', BerkasController::class);
     // Route Presensi
     Route::resource('/presensi', PresensiController::class);
+    Route::put('/ubah_presensi/{id}', [PresensiController::class, 'ubah_presensi']);
     Route::get('/export/presensi/', [PresensiController::class, 'export']);
-    // Route Cuti
-    // Route::resource('/cuti', CutiController::class);
     // Route Pengguna
     Route::resource('/user', UserController::class);
-    Route::get('/pegawai-list', [CutiController::class, 'pegawaiList']);
+    // Routing JS
+    Route::post('/cari-pegawai', [PegawaiController::class, 'cariPegawai'])->name('cariPegawai');
+    Route::post('/cari-jabatan', [PegawaiController::class, 'cariJabatan'])->name('cariJabatan');
+    Route::post('/cari-golongan', [PegawaiController::class, 'cariGolongan'])->name('cariGolongan');
+    Route::post('/cari-kota', [PegawaiController::class, 'cariKota'])->name('cariKota');
+    Route::post('/cari-kecamatan', [PegawaiController::class, 'cariKecamatan'])->name('cariKecamatan');
+    Route::post('/cari-desa', [PegawaiController::class, 'cariDesa'])->name('cariDesa');
+    Route::post('/cari-kode-pos', [PegawaiController::class, 'cariKodePos'])->name('cariKodePos');
 });
 
 Route::group(['middleware' => ['auth', 'checkrole:user']], function (){
     // Route Dashboard
-    Route::get('/', [DashboardController::class, 'index']);
     Route::get('/profil', [PegawaiController::class, 'index_']);
     Route::get('/pemberkasan-pegawai', [BerkasController::class, 'index_']);
     Route::group(['middleware' => ['auth', 'checkip']], function (){

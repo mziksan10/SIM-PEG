@@ -7,7 +7,10 @@ use App\Models\Jabatan;
 use App\Models\Pegawai;
 use App\Models\Golongan;
 use App\Models\RiwayatJabatan;
+use App\Imports\RiwayatJabatansImport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class RiwayatJabatanController extends Controller
 {
@@ -20,10 +23,11 @@ class RiwayatJabatanController extends Controller
     {
         return view('riwayat-jabatan/index', [
             'title' => 'Riwayat Jabatan',
-            'data_riwayatjabatan' => RiwayatJabatan::latest()->filter(request(['search']))->paginate('5')->withQueryString(),
+            'data_riwayatjabatan' => RiwayatJabatan::orderBy('tmt_bekerja', 'DESC')->get(),
             'data_bidang' => Bidang::all(),
             'data_jabatan' => Jabatan::all(),
             'data_golongan' => Golongan::all()->sortBy('golongan'),
+            'status' => ['Kontrak', 'Tetap']
         ]);
     }
 
@@ -51,14 +55,29 @@ class RiwayatJabatanController extends Controller
             'bidang_id' => 'required',
             'jabatan_id' => 'required',
             'golongan_id' => 'required',
-            'no_sk' => 'required',
-            'tanggal_sk' => 'required',
+            'tmt_golongan' => 'required',
+            'tmt_bekerja' => 'required',
+            'scan_sk' => 'required|mimes:pdf|max:1024',
         ]);
+        $getStatus = Golongan::where('id', $request->golongan_id)->pluck('status');
+        if($getStatus[0] == "Tetap"){
+            $selectNIP = Pegawai::select('nip')->where('status', '1')->latest('tanggal_masuk')->first();
+            if($selectNIP == null){
+                $createNIP = '130041' . date('dmy') . '1' . '001'; 
+            }else{
+                $createNIP = '130041' . date('dmy') . substr($selectNIP->nip, -4) + 1;
+            }
+            $dataBaru = [];
+            $dataBaru['nip'] = $createNIP;  
+            $dataBaru['status'] = 1;
+            Pegawai::where('id', $pegawaiId[0]->id)->update($dataBaru);
+        }
+        if(request()->file('scan_sk')){ 
+            $validatedData['scan_sk'] = request()->file('scan_sk')->store('berkas-pegawai');  
+        }
         $validatedData['pegawai_id'] = $pegawaiId[0]->id;
-        $statusUpdate['status'] = 'Aktif';
-        Pegawai::where('id', $pegawaiId[0]->id)->update($statusUpdate);
         RiwayatJabatan::create($validatedData);
-        return redirect('/riwayat-jabatan')->with('success', 'Data pegawai cuti berhasil diinput!');
+        return redirect('/riwayat-jabatan')->with('success', 'Data riwayat jabatan berhasil diinput!');
     }
 
     /**
@@ -90,9 +109,25 @@ class RiwayatJabatanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, RiwayatJabatan $riwayatJabatan)
     {
-        //
+        $rules = [
+            'bidang_id' => 'required',
+            'jabatan_id' => 'required',
+            'golongan_id' => 'required',
+            'tmt_golongan' => 'required',
+            'tmt_bekerja' => 'required',
+            'scan_sk' => 'mimes:pdf|file|max:1024',
+        ];
+        $validatedData = $request->validate($rules);
+        if(request()->file('scan_sk')){ 
+            if($request->file_lama){
+                Storage::delete($request->scan_sk_lama);
+            }
+            $validatedData['scan_sk'] = request()->file('scan_sk')->store('berkas-pegawai');  
+        }
+        RiwayatJabatan::where('id', $riwayatJabatan->id)->update($validatedData);
+        return redirect('/riwayat-jabatan')->with('success', 'Data riwayat jabatan berhasil diubah!');
     }
 
     /**
@@ -101,8 +136,22 @@ class RiwayatJabatanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(RiwayatJabatan $riwayatJabatan)
     {
-        //
+        if($riwayatJabatan->scan_sk){
+            Storage::delete($riwayatJabatan->scan_sk);
+        }
+        
+        RiwayatJabatan::destroy($riwayatJabatan->id);
+        return redirect('/riwayat-jabatan')->with('success', 'Data riwayat jabatan berhasil dihapus!');
+    }
+    public function import(Request $request) 
+    {
+        if(request()->file('file')){
+            Excel::import(new RiwayatJabatansImport, request()->file('file'));
+            return redirect('/riwayat-jabatan')->with('success', 'Data riwayat jabatan berhasil diimpor!');
+        }
+        
+        return redirect('/riwayat-jabatan');
     }
 }

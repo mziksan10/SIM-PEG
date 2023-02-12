@@ -58,7 +58,7 @@
     @endif
         <a class="nav-link" href="#" data-toggle="collapse" data-target="#master-data" aria-expanded="true" aria-controls="master-data">
             <i class="fas fa-database"></i>
-            <span>Master Data</span>
+            <span>Data Master</span>
         </a>
         <div id="master-data" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar" style="">
             <div class="bg-white py-2 collapse-inner rounded">
@@ -71,16 +71,24 @@
         </div>
         
     </li>
-
-    <li class="nav-item {{ request()->is('riwayat-jabatan*') ? 'active' : '' }}">
-        <a class="nav-link" href="/riwayat-jabatan">
-            <i class="fas fa-briefcase"></i>
-            <span>Riwayat Jabatan</span></a>
-    </li>
-    <li class="nav-item {{ request()->is('pemberkasan*') ? 'active' : '' }}">
-        <a class="nav-link" href="/pemberkasan">
-            <i class="fas fa-archive"></i>
-            <span>Pemberkasan</span></a>
+    @if(request()->is('riwayat-jabatan*') || request()->is('riwayat-pendidikan*') || request()->is('riwayat-pemberkasan*'))
+    <li class="nav-item active">
+    @else
+    <li class="nav-item">
+    @endif
+        <a class="nav-link" href="#" data-toggle="collapse" data-target="#kelola-riwayat" aria-expanded="true" aria-controls="kelola-riwayat">
+        <i class="fas fa-user-cog"></i>
+            <span>Kelola Kepegawaian</span>
+        </a>
+        <div id="kelola-riwayat" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar" style="">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Sub menu:</h6>
+                <a class="collapse-item" href="/riwayat-pendidikan">Riwayat Pendidikan</a>
+                <a class="collapse-item" href="/riwayat-jabatan">Riwayat Jabatan</a>
+                <a class="collapse-item" href="/riwayat-pemberkasan">Riwayat Pemberkasan</a>
+            </div>
+        </div>
+        
     </li>
     <li class="nav-item {{ request()->is('presensi*') ? 'active' : '' }}">
         <a class="nav-link" href="/presensi">

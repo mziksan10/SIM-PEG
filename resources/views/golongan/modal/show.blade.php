@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title">Detail</h5>
+            <h5 class="modal-title">Detail {{ $title }}</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
@@ -16,14 +16,14 @@
                 <td>{{ $item->golongan }}</td>
             </tr>
             <tr>
-                <th>Pendidikan</th>
+                <th>Jenjang</th>
                 <td> : </td>
-                <td>{{ $item->pendidikan }}</td>
+                <td>{{ $item->jenjang }}</td>
             </tr>
             <tr>
                 <th>Masa kerja</th>
                 <td> : </td>
-                <td>{{ $item->masa_kerja }} Tahun</td>
+                <td>@if($item->max_masa_kerja !== null) {{ $item->min_masa_kerja . ' - ' . $item->max_masa_kerja }} @else {{ $item->min_masa_kerja }} @endif Tahun</td>
             </tr>
             <tr>
                 <th>Gaji pokok</th>
@@ -36,6 +36,15 @@
                 <td>{{ $item->status }}</td>
             </tr>
             </table>
+            <div class="row">
+            <div class="col">
+            <form action="/golongan/{{ $item->id }}" method="post" class="d-inline">
+                @method('delete')
+                @csrf
+                <button class="btn btn-sm btn-danger" onclick="return confirm('Apakah kamu yakin?')" style="width:100%"><i class="fas fa-trash fa-sm"></i> Delete</button>
+            </form>
+            </div>
+            </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

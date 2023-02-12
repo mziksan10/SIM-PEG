@@ -17,8 +17,9 @@ class GolongansImport implements ToModel, WithHeadingRow
     {
         return new Golongan([
             'golongan' => $row['golongan'],
-            'pendidikan' => $row['pendidikan'],
-            'masa_kerja' => $row['masa_kerja'],
+            'jenjang' => $row['jenjang'],
+            'min_masa_kerja' => $row['min_masa_kerja'],
+            'max_masa_kerja' => $row['max_masa_kerja'],
             'gaji_pokok' => $row['gaji_pokok'],
             'status' => $row['status'],
         ]);

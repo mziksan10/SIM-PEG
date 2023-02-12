@@ -15,6 +15,13 @@ class CreateAturanPresensisTable extends Migration
     {
         Schema::create('aturan_presensis', function (Blueprint $table) {
             $table->id();
+            $table->string('sesi');
+            $table->string('jam_masuk');
+            $table->string('batas_max');
+            $table->string('batas_min');
+            $table->string('late_1');
+            $table->string('late_2');
+            $table->string('late_3');
             $table->timestamps();
         });
     }

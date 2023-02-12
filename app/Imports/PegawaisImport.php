@@ -17,7 +17,7 @@ class PegawaisImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
         return new Pegawai([
-            'nip' => $row['nip'],
+            'nip' => str_replace("'", "", $row['nip']),
             'nik' => $row['nik'],
             'nama' => $row['nama'],
             'tempat_lahir' => $row['tempat_lahir'],

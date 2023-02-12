@@ -19,7 +19,7 @@ class BidangController extends Controller
     {
         return view('bidang/index', [
             'title' => 'Data Bidang',
-            'data_bidang' => Bidang::orderBy('nama_bidang', 'ASC')->filter(request(['search']))->paginate('5')->withQueryString()
+            'data_bidang' => Bidang::orderBy('nama_bidang', 'ASC')->get()
         ]);
     }
 

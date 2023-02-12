@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Presensi;
+use App\Models\AturanPresensi;
 use App\Models\Pegawai;
 use Illuminate\Http\Request;
 use App\Exports\PresensisExport;
@@ -19,74 +20,22 @@ class PresensiController extends Controller
     {
         return view('presensi/index',[
                 'title' => 'Presensi',
-                'data_presensi' => Presensi::latest()->filter(request(['search']))->paginate('5')->withQueryString()
+                'data_presensi' => Presensi::latest()->get(),
+                'aturan_presensi' => AturanPresensi::get(),
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Presensi  $presensi
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Presensi $presensi)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Presensi  $presensi
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Presensi $presensi)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Presensi  $presensi
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Presensi $presensi)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Presensi  $presensi
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Presensi $presensi)
-    {
-        //
+    public function ubah_presensi(Request $request){
+        $rules = [
+            'jam_masuk' => 'required',
+            'batas_max' => 'required',
+            'batas_min' => 'required',
+            'late_1' => 'required',
+            'late_2' => 'required',
+        ];
+        $validatedData = $request->validate($rules);
+        AturanPresensi::where('id', $request->id)->update($validatedData);
+        return redirect('/presensi')->with('success', 'Aturan presensi berhasil diubah!');
     }
 
     public function export() 
@@ -110,49 +59,24 @@ class PresensiController extends Controller
         $data['tanggal'] = date('Y-m-d');
         $data['pegawai_id'] = session()->get('pegawai_id');
 
-        // Aturan Masuk Sesi ke- 1
-        $jam_masuk_sesi1 = strtotime('07:45:00');
-        $jms1_min = strtotime('07:00:00');
-        $jms1_late1 = strtotime('08:00:00');
-        $jms1_late2 = strtotime('08:15:00');
-        $jms1_max = strtotime('08:20:00');
-
-        // Aturan Masuk Sesi ke- 2
-        $jam_masuk_sesi2 = strtotime('11:00:00');
-        $jms2_min = strtotime('10:15:00');
-        $jms2_late1 = strtotime('11:15:00');
-        $jms2_late2 = strtotime('11:30:00');
-        $jms2_max = strtotime('11:35:00');
-
-        // Validasi Absen Masuk
-        if(strtotime($data['jam_masuk']) >= strtotime(date('H:i:s', $jms1_min)) && strtotime($data['jam_masuk']) < strtotime(date('H:i:s', $jam_masuk_sesi1))){
-            $data['sesi'] = 'Sesi 1';
-            $data['status'] = 'Normal';
-        }elseif(strtotime($data['jam_masuk']) >= strtotime(date('H:i:s', $jam_masuk_sesi1)) && strtotime($data['jam_masuk']) <= strtotime(date('H:i:s', $jms1_late1))){
-            $data['sesi'] = 'Sesi 1';
-            $data['status'] = 'Normal';
-        }elseif(strtotime($data['jam_masuk']) > strtotime(date('H:i:s', $jms1_late1)) && strtotime($data['jam_masuk']) <= strtotime(date('H:i:s', $jms1_late2))){
-            $data['sesi'] = 'Sesi 1';
-            $data['status'] = 'Late 1';
-        }elseif(strtotime($data['jam_masuk']) > strtotime(date('H:i:s', $jms1_late2)) && strtotime($data['jam_masuk']) <= strtotime(date('H:i:s', $jms1_max))){
-            $data['sesi'] = 'Sesi 1';
-            $data['status'] = 'Late 2';      
-        }elseif(strtotime($data['jam_masuk']) >= strtotime(date('H:i:s', $jms2_min)) && strtotime($data['jam_masuk']) < strtotime(date('H:i:s', $jam_masuk_sesi2))){
-            $data['sesi'] = 'Sesi 2';
-            $data['status'] = 'Normal';
-        }elseif(strtotime($data['jam_masuk']) >= strtotime(date('H:i:s', $jam_masuk_sesi2)) && strtotime($data['jam_masuk']) <= strtotime(date('H:i:s', $jms2_late1))){
-            $data['sesi'] = 'Sesi 2';
-            $data['status'] = 'Normal';
-        }elseif(strtotime($data['jam_masuk']) > strtotime(date('H:i:s', $jms2_late1)) && strtotime($data['jam_masuk']) <= strtotime(date('H:i:s', $jms2_late2))){
-            $data['sesi'] = 'Sesi 2';
-            $data['status'] = 'Late 1';
-        }elseif(strtotime($data['jam_masuk']) > strtotime(date('H:i:s', $jms2_late2)) && strtotime($data['jam_masuk']) <= strtotime(date('H:i:s', $jms2_max))){
-            $data['sesi'] = 'Sesi 2';
-            $data['status'] = 'Late 2';      
-        }else{
-            return redirect()->back()->with('failed','Sesi telah berakhir');
+        $getAturanPresensi = AturanPresensi::get();
+        foreach($getAturanPresensi as $item){
+            if(strtotime($data['jam_masuk']) >= strtotime(date('H:i:s', strtotime($item->batas_min))) && strtotime($data['jam_masuk']) < strtotime(date('H:i:s', strtotime($item->jam_masuk)))){
+                $data['sesi'] = $item->sesi;
+                $data['status'] = 'Normal';
+            }elseif(strtotime($data['jam_masuk']) >= strtotime(date('H:i:s', strtotime($item->jam_masuk))) && strtotime($data['jam_masuk']) <= strtotime(date('H:i:s', strtotime($item->late_1)))){
+                $data['sesi'] = $item->sesi;
+                $data['status'] = 'Normal';
+            }elseif(strtotime($data['jam_masuk']) > strtotime(date('H:i:s', strtotime($item->late_1))) && strtotime($data['jam_masuk']) <= strtotime(date('H:i:s', strtotime($item->late_2)))){
+                $data['sesi'] = $item->sesi;
+                $data['status'] = 'Late 1';
+            }elseif(strtotime($data['jam_masuk']) > strtotime(date('H:i:s', strtotime($item->late_2))) && strtotime($data['jam_masuk']) <= strtotime(date('H:i:s', strtotime($item->batas_max)))){
+                $data['sesi'] = $item->sesi;
+                $data['status'] = 'Late 2';  
+            }elseif($item->sesi == 2 && strtotime($data['jam_masuk']) > strtotime(date('H:i:s', strtotime($item->batas_max)))){
+                return redirect()->back()->with('failed','Sesi telah berakhir');
+            }
         }
-
         Presensi::create($data);
         return redirect()->back()->with('success','Absen masuk berhasil!');
     }
@@ -166,7 +90,7 @@ class PresensiController extends Controller
         $jam = floor($diff / (60 * 60));
         $menit = $diff - $jam * (60 * 60);
 
-        if($jam >= 10){
+        if($jam >= 10){ 
             $data['keterangan'] = 'Lembur ' . floor($jam - 9).' jam '.floor( $menit / 60 ). ' menit'; 
         }elseif($jam == 9){
             $data['keterangan'] = 'Normal';

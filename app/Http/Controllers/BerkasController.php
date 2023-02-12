@@ -20,8 +20,8 @@ class BerkasController extends Controller
     public function index()
     {
         return view ('pemberkasan/index',[
-            'title' => 'Pemberkasan',
-            'data_berkas' => Berkas::latest()->filter(request(['search']))->paginate('5')->withQueryString(),
+            'title' => 'Riwayat Pemberkasan',
+            'data_berkas' => Berkas::latest()->get(),
             'jenis_berkas' => Berkas::data_jenis_berkas(),
         ]);
     }
@@ -48,7 +48,7 @@ class BerkasController extends Controller
         $validatedData = $request->validate([
             'jenis_berkas' => 'required',
             'keterangan' => 'required',
-            'file' => 'required|mimes:pdf|file|max:3072',
+            'file' => 'required|mimes:pdf|file|max:1024',
         ]);
         $validatedData['pegawai_id'] = $pegawaiId[0]->id;
         if(request()->file('file')){ 
@@ -87,9 +87,22 @@ class BerkasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Berkas $berkas)
     {
-        //
+        $rules = [
+            'jenis_berkas' => 'required',
+            'keterangan' => 'required',
+            'file' => 'mimes:pdf|file|max:1024',
+        ];
+        $validatedData = $request->validate($rules);
+        if(request()->file('file')){ 
+            if($request->file_lama){
+                Storage::delete($request->file_lama);
+            }
+            $validatedData['file'] = request()->file('file')->store('berkas-pegawai');  
+        }
+        Berkas::where('id', $berkas->id)->update($validatedData);
+        return redirect('/riwayat-pemberkasan')->with('success', 'Data riwayat pemberkasan berhasil diubah!');
     }
 
     /**
@@ -123,7 +136,7 @@ class BerkasController extends Controller
         $validatedData = $request->validate([
             'jenis_berkas' => 'required',
             'keterangan' => 'required',
-            'file' => 'required|mimes:pdf|file|max:3072',
+            'file' => 'required|mimes:pdf|file|max:1024',
         ]);
         $validatedData['pegawai_id'] = $request->pegawai_id;
         if(request()->file('file')){ 

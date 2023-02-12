@@ -5,7 +5,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title">Input</h5>
+            <h5 class="modal-title">Form Input {{ $title }}</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
@@ -13,47 +13,61 @@
         <div class="modal-body">
 
         <div class="form-row">
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-6">
             <label>Golongan</label>
             <input type="text" class="form-control @error('golongan') is-invalid @enderror" name="golongan" value="{{ old('golongan') }}">
             @error('golongan')
             <div class="invalid-feedback ml-3">{{ $message }}</div>
             @enderror
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-6">
             <label>Pendidikan</label>
-            <select name="pendidikan" class="form-control @error('pendidikan') is-invalid @enderror">
+            <select name="jenjang" class="form-control @error('jenjang') is-invalid @enderror">
                 <option value="">Pilih..</option>
-                @foreach($pendidikan as $item)
-                @if(old('pendidikan') == $item)
-                <option value="{{ $item }}" selected>{{ $item }}</option>
+                @foreach($jenjang as $j)
+                @if(old('jenjang') == $j)
+                <option value="{{ $j }}" selected>{{ $j }}</option>
                 @else
-                <option value="{{ $item }}">{{ $item }}</option>
+                <option value="{{ $j }}">{{ $j }}</option>
                 @endif
                 @endforeach
             </select>
             </div>
-            <div class="form-group col-md-4">
-            <label>Masa Kerja</label>
-            <div class="input-group">
-                <input type="text" class="form-control @error('masa_kerja') is-invalid @enderror" name="masa_kerja" value="{{ old('masa_kerja') }}">
-                <div class="input-group-append">
-                    <span class="input-group-text">Tahun</span>
-                </div>
-            </div>
-            @error('masa_kerja')
-            <div class="invalid-feedback ml-3">{{ $message }}</div>
-            @enderror
-            </div>
     </div>
     <div class="form-row">
-        <div class="form-group col-md-9">
+        <div class="form-group col-md-6">
+        <label>Min. Masa Kerja</label>
+        <div class="input-group">
+            <input type="number" class="form-control @error('min_masa_kerja') is-invalid @enderror" name="min_masa_kerja" value="{{ old('min_masa_kerja') }}">
+            <div class="input-group-append">
+                <span class="input-group-text">Tahun</span>
+            </div>
+        </div>
+        @error('min_masa_kerja')
+        <div class="invalid-feedback ml-3">{{ $message }}</div>
+        @enderror
+        </div>
+        <div class="form-group col-md-6">
+        <label>Max. Masa Kerja</label>
+        <div class="input-group">
+            <input type="number" class="form-control @error('max_masa_kerja') is-invalid @enderror" name="max_masa_kerja" value="{{ old('max_masa_kerja') }}">
+            <div class="input-group-append">
+                <span class="input-group-text">Tahun</span>
+            </div>
+        </div>
+        @error('max_masa_kerja')
+        <div class="invalid-feedback ml-3">{{ $message }}</div>
+        @enderror
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-12">
             <label>Gaji Pokok</label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text">Rp.</span>
                 </div>
-                <input type="text" class="form-control @error('gaji_pokok') is-invalid @enderror" name="gaji_pokok" value="{{ old('gaji_pokok') }}">
+                <input type="number" class="form-control @error('gaji_pokok') is-invalid @enderror" name="gaji_pokok" value="{{ old('gaji_pokok') }}">
                 </div>
             </div>
             @error('gaji_pokok')
@@ -61,25 +75,29 @@
             @enderror
     </div>
     <div class="form-row">
-        <div class="form-group col-md-3">
-            <label>Status</label>
-                <select name="status" class="form-control @error('status') is-invalid @enderror">
-                    <option value="" selected>Pilih..</option>
-                    @foreach($status as $item)
-                    @if(old('status') == $item)
-                    <option value="{{ $item }}" selected>{{ $item }}</option>
-                    @else
-                    <option value="{{ $item }}">{{ $item }}</option>
-                    @endif
-                    @endforeach
-                </select>
-            </div>
+    <div class="form-group col-md-6">
+        <label>Status</label>
+            <select name="status" class="form-control @error('status') is-invalid @enderror">
+                <option value="" selected>Pilih..</option>
+                @foreach($status as $s)
+                @if(old('status') == $s)
+                <option value="{{ $s }}" selected>{{ $s }}</option>
+                @else
+                <option value="{{ $s }}">{{ $s }}</option>
+                @endif
+                @endforeach
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+        <button type="submit" class="btn btn-primary" style="width:100%">Save</button>
+        </div>
     </div>
 
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Submit</button>
         </div>
         </div>
     </div>

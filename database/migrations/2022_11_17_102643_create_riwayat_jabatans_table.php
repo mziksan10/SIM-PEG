@@ -19,8 +19,9 @@ return new class extends Migration
             $table->foreignId('bidang_id');
             $table->foreignId('jabatan_id');
             $table->foreignId('golongan_id');
-            $table->string('no_sk');
-            $table->date('tanggal_sk');
+            $table->date('tmt_golongan');
+            $table->date('tmt_bekerja');
+            $table->string('scan_sk');
             $table->timestamps();
         });
     }

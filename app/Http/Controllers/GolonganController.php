@@ -20,8 +20,8 @@ class GolonganController extends Controller
     {
         return view('golongan/index', [
             'title' => 'Data Golongan',
-            'data_golongan' => Golongan::orderBy('golongan')->filter(request(['search']))->paginate('5')->withQueryString(),
-            'pendidikan' => Golongan::data_pendidikan(),
+            'data_golongan' => Golongan::get()->sortBy('golongan'),
+            'jenjang' => Golongan::data_pendidikan(),
             'status' => Golongan::data_status()
         ]);
     }
@@ -33,12 +33,7 @@ class GolonganController extends Controller
      */
     public function create()
     {
-        return view('golongan/create', [
-            'title' => 'Input Golongan',
-            'pendidikan' => Golongan::data_pendidikan(),
-            'status' => Golongan::data_status(),
-            'data_golongan' => Golongan::all()
-        ]);
+        // 
     }
 
     /**
@@ -51,8 +46,9 @@ class GolonganController extends Controller
     {
         $validatedData = $request->validate([
             'golongan' => 'required',
-            'pendidikan' => 'required',
-            'masa_kerja' => 'required',
+            'jenjang' => 'required',
+            'min_masa_kerja' => 'required|numeric',
+            'max_masa_kerja' => 'nullable|numeric',
             'gaji_pokok' => 'required|numeric',
             'status' => 'required',
         ]);
@@ -79,13 +75,7 @@ class GolonganController extends Controller
      */
     public function edit(Golongan $golongan)
     {
-        return view('/golongan/edit', [
-            'golongan' => $golongan,           
-            'title' => 'Ubah Golongan',
-            'pendidikan' => Golongan::data_pendidikan(),
-            'status' => Golongan::data_status(),
-
-        ]);
+        // 
     }
 
     /**
@@ -98,8 +88,9 @@ class GolonganController extends Controller
     public function update(Request $request, Golongan $golongan)
     {
         $rules = [
-            'pendidikan' => 'required',
-            'masa_kerja' => 'required',
+            'jenjang' => 'required',
+            'min_masa_kerja' => 'required|numeric',
+            'max_masa_kerja' => 'nullable|numeric',
             'gaji_pokok' => 'required|numeric',
             'status' => 'required',
         ];

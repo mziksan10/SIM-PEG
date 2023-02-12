@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-
     public function index(){
         $bidang = Bidang::all();
         $bidang_id = RiwayatJabatan::select('bidang_id')->groupBy('bidang_id')->get();
@@ -31,8 +30,8 @@ class DashboardController extends Controller
         return view('index', [
             "title" => "Dashboard",
             "photo" => "logo_piksi.png",
-            "data_pegawai_aktif" => Pegawai::where('status', '=' , 'Aktif')->count(),
-            "data_pegawai_nonaktif" => Pegawai::where('status', '=' , 'Non Aktif')->count(),
+            "data_pegawai_tetap" => Pegawai::where('status', '=' , '1')->count(),
+            "data_pegawai_kontrak" => Pegawai::where('status', '=' , '2')->count(),
             "data_pegawai_cuti" => Pegawai::where('status', '=' , 'Cuti')->count(),
             "data_pegawai_total" => Pegawai::all()->count(),
             'categories' => $categories,

@@ -10,6 +10,20 @@
 <!-- Content Row -->
 <div class="row">
     <div class="col">
+    @if(date('d F', strtotime($pegawai->tanggal_lahir)) == date('d F', strtotime(now())) )
+        <div class="card shadow mb-2">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-1">
+                    <i class="fas fa-bullhorn"></i>
+                    </div>
+                    <div class="col-11">
+                        <marquee><small><i class="fas fa-gift"></i> Hari ini <b>{{ $pegawai->nama }}</b> Berulang Tahun yang ke- {{ date('Y', strtotime(now())) - date('Y', strtotime($pegawai->tanggal_lahir)) }} Tahun.</small></marquee>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
@@ -19,11 +33,11 @@
                     </div>
                     <div class="col-4">
                         <div class="float-right">
-                            <a href="/pegawai/{{ $pegawai->id }}/edit" class="btn-circle btn-sm btn-warning"><i class="fas fa-edit fa-sm"></i></a>
+                            <a href="/pegawai/{{ $pegawai->id }}/edit" class="btn btn-sm btn-warning"><i class="fas fa-edit fa-sm"></i> Edit</a>
                             <form action="/pegawai/{{ $pegawai->id }}" method="post" class="d-inline">
                                 @method('delete')
                                 @csrf
-                                <button class="btn-circle btn-sm btn-danger border-0" onclick="return confirm('Apakah kamu yakin?')"><i class="fas fa-trash fa-sm"></i></button>
+                                <button class="btn btn-sm btn-danger border-0" onclick="return confirm('Apakah kamu yakin?')"><i class="fas fa-trash fa-sm"></i> Delete</button>
                             </form>
                         </div>
                     </div>
@@ -55,15 +69,11 @@
                                 </tr>
                                 <tr>
                                     <th>Tempat, Tanggal lahir</th>
-                                    <td>: {{ $pegawai->tempat_lahir . ", " . date('d F Y', strtotime($pegawai->tanggal_lahir)) }}</td>
+                                    <td>: {{ ucwords(strtolower($pegawai->tempat_lahir)) . ", " . date('d F Y', strtotime($pegawai->tanggal_lahir)) }}</td>
                                 </tr>
                                 <tr>
                                     <th>Jenis Kelamin</th>
-                                    @if ($pegawai->jenis_kelamin == "L")
-                                    <td>: Laki-laki</td>
-                                    @elseif ($pegawai->jenis_kelamin == "P")
-                                    <td>: Perempuan</td>
-                                    @endif
+                                    <td>: {{ $pegawai->jenis_kelamin }}</td>
                                 </tr>
                                 <tr>
                                     <th>Alamat</th>
@@ -105,23 +115,23 @@
                                         <tr>
                                             <th>Bidang</th>
                                             @if($pegawai->riwayatJabatan === null)
-                                            <td>-</td>
+                                            <td>: -</td>
                                             @elseif($pegawai->riwayatJabatan)
-                                            <td>: {{ $pegawai->riwayatJabatan->bidang->nama_bidang }}</td>
+                                            <td>: {{ ucwords(strtolower($pegawai->riwayatJabatan->bidang->nama_bidang)) }}</td>
                                             @endif
                                         </tr>
                                         <tr>
                                             <th>Jabatan</th>
                                             @if($pegawai->riwayatJabatan === null)
-                                            <td>-</td>
+                                            <td>: -</td>
                                             @elseif($pegawai->riwayatJabatan)
-                                            <td>: {{ $pegawai->riwayatJabatan->jabatan->nama_jabatan }}</td>
+                                            <td>: {{ ucwords(strtolower($pegawai->riwayatJabatan->jabatan->nama_jabatan)) }}</td>
                                             @endif
                                         </tr>
                                         <tr>
                                             <th>Golongan</th>
                                             @if($pegawai->riwayatJabatan === null)
-                                            <td>-</td>
+                                            <td>: -</td>
                                             @elseif($pegawai->riwayatJabatan)
                                             <td>: {{ $pegawai->riwayatJabatan->golongan->golongan }}
                                                 @if( $pegawai->riwayatJabatan->golongan->status == 'Kontrak')
@@ -135,7 +145,7 @@
                                         <tr>
                                             <th>Gaji Pokok</th>
                                             @if($pegawai->riwayatJabatan === null)
-                                            <td>-</td>
+                                            <td>: -</td>
                                             @elseif($pegawai->riwayatJabatan)
                                             <td>: Rp. {{ number_format($pegawai->riwayatJabatan->golongan->gaji_pokok, 2,',','.') }},-</td>
                                             @endif
@@ -144,13 +154,21 @@
                                             <th>Tanggal Masuk</th>
                                             <td>: {{ $pegawai->tanggal_masuk }}</td>
                                         </tr>
+                                        <?php
+                                            $tanggal_masuk = new DateTime("$pegawai->tanggal_masuk");
+                                            $sekarang = new DateTime("today");
+                                            if ($tanggal_masuk > $sekarang) { 
+                                            $thn = "0";
+                                            $bln = "0";
+                                            $tgl = "0";
+                                            }
+                                            $thn = $sekarang->diff($tanggal_masuk)->y;
+                                            $bln = $sekarang->diff($tanggal_masuk)->m;
+                                            $tgl = $sekarang->diff($tanggal_masuk)->d;
+                                        ?>
                                         <tr>
-                                            <th>Status</th>
-                                            @if( $pegawai->status == 'Aktif')
-                                            <td>: <div class="badge badge-success ">Aktif</div></td>
-                                            @elseif( $pegawai->status == 'Non Aktif')
-                                            <td>: <div class="badge badge-danger">Non Aktif</div></td>
-                                            @endif
+                                            <th>Lama Bekerja</th>
+                                            <td>: {{ $thn." tahun ".$bln." bulan ".$tgl." hari" }}</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -173,47 +191,82 @@
                             <div class="row">
                                 <div class="col">
                                     <table class="table small">
+                                    @if($pegawai->riwayatPendidikan === null)
+                                            <tr>
+                                            <th>Jenjang</th>
+                                            <td>: -</td>
+                                            </tr>
+                                            <tr>
+                                            <th>Jurusan</th>
+                                            <td>: - </td>
+                                            </tr>
+                                            <tr>
+                                            <th>Nama Institusi</th>
+                                            <td>: -</td>
+                                            </tr>
+                                            <tr>
+                                            <th>Tahun Lulus</th>
+                                            <td>: -</td>
+                                            </tr>
+                                    @else
                                         <tr>
-                                            <th>Pendidikan Terakhir</th>
-                                            <td>: {{ $pegawai->pendidikan }}</td>
+                                            <th>Jenjang</th>
+                                            <td>: {{ $pegawai->riwayatPendidikan->jenjang }}</td>
                                         </tr>
                                         <tr>
                                             <th>Jurusan</th>
-                                            <td>: {{ $pegawai->jurusan }}</td>
+                                            <td>: {{ $pegawai->riwayatPendidikan->jurusan }}</td>
                                         </tr>
+                                        <tr>
+                                            <th>Nama Institusi</th>
+                                            <td>: {{ $pegawai->riwayatPendidikan->institusi }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Tahun Lulus</th>
+                                            <td>: {{ $pegawai->riwayatPendidikan->tahun_lulus }}</td>
+                                        </tr>
+                                        @endif
                                     </table>
                                 </div>
                               </div>
                         </div>
                     </div>
                 </div>
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <div class="row">
-                            <div class="col-8 d-flex justify-content-start">
-                                <h6 class="font-weight-bold text-primary mt-auto"><i class="fas fa-university"></i> Detail Bank</h6>
-                            </div>
-                        </div>
+            </div>
+        </div>
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <div class="row">
+                    <div class="col-8 d-flex justify-content-start">
+                        <h6 class="font-weight-bold text-primary mt-auto"><i class="fas fa-history"></i> Riwayat Pendidikan</h6>
                     </div>
-                    <div class="card-body">
-                        <div class="col-12">
-                            <div class="row">
-                                <div class="col">
-                                    <table class="table small">
-                                        <tr>
-                                            <th>Nama Bank</th>
-                                            <td>: {{ $pegawai->bank }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>No. Rekening</th>
-                                            <td>: {{ $pegawai->no_rekening }}</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                              </div>
+                    <div class="col-4">
+                        <div class="float-right">
+                            <!-- Kosong -->
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="card-body">
+              <table class="table small">
+                    <tr>
+                        <th>No</th>
+                        <th>Jenjang</th>
+                        <th>Jurusan</th>
+                        <th>Nama Institusi</th>
+                        <th>Tahun Lulus</th>
+                    </tr>
+                    @foreach($data_riwayatPendidikan as $item)
+                    <tr>
+                        <td>{{ $loop->iteration . "." }}</td>
+                        <td>{{ $item->jenjang }}</td>
+                        <td>{{ $item->jurusan }}</td>
+                        <td>{{ $item->institusi }}</td>
+                        <td>{{ $item->tahun_lulus }}</td>
+                    </tr>
+                    @endforeach
+                </table>
             </div>
         </div>
 
@@ -235,17 +288,19 @@
                     <tr>
                         <th>No</th>
                         <th>Bidang</th>
-                        <th>jabtan</th>
+                        <th>jabatan</th>
                         <th>Golongan</th>
-                        <th>Tanggal SK</th>
+                        <th>TMT Golongan</th>
+                        <th>TMT Bekerja</th>
                     </tr>
               @foreach($data_riwayatJabatan as $item)
                     <tr>
                         <td>{{ $loop->iteration . "." }}</td>
-                        <td>{{ $item->bidang->nama_bidang }}</td>
-                        <td>{{ $item->jabatan->nama_jabatan }}</td>
-                        <td>{{ $item->golongan->golongan . "-" . $item->golongan->status}}</td>
-                        <td>{{ $item->tanggal_sk }}</td>
+                        <td>{{ ucwords(strtolower($item->bidang->nama_bidang)) }}</td>
+                        <td>{{ ucwords(strtolower($item->jabatan->nama_jabatan)) }}</td>
+                        <td>{{ $item->golongan->golongan . " - " . $item->golongan->status}}</td>
+                        <td>{{ $item->tmt_golongan }}</td>
+                        <td>{{ $item->tmt_bekerja }}</td>
                     </tr>
               @endforeach
                 </table>

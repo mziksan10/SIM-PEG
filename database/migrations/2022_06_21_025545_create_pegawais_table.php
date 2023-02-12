@@ -29,10 +29,6 @@ return new class extends Migration
             $table->string('kode_pos');
             $table->string('no_hp');
             $table->string('email');
-            $table->string('pendidikan');
-            $table->string('jurusan')->nullable();
-            $table->string('bank')->nullable();
-            $table->string('no_rekening')->nullable();
             $table->date('tanggal_masuk');
             $table->string('status');
             $table->string('foto')->nullable();

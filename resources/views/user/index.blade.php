@@ -3,10 +3,11 @@
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
 <div class="form-col">
-<h1 class="h3 mb-0 text-gray-800">Data {{ $title }}</h1>
+<h1 class="h3 mb-0 text-gray-800">{{ $title }}</h1>
 </div>
 <div class="form-col">
-    <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#createModal"><i class="fas fa-plus fa-sm text-white-50"></i> Add</button>
+<a href="/user" class="btn btn-primary"><i class="fas fa-sync fa-sm"></i></a>
+<button type="button" class="btn btn btn-primary shadow ml-1" data-toggle="modal" data-target="#createModal"><i class="fas fa-plus fa-sm"></i> Add</button>
 </div>
 </div>
 
@@ -31,33 +32,14 @@
         
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
-        <div class="card-header">
-            <div class="row">
-                <div class="col-8 d-flex justify-content-start">
-                    <a href="/user" class="btn btn-primary"><i class="fas fa-sync fa-sm"></i></a>
-                </div>
-                <div class="col-4">
-                    <form action="/user" method="GET">
-                        <div class="input-group"> 
-                            <input type="text" class="form-control small" placeholder="Cari.." name="search" value="{{ request('search') }}">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table id="dataTable" class="table table-bordered" width="100%" cellspacing="0">
+        <div class="table-responsive">
+            <table id="myTable">
                     <thead>
                         <tr class="bg-primary my-font-white">
-                            <th>No</th>
-                            <th>Username / NIP</th>
-                            <th>Email</th>
+                            <th style="text-align: center">No</th>
+                            <th style="text-align: center">Username</th>
+                            <th style="text-align: center">Email</th>
                             <th style="text-align: center">Status</th>
                             <th style="text-align: center">Aksi</th>
                         </tr>
@@ -88,13 +70,6 @@
                         @endforeach
                     </tbody>
                 </table>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="d-flex justify-content-end">
-                        {{ $data_user->links() }}
-                    </div>
-                </div>
             </div>
         </div>
     </div>

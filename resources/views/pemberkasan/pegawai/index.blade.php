@@ -2,8 +2,13 @@
 @section('container')
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">{{ $title }}</h1>
-    <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#createModal"><i class="fas fa-plus fa-sm text-white-50"></i> Add</button>
+<div class="form-col">
+<h1 class="h3 mb-0 text-gray-800">{{ $title }}</h1>
+</div>
+<div class="form-col">
+<a href="/pemberkasan-pegawai" class="btn btn-primary"><i class="fas fa-sync fa-sm"></i></a>
+<button type="button" class="btn btn btn-primary shadow ml-1" data-toggle="modal" data-target="#createModal"><i class="fas fa-plus fa-sm"></i> Add</button>
+</div>
 </div>
 
 <!-- Content Row -->
@@ -25,38 +30,9 @@
         </div>
         @endif
         <div class="card shadow mb-4">
-            <div class="card-header">
-                <div class="row d-flex justify-content-end">
-                    <div class="col-8 d-flex justify-content-start">
-                        <a href="/pemberkasan-pegawai" class="btn btn-primary mr-2"><i class="fas fa-sync fa-sm"></i></a>
-                    </div>
-                    <div class="col-4">
-                        <div class="float-right">
-                            <form action="/pemberkasan-pegawai" method="GET">
-                                <div class="input-group"> 
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">Cari Jenis Berkas</span>
-                                    </div>
-                                    <select name="search" class="form-control @error('jenis_berkas') is-invalid @enderror" autofocus>
-                                        <option value="" selected>--Pilih--</option>
-                                        @foreach($jenis_berkas as $item)
-                                        <option value="{{ $item }}">{{ $item }}</option>
-                                        @endforeach
-                                    </select>
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary" type="submit">
-                                            <i class="fas fa-search fa-sm"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="card-body">
-                <div class="table-responsive">
-                <table class="table table-bordered" width="100%" cellspacing="0" style="text-align: center">
+            <div class="table-responsive">
+            <table id="myTable">
                         <thead>
                             <tr class="bg-primary my-font-white">
                                 <th>No</th>
@@ -87,13 +63,6 @@
                             @endforeach
                         </tbody>
                     </table>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="d-flex justify-content-end">
-                            {{ $data_berkas->links() }}
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

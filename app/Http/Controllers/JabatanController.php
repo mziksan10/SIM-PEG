@@ -21,7 +21,7 @@ class JabatanController extends Controller
     {
         return view('jabatan/index', [
             'title' => 'Data Jabatan',
-            'data_jabatan' => Jabatan::orderBy('nama_jabatan', 'ASC')->filter(request(['search']))->paginate('5')->withQueryString(),
+            'data_jabatan' => Jabatan::orderBy('nama_jabatan', 'ASC')->get(),
             'data_bidang' => Bidang::all()
         ]);
     }

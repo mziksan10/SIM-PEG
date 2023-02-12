@@ -14,31 +14,31 @@ class Pegawai extends Model
     use HasFactory;
     protected $guarded = ['id'];
 
-    private static $jenis_kelamin = ['L', 'P'];
-
-    private static $status = ['Aktif', 'Non Aktif'];
-    
-    private static $pendidikan = ['SD', 'SMP', 'SMA/SMK', 'D1', 'D2', 'D3', 'D4/S1', 'S2', 'S3', 'Lainnya'];
-
-    private static $jenis_berkas = ['KTP', 'KK', 'Ijazah', 'Transkrip', 'Sertifikat', 'Lainnya'];
-
-
+    // Static jenis status
+    private static $status = ['1', '2'];
     public static function data_status(){
         return self::$status;
     }
 
+    // Static jenis jenjang
+    private static $pendidikan = ['SD', 'SMP', 'SMA/SMK', 'D1', 'D2', 'D3', 'D4/S1', 'S2', 'S3', 'Lainnya'];
     public static function data_pendidikan(){
         return self::$pendidikan;
     }
 
+    // Static jenis kelamin
+    private static $jenis_kelamin = ['Laki-laki', 'Perempuan'];
     public static function data_jenis_kelamin(){
         return self::$jenis_kelamin;
     }
-
+    
+    // Static jenis berkas
+    private static $jenis_berkas = ['KTP', 'KK', 'Ijazah', 'Transkrip', 'Sertifikat', 'Lainnya'];
     public static function data_jenis_berkas(){
         return self::$jenis_berkas;
     }
 
+    // Filter
     public function scopeFilter($query, array $filters){
         return $query->when($filters['search'] ?? false, function($query, $search){
             $query->where('nip', 'like', '%' . $search . '%')->orWhere('nama', 'like', '%' . $search . '%');
@@ -51,12 +51,24 @@ class Pegawai extends Model
         });
     }
 
+    public function golongan(){
+        return $this->belongsTo(Golongan::class);
+    }
+
     public function riwayatJabatan(){
         return $this->hasOne(RiwayatJabatan::class)->latestOfMany();
     }
 
     public function riwayatJabatan_(){
         return $this->hasMany(RiwayatJabatan::class);
+    }
+
+    public function riwayatPendidikan(){
+        return $this->hasOne(RiwayatPendidikan::class)->latestOfMany();
+    }
+
+    public function riwayatPendidikan_(){
+        return $this->hasMany(RiwayatPendidikan::class);
     }
 
     public function berkas(){

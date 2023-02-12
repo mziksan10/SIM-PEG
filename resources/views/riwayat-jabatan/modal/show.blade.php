@@ -5,13 +5,12 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title">Detail</h5>
+            <h5 class="modal-title">Detail {{ $title }}</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
-
             <table class="table">
             <tr>
                 <th>NIP</th>
@@ -46,17 +45,32 @@
                 </td>
             </tr>
             <tr>
-                <th>No. SK</th>
+                <th>TMT Golongan</th>
                 <td> : </td>
-                <td>{{ $item->no_sk }}</td>
+                <td>{{ $item->tmt_golongan }}</td>
             </tr>
             <tr>
-                <th>Tanggal SK</th>
+                <th>TMT Bekerja</th>
                 <td> : </td>
-                <td>{{ $item->tanggal_sk }}</td>
+                <td>{{ $item->tmt_bekerja }}</td>
+            </tr>
+            <tr>
+            <th>Scan SK</th>
+            <td> : </td>
+            <td>
+            <a href="{{asset('storage/' . $item->scan_sk)}}" class="btn btn-sm btn-danger" target="_blank"><i class="fas fa-file-pdf fa-sm"></i> PDF</a>
+            </td>
             </tr>
             </table>
-
+            <div class="row">
+            <div class="col-12">
+            <form action="/riwayat-jabatan/{{ $item->id }}" method="post" class="d-inline">
+                @method('delete')
+                @csrf
+                <button class="btn btn-sm btn-danger" onclick="return confirm('Apakah kamu yakin?')" style="width:100%"><i class="fas fa-trash fa-sm"></i> Delete</button>
+            </form>
+            </div>
+            </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
