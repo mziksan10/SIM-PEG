@@ -109,6 +109,9 @@
     <script src="/assets/vendor/jquery/jquery.min.js"></script>
     <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
+    <!-- MY SCRIPT JS -->
+    <script type="text/javascript" src="/assets/js/my-script.js"></script>
+
     <!-- Core plugin JavaScript-->
     <script src="/assets/vendor/jquery-easing/jquery.easing.min.js"></script>
 
@@ -128,9 +131,6 @@
 
     <!-- Scrip DataTables -->
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.13.1/datatables.min.js"></script>
-
-    <!-- MY SCRIPT JS -->
-    <script type="text/javascript" src="/assets/js/my-script.js"></script>
 
 </body>
 
