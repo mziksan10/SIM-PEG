@@ -300,13 +300,13 @@ class PegawaiController extends Controller
 
     public function cariGolongan(Request $request){
         $getPegawai = Pegawai::select('*')->where('nip', $request->get('nip'))->first();
-        $getJenjang = RiwayatPendidikan::where('pegawai_id', $getPegawai->id)->latest('tahun_lulus')->pluck('jenjang');
+        $getJenjang = RiwayatPendidikan::select('*')->where('pegawai_id', $getPegawai->id)->latest()->first();
         if($getPegawai->status == 1){
             $status = "Tetap";
         }elseif($getPegawai->status == 2){
             $status = "Kontrak";
         }
-        $golongan_id = Golongan::where('jenjang', $getJenjang)->where('status', $status)->get();
+        $golongan_id = Golongan::where('jenjang', $getJenjang->jenjang)->where('status', $status)->get();
         return response()->json($golongan_id);
     }
 
