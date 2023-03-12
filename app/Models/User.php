@@ -39,14 +39,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-        
-    private static $role = ['user', 'guest'];
-    
-    public static function data_role(){
-        return self::$role;
-    }
 
     public function pegawai(){
         return $this->belongsTo(Pegawai::class);
     }
+
 }

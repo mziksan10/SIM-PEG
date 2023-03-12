@@ -52,28 +52,18 @@
                     <thead>
                         <tr class="bg-primary my-font-white">
                             <th style="text-align: center">No</th>
-                            <th style="text-align: center">NIP</th>
-                            <th style="text-align: center">Nama</th>
-                            <th style="text-align: center">Tanggal</th>
+                            <th style="text-align: center">Sesi</th>
                             <th style="text-align: center">Jam Masuk</th>
                             <th style="text-align: center">Jam Keluar</th>
-                            <th style="text-align: center">Sesi</th>
-                            <th style="text-align: center">Status</th>
-                            <th style="text-align: center">Keterangan</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($data_presensi as $item)
+                        @foreach ($data_aturanPresensi as $item)
                         <tr>
                             <td>{{  $loop->iteration }}</td>
-                            <td>{{ $item->pegawai->nip }}</td>
-                            <td>{{ $item->pegawai->nama }}</td>
-                            <td style="text-align: center">{{ date('d/m/Y', strtotime($item->tanggal)) }}</td>
-                            <td style="text-align: center">{{ $item->jam_masuk }}</td>
-                            <td style="text-align: center">{{ $item->jam_keluar }}</td>
-                            <td style="text-align: center">{{ $item->sesi }}</td>
-                            <td style="text-align: center">{{ $item->status }}</td>
-                            <td style="text-align: center">{{ $item->keterangan }}</td>
+                            <td>{{ $item->sesi }}</td>
+                            <td>{{ $item->jam_masuk }}</td>
+                            <td style="text-align: center">{{ $item->jam_masuk + (0 * 60*0 * 60 * 8) }}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -83,5 +73,4 @@
     </div>
     </div>
 </div>
-@include('presensi/modal/setting')
 @endsection

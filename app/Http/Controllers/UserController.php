@@ -20,7 +20,7 @@ class UserController extends Controller
         return view('user/index', [
             'title' => 'User',
             'data_user' => User::paginate('5'),
-            'role' => User::data_role()
+            'roles' => ['admin', 'user', 'guest'],
         ]);
     }
 

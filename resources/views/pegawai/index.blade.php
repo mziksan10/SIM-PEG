@@ -9,8 +9,8 @@
     <a href="/pegawai" class="btn btn-primary"><i class="fas fa-sync fa-sm"></i></a>
     <a href="/export/pegawai/" class="btn btn-success ml-1" target="_blank"><i class="fas fa-file-excel fa-sm"></i></a>
     <a href="/report/pegawai/" class="btn btn-danger ml-1" target="_blank"><i class="fas fa-file-pdf fa-sm"></i></a>
-    <button type="button" class="btn btn btn-warning shadow ml-1" data-toggle="modal" data-target="#importModal"><i class="fas fa-upload fa-sm"></i></button>
-    <button type="button" class="btn btn btn-primary shadow ml-1" data-toggle="modal" data-target="#createModal"><i class="fas fa-plus fa-sm"></i> Add</button>
+    <button type="button" class="btn btn btn-warning ml-1" data-toggle="modal" data-target="#importModal"><i class="fas fa-upload fa-sm"></i></button>
+    <button type="button" class="btn btn btn-primary ml-1" data-toggle="modal" data-target="#createModal"><i class="fas fa-plus fa-sm"></i> Add</button>
     </div>
 </div>
 
@@ -33,7 +33,7 @@
         </div>
         @endif
     <!-- DataTales Example -->
-    <div class="card shadow mb-4">
+    <div class="card shadow-sm mb-4">
         <div class="card-header">
         <center>
             DAFTAR PEGAWAI<br>POLITEKNIK PIKSI GANESHA TAHUN {{date('Y')}}
@@ -47,13 +47,16 @@
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="kontrak-tab" data-toggle="tab" data-target="#kontrak" type="button" role="tab" aria-controls="kontrak" aria-selected="false">Pegawai Kontrak</button>
         </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="magang-tab" data-toggle="tab" data-target="#magang" type="button" role="tab" aria-controls="magang" aria-selected="false">Pegawai Magang</button>
+        </li>
         </ul>
         <div class="tab-content" id="myTabContent">
         <?php foreach ($status as $tab) : if ($tab != 0) { ?>
-        <div class="tab-pane fade show <?php if ($tab == 1) { echo 'active';} ?>" id="<?php if ($tab == 1) { echo 'tetap';} else { echo 'kontrak';} ?>" role="tabpanel" aria-labelledby="<?php if ($tab == 1) { echo 'tetap-tab';} else { echo 'kontrak-tab';} ?>">
+        <div class="tab-pane fade show <?php if ($tab == 1) { echo 'active';} ?>" id="<?php if ($tab == 1) { echo 'tetap';} elseif ($tab == 2) { echo 'kontrak';} elseif ($tab == 3) { echo 'magang';} ?>" role="tabpanel" aria-labelledby="<?php if ($tab == 1) { echo 'tetap-tab';} elseif ($tab == 2) { echo 'kontrak-tab';} elseif ($tab == 3) { echo 'magang-tab';} ?>">
         <div class="card-body">
         <div class="table-responsive">
-            <table id="<?php if ($tab == 1) { echo 'tetapTable';} else { echo 'kontrakTable';} ?>">
+            <table id="<?php if ($tab == 1) { echo 'tetapTable';} elseif ($tab == 2) { echo 'kontrakTable';} else { echo 'magangTable';} ?>">
                 <thead>
                     <tr class="bg-primary my-font-white">
                         <th style="text-align: center">No</th>
@@ -72,7 +75,19 @@
                     @foreach($data_pegawai as $item)
                     @if($item->status == $tab)
                     @if($item->nip)
-                    <tr class="@if(date('d F', strtotime($item->tanggal_lahir)) == date('d F', strtotime(now())) ) flash @endif">
+                    <?php
+                            $tanggal_masuk = new DateTime("$item->tanggal_masuk");
+                            $sekarang = new DateTime("today");
+                            if ($tanggal_masuk > $sekarang) { 
+                            $thn = "0";
+                            $bln = "0";
+                            $tgl = "0";
+                            }
+                            $thn = $sekarang->diff($tanggal_masuk)->y;
+                            $bln = $sekarang->diff($tanggal_masuk)->m;
+                            $tgl = $sekarang->diff($tanggal_masuk)->d;
+                    ?>
+                    <tr class="@if( $item->riwayatJabatan == null) @else @if( $thn > $item->riwayatJabatan->golongan->min_masa_kerja && $thn != $item->riwayatJabatan->golongan->min_masa_kerja ) flash @endif @endif">
                         <td style="text-align: center">{{  $no++ }}</td>
                         <td>
                             <center>
@@ -88,7 +103,7 @@
                             </center>
                         </td>
                         <td style="text-align: center">{{ $item->nip }}</td>
-                        <td>{{ $item->nama }}@if(date('d F', strtotime($item->tanggal_lahir)) == date('d F', strtotime(now())) ) <i class="fas fa-gift"></i>@endif</td>
+                        <td>{{ $item->nama }}</td>
                         @if($item->riwayatJabatan === null)
                         <td style="text-align: center"><div class="badge badge-warning">Belum Terdaftar</div></td>
                         <td style="text-align: center"><div class="badge badge-warning">Belum Terdaftar</div></td>
@@ -98,21 +113,9 @@
                         <td style="text-align: center">{{ ucwords(strtolower($item->riwayatJabatan->jabatan->nama_jabatan)) }}</td>
                         <td style="text-align: center">{{ $item->riwayatJabatan->golongan->golongan }}</td>
                         @endif
-                        <?php
-                            $tanggal_masuk = new DateTime("$item->tanggal_masuk");
-                            $sekarang = new DateTime("today");
-                            if ($tanggal_masuk > $sekarang) { 
-                            $thn = "0";
-                            $bln = "0";
-                            $tgl = "0";
-                            }
-                            $thn = $sekarang->diff($tanggal_masuk)->y;
-                            $bln = $sekarang->diff($tanggal_masuk)->m;
-                            $tgl = $sekarang->diff($tanggal_masuk)->d;
-                        ?>
                         <td style="text-align: center">{{ $thn." Tahun" }} <br> {{ $bln." Bulan ".$tgl." Hari" }}</td>
                         <td style="text-align: center">
-                            <a href="/pegawai/{{ $item->id }}" class="btn btn-sm btn-primary"><i class="fas fa-eye fa-sm"></i> Detail</a>
+                            <a href="{{ route('showPegawai', $item->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-eye fa-sm"></i> Detail</a>
                         </td>
                     </tr>
                     @endif
@@ -132,13 +135,13 @@
 </div>
 <div class="row">
 <div class="col">
-    <div class="alert alert-warning alert-dismissible fade show shadow" role="alert">
+    <div class="alert alert-warning alert-dismissible fade show shadow-sm" role="alert">
         <small>
             <b>Perhatian</b>
             <ul>
                 <li>Untuk menambahkan data pegawai lama gunakan fitur import pegawai.</li>
                 <li>NIP sudah di generate secara otomatis oleh sistem.</li>
-                <li>Ukuran foto tidak boleh lebih dari 3 MB.</li>
+                <li>Ukuran foto tidak boleh lebih dari 1 MB.</li>
                 <li>Penulisan nama gelar harus benar.</li>
             </ul>
         </small>

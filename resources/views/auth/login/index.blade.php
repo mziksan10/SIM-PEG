@@ -13,8 +13,8 @@
                     <!-- <div class="col-lg-6 d-none d-lg-block login-image"></div> -->
                     <div class="col-lg-12">
                         <div class="p-5">
-                            <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Selamat datang!</h1>
+                            <div class="text-center mb-3">
+                                <img src="{{ asset('/assets/img') }}/logo_piksi.png" style="max-width: 100px;">
                             </div>
                             @if(session()->has('success'))                                
                             <div class="alert alert-success alert-dismissible fade show" role="alert">

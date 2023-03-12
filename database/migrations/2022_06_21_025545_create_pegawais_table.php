@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('no_hp');
             $table->string('email');
             $table->date('tanggal_masuk');
+            $table->string('status_pernikahan');
             $table->string('status');
             $table->string('foto')->nullable();
             $table->timestamps();

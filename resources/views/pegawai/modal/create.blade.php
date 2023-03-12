@@ -10,10 +10,10 @@
         <div class="modal-body text-center">
             <div class="row">
             <div class="col-6">
-            <a href="create-pegawai-tetap/pegawai/" class="btn btn btn-primary mb-1" style="width:100%">Tetap</a>
+            <a href="{{ route('createPegawaiTetap') }}" class="btn btn btn-primary mb-1" style="width:100%">Tetap</a>
             </div>
             <div class="col-6">
-            <a href="create-pegawai-kontrak/pegawai/" class="btn btn btn-warning" style="width:100%">Kontrak</a>
+            <a href="{{ route('createPegawaiKontrak') }}" class="btn btn btn-warning" style="width:100%">Kontrak</a>
             </div>
             </div>
         </div>

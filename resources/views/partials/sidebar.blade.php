@@ -13,7 +13,7 @@
     <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Dashboard -->
-    <li class="nav-item {{ request()->is('/dashboard*') ? 'active' : '' }}">
+    <li class="nav-item {{ request()->is('/*') ? 'active' : '' }}">
         <a class="nav-link" href="/">
             <i class="fas fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
@@ -27,86 +27,61 @@
     </li>
     <li class="nav-item {{ request()->is('pemberkasan-pegawai*') ? 'active' : '' }}">
         <a class="nav-link" href="/pemberkasan-pegawai">
-            <i class="fas fa-paper-plane"></i>
+            <i class="fas fa-folder-open"></i>
             <span>Pemberkasan</span></a>
     </li>
     <li class="nav-item {{ request()->is('presensi-pegawai*') ? 'active' : '' }}">
         <a class="nav-link" href="/presensi-pegawai">
-            <i class="fas fa-paper-plane"></i>
+        <i class="fas fa-user-clock"></i>
             <span>Presensi</span></a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#" data-toggle="collapse" data-target="#setting" aria-expanded="true" aria-controls="setting">
-            <i class="fas fa-user-cog"></i>
-            <span>Setting</span>
-        </a>
-        <div id="setting" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Sub menu:</h6>
-                <a class="collapse-item" href="#">Ganti Foto</a>
-                <a class="collapse-item" href="#">Reset Password</a>
-            </div>
-        </div>
+    <li class="nav-item {{ request()->is('reset-password*') ? 'active' : '' }}">
+        <a class="nav-link" href="#">
+        <i class="fas fa-key"></i>
+            <span>Reset Password</span></a>
     </li>
-    @endif
-
-    @if(auth()->user()->role == 'admin')
-    @if(request()->is('pegawai*') || request()->is('golongan*') || request()->is('bidang*') || request()->is('jabatan*'))
+    @elseif(auth()->user()->role == 'admin')
+    <li class="nav-item {{ request()->is('pegawai*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('pegawai') }}">
+            <i class="fas fa-users"></i>
+            <span>Data Pegawai</span></a>
+    </li>
+    @if(request()->is('golongan*') || request()->is('bidang*') || request()->is('jabatan*'))
     <li class="nav-item active">
     @else
     <li class="nav-item">
     @endif
         <a class="nav-link collapsed collapsed" href="#" data-toggle="collapse" data-target="#master-data" aria-expanded="false" aria-controls="master-data">
             <i class="fas fa-database"></i>
-            <span>Data Master</span>
+            <span>Master Data</span>
         </a>
         <div id="master-data" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Sub menu:</h6>
-                <a class="collapse-item" href="/pegawai">Data Pegawai</a>
-                <a class="collapse-item" href="/golongan">Data Golongan</a>
-                <a class="collapse-item" href="/bidang">Data Bidang</a>
-                <a class="collapse-item" href="/jabatan">Data Jabatan</a>
+                <a class="collapse-item" href="/golongan"><i class="fas fa-chevron-circle-right mr-1"></i>Data Golongan</a>
+                <a class="collapse-item" href="/bidang"><i class="fas fa-chevron-circle-right mr-1"></i>Data Bidang</a>
+                <a class="collapse-item" href="/jabatan"><i class="fas fa-chevron-circle-right mr-1"></i>Data Jabatan</a>
             </div>
         </div>
         
     </li>
-    @if(request()->is('riwayat-jabatan*') || request()->is('riwayat-pendidikan*') || request()->is('riwayat-pemberkasan*'))
+
+    @if(request()->is('presensi*'))
     <li class="nav-item active">
     @else
     <li class="nav-item">
     @endif
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#kelola-riwayat" aria-expanded="false" aria-controls="kelola-riwayat">
-        <i class="fas fa-user-cog"></i>
-            <span>Kelola Kepegawaian</span>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#presensi" aria-expanded="false" aria-controls="presensi">
+            <i class="fas fa-user-clock"></i>
+            <span>Presensi</span>
         </a>
-        <div id="kelola-riwayat" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
+        <div id="presensi" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Sub menu:</h6>
-                <a class="collapse-item" href="/riwayat-pendidikan">Riwayat Pendidikan</a>
-                <a class="collapse-item" href="/riwayat-jabatan">Riwayat Jabatan</a>
-                <a class="collapse-item" href="/riwayat-pemberkasan">Riwayat Pemberkasan</a>
+                <a class="collapse-item" href="#"><i class="fas fa-chevron-circle-right mr-1"></i>Atur Presensi</a>
+                <a class="collapse-item" href="/rekap-presensi"><i class="fas fa-chevron-circle-right mr-1"></i>Rekap Presensi</a>
             </div>
         </div>
-        
-    </li>
-    @if(request()->is('aturan-presensi*') || request()->is('rekap-presensi*'))
-    <li class="nav-item active">
-    @else
-    <li class="nav-item">
-    @endif
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#kelola-presensi" aria-expanded="false" aria-controls="kelola-presensi">
-        <i class="fas fa-clock"></i>
-            <span>Kelola Presensi</span>
-        </a>
-        <div id="kelola-presensi" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Sub menu:</h6>
-                <a class="collapse-item" href="/aturan-presensi">Aturan Presensi</a>
-                <a class="collapse-item" href="/rekap-presensi">Rekap Presensi</a>
-            </div>
-        </div>
-        
     </li>
 
     @if(request()->is('user*'))
@@ -121,7 +96,8 @@
         <div id="setting" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Sub menu:</h6>
-                <a class="collapse-item" href="/user">User & Role</a>
+                <a class="collapse-item" href="/user"><i class="fas fa-chevron-circle-right mr-1"></i>User & Role</a>
+                <a class="collapse-item" href="#"><i class="fas fa-chevron-circle-right mr-1"></i>Password reset</a>
             </div>
         </div>
     </li>

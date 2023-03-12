@@ -8,6 +8,9 @@ $(document).ready( function () {
 $(document).ready( function () {
     $('#kontrakTable').DataTable();
 } );
+$(document).ready( function () {
+    $('#magangTable').DataTable();
+} );
 
 var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 $(document).ready(function(){
@@ -85,16 +88,37 @@ $(function () {
     
 });
 
+// Script kondisi pemilihan bidang & jabatan ketika Edit
+$(function () {
+    $.ajaxSetup({
+        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+    });
+    $('#bidang_id_').on('change', function () {
+        $.ajax({
+            url: '/cari-golongan',
+            method: 'POST',
+            data: {nip: document.getElementById("nip").value, lama_bekerja: document.getElementById("lama_bekerja").value },
+            success: function (response) {
+                $('#golongan_id_').empty();
+
+                $.each(response, function (key, entry) {
+                    $('#golongan_id_').append(new Option(entry.golongan + ' - ' + entry.status, entry.id))
+                })
+            }
+        })
+    });
+});
+
 // Script kondisi pemilihan pegawai & golongan
 $(function () {
     $.ajaxSetup({
         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
     });
-    $('#nip').on('change', function () {
+    $('#bidang_id').on('change', function () {
         $.ajax({
             url: '/cari-golongan',
             method: 'POST',
-            data: {nip: $(this).val()},
+            data: {nip: document.getElementById("nip").value, lama_bekerja: document.getElementById("lama_bekerja").value },
             success: function (response) {
                 $('#golongan_id').empty();
 
@@ -171,7 +195,7 @@ $(function () {
             }
         })
     });
-});
+}); 
 
 // JAM ID
 window.onload = function() { jam(); }

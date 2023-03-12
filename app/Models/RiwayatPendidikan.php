@@ -11,10 +11,10 @@ class RiwayatPendidikan extends Model
     use HasFactory;
     protected $guarded = ['id'];
 
-    // Static Pendidikan
-    private static $pendidikan = ['SD', 'SMP', 'SMA/SMK', 'D1', 'D2', 'D3', 'D4/S1', 'S2', 'S3', 'Lainnya'];
-    public static function data_pendidikan(){
-        return self::$pendidikan;
+    // Static Jenjang
+    private static $jenjang = ['SMA/SMK', 'D1', 'D2', 'D3', 'D4/S1', 'S2', 'S3', 'Lainnya'];
+    public static function jenjang(){
+        return self::$jenjang;
     }
 
     public function pegawai(){

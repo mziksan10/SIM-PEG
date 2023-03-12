@@ -28,14 +28,19 @@
 }
 
 .flash {
-  -webkit-animation: flash 1.5s infinite;  /* Safari 4+ */
-  -moz-animation: flash 1.5s infinite;  /* Fx 5+ */
-  -o-animation: flash 1.5s infinite;  /* Opera 12+ */
-  animation: flash 1.5s infinite;  /* IE 10+, Fx 29+ */
+  -webkit-animation: flash 2s infinite;  /* Safari 4+ */
+  -moz-animation: flash 2s infinite;  /* Fx 5+ */
+  -o-animation: flash 2s infinite;  /* Opera 12+ */
+  animation: flash 2s infinite;  /* IE 10+, Fx 29+ */
 }
 
 @-webkit-keyframes flash {
   50%, 100% {
-    background-color: #d9e2ef;
+    background-color: #d9534f;
+    color: white;
   }
+}
+
+.icon-cog {
+  color: #0275d8;
 }
