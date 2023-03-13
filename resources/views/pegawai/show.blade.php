@@ -406,11 +406,8 @@
 </div>
 
 @include('pegawai/modal/create-pendidikan')
-@if($pegawai->riwayatPendidikan === null)
-@else
 @include('pegawai/modal/create-jabatan')
 @include('pegawai/modal/edit-pendidikan')
 @include('pegawai/modal/edit-jabatan')
-@endif
 @include('pegawai/modal/create-pemberkasan')
 @endsection

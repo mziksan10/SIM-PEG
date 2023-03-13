@@ -1,3 +1,4 @@
+@if($pegawai->riwayatPendidikan)
 <form action="{{ route('updateRiwayatPendidikan', $pegawai->riwayatPendidikan->id) }}" method="POST" enctype="multipart/form-data">
 @method('put')
 @csrf
@@ -79,3 +80,4 @@
     </div>
     </div>
 </form>
+@endif
