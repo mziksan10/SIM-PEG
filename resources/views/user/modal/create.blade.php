@@ -23,11 +23,11 @@
         <label>Role</label>
             <select name="role" class="form-control @error('role') is-invalid @enderror">
                 <option value="">Pilih..</option>
-                @foreach($role as $r)
-                @if(old('role') == $r)
-                <option value="{{ $r }}" selected>{{ $r }}</option>
+                @foreach($roles as $role)
+                @if(old('role') == $role)
+                <option value="{{ $role }}" selected>{{ $role }}</option>
                 @else
-                <option value="{{ $r }}">{{ $r }}</option>
+                <option value="{{ $role }}">{{ $role }}</option>
                 @endif
                 @endforeach
             </select>

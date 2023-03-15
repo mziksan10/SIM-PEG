@@ -15,27 +15,33 @@ class Pegawai extends Model
     protected $guarded = ['id'];
 
     // Static jenis status
-    private static $status = ['1', '2'];
-    public static function data_status(){
+    private static $status = ['1', '2', '0'];
+    public static function status(){
         return self::$status;
     }
 
+    // Status pernikahan
+    private static $statusPernikahan = ['Lajang', 'Menikah', 'Cerai'];
+    public static function statusPernikahan(){
+        return self::$statusPernikahan;
+    }
+
     // Static jenis jenjang
-    private static $pendidikan = ['SD', 'SMP', 'SMA/SMK', 'D1', 'D2', 'D3', 'D4/S1', 'S2', 'S3', 'Lainnya'];
-    public static function data_pendidikan(){
-        return self::$pendidikan;
+    private static $statusJenjang = ['SD', 'SMP', 'SMA/SMK', 'D1', 'D2', 'D3', 'D4/S1', 'S2', 'S3', 'Lainnya'];
+    public static function statusJenjang(){
+        return self::$statusJenjang;
     }
 
     // Static jenis kelamin
-    private static $jenis_kelamin = ['Laki-laki', 'Perempuan'];
-    public static function data_jenis_kelamin(){
-        return self::$jenis_kelamin;
+    private static $jenisKelamin = ['Laki-laki', 'Perempuan'];
+    public static function jenisKelamin(){
+        return self::$jenisKelamin;
     }
     
     // Static jenis berkas
-    private static $jenis_berkas = ['KTP', 'KK', 'Ijazah', 'Transkrip', 'Sertifikat', 'Lainnya'];
-    public static function data_jenis_berkas(){
-        return self::$jenis_berkas;
+    private static $jenisBerkas = ['Asli', 'Fotokopi '];
+    public static function jenisBerkas(){
+        return self::$jenisBerkas;
     }
 
     // Filter

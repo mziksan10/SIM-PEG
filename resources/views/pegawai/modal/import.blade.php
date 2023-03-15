@@ -1,4 +1,4 @@
-<form action="{{ route('import-pegawai') }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('importPegawai') }}" method="POST" enctype="multipart/form-data">
 @csrf
 
     <div class="modal fade" tabindex="-1" id="importModal">

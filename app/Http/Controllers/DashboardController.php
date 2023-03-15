@@ -6,6 +6,7 @@ use App\Models\Pegawai;
 use App\Models\Bidang;
 use App\Models\RiwayatJabatan;
 use Illuminate\Http\Request;
+use DateTime;
 
 class DashboardController extends Controller
 {
@@ -27,15 +28,41 @@ class DashboardController extends Controller
     
             }
         }
+        
+        $pegawai = Pegawai::all();
+        $pegawaiBerulangTahun = [];
+        $pegawaiNaikGolongan = [];
+        foreach($pegawai as $item):
+            $tanggal_masuk = new DateTime("$item->tanggal_masuk");
+            $sekarang = new DateTime("today");
+            if ($tanggal_masuk > $sekarang) { 
+            $thn = "0";
+            $bln = "0";
+            $tgl = "0";
+            }
+            $thn = $sekarang->diff($tanggal_masuk)->y;
+            $bln = $sekarang->diff($tanggal_masuk)->m;
+            $tgl = $sekarang->diff($tanggal_masuk)->d;
+        {
+            if(date('F', strtotime($item->tanggal_lahir)) == date('F', strtotime(now()))){
+                $pegawaiBerulangTahun[] = $item;
+            }
+            if($item->riwayatJabatan != null){
+                if($thn > $item->riwayatJabatan->golongan->min_masa_kerja && $thn != $item->riwayatJabatan->golongan->max_masa_kerja){
+                    $pegawaiNaikGolongan[] = $item;
+                }
+            }
+        }endforeach;
         return view('index', [
-            "title" => "Dashboard",
-            "photo" => "logo_piksi.png",
-            "data_pegawai_tetap" => Pegawai::where('status', '=' , '1')->count(),
-            "data_pegawai_kontrak" => Pegawai::where('status', '=' , '2')->count(),
-            "data_pegawai_cuti" => Pegawai::where('status', '=' , 'Cuti')->count(),
-            "data_pegawai_total" => Pegawai::all()->count(),
+            'title' => 'Dashboard',
+            'data_pegawai_tetap' => Pegawai::where('status', '=' , '1')->count(),
+            'data_pegawai_kontrak' => Pegawai::where('status', '=' , '2')->count(),
+            'data_pegawai_magang' => Pegawai::where('status', '=' , '3')->count(),
+            'data_pegawai_total' => Pegawai::all()->count(),
             'categories' => $categories,
             'series' => $series,
+            'pegawaiBerulangTahun' => $pegawaiBerulangTahun,
+            'pegawaiNaikGolongan' => $pegawaiNaikGolongan,
         ]);
     }
 }

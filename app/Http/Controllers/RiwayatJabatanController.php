@@ -51,33 +51,24 @@ class RiwayatJabatanController extends Controller
     {
         $pegawaiId = Pegawai::select('id')->where('nip', $request->nip)->get();
         $validatedData = $request->validate([
-            'nip' => 'required',
+            'golongan_id' => 'required',
             'bidang_id' => 'required',
             'jabatan_id' => 'required',
-            'golongan_id' => 'required',
-            'tmt_golongan' => 'required',
-            'tmt_bekerja' => 'required',
             'scan_sk' => 'required|mimes:pdf|max:1024',
         ]);
-        $getStatus = Golongan::where('id', $request->golongan_id)->pluck('status');
-        if($getStatus[0] == "Tetap"){
-            $selectNIP = Pegawai::select('nip')->where('status', '1')->latest('tanggal_masuk')->first();
-            if($selectNIP == null){
-                $createNIP = '130041' . date('dmy') . '1' . '001'; 
-            }else{
-                $createNIP = '130041' . date('dmy') . substr($selectNIP->nip, -4) + 1;
-            }
-            $dataBaru = [];
-            $dataBaru['nip'] = $createNIP;  
-            $dataBaru['status'] = 1;
-            Pegawai::where('id', $pegawaiId[0]->id)->update($dataBaru);
-        }
         if(request()->file('scan_sk')){ 
             $validatedData['scan_sk'] = request()->file('scan_sk')->store('berkas-pegawai');  
         }
+        if($request->status == 1){
+            $status = "Tetap";
+        }elseif($request->status == 2){
+            $status = "Kontrak";
+        }
+        $validatedData['tmt_golongan'] = date_create()->format('Y-m-d');
+        $validatedData['tmt_bekerja'] = date_create()->format('Y-m-d');
         $validatedData['pegawai_id'] = $pegawaiId[0]->id;
         RiwayatJabatan::create($validatedData);
-        return redirect('/riwayat-jabatan')->with('success', 'Data riwayat jabatan berhasil diinput!');
+        return back()->with('success', 'Data riwayat jabatan berhasil diinput!');
     }
 
     /**

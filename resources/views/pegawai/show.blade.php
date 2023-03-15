@@ -3,29 +3,52 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">{{ $title }}</h1>
-        <a href="/pegawai" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-        <i class="fas fa-arrow-left fa-sm text-white-50"></i> Back</a>
     </div>
 
 <!-- Content Row -->
 <div class="row">
     <div class="col">
-    @if(date('d F', strtotime($pegawai->tanggal_lahir)) == date('d F', strtotime(now())) )
-        <div class="card shadow mb-2">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-1">
-                    <i class="fas fa-bullhorn"></i>
+    @if(session()->has('success'))                                
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <small>{{ session('success') }}</small>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    @endif
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="card shadow-sm mb-2">
+        <div class="card border-left-primary">
+            <div class="card-body px-1 py-1">
+                <div class="form-row">
+                    <div class="col-xl-1 col-md-2">
+                    <div class="badge badge-primary py-2" style="width:100%">
+                    <i class="fas fa-bullhorn mr-2"></i> Info
                     </div>
-                    <div class="col-11">
-                        <marquee><small><i class="fas fa-gift"></i> Hari ini <b>{{ $pegawai->nama }}</b> Berulang Tahun yang ke- {{ date('Y', strtotime(now())) - date('Y', strtotime($pegawai->tanggal_lahir)) }} Tahun.</small></marquee>
                     </div>
+                    <div class="col-xl-11 col-md-10 modal-dialog-centered">
+                    <marquee>
+                        @if($pegawaiBerulangTahun == false && $pegawaiNaikGolongan == false)
+                        <small>Tidak ada informasi penting.</small>
+                        @else
+                            @if(date('d F', strtotime($pegawai->tanggal_lahir)) == date('d F', strtotime(now())) )
+                            <small class="ml-3"><i class="fas fa-gift"></i> Hari ini <b>{{ $pegawai->nama }}</b> Berulang Tahun yang ke- {{ date('Y', strtotime(now())) - date('Y', strtotime($pegawai->tanggal_lahir)) }} Tahun.</small>
+                            @endif
+                            @if($lamaBekerja[0] > $pegawai->riwayatJabatan->golongan->min_masa_kerja && $lamaBekerja[0] != $pegawai->riwayatJabatan->golongan->max_masa_kerja)
+                            <small class="ml-3">Tahun ini <b>{{ $pegawai->nama }}</b> harus naik golongan.
+                            @endif
+                        @endif
+                    </marquee>
+                    </div>
+                </div>
                 </div>
             </div>
         </div>
-    @endif
         <!-- DataTales Example -->
-        <div class="card shadow mb-4">
+        <div class="card shadow-sm mb-2">
             <div class="card-header py-3">
                 <div class="row">
                     <div class="col-8 d-flex justify-content-start">
@@ -33,31 +56,28 @@
                     </div>
                     <div class="col-4">
                         <div class="float-right">
-                            <a href="/pegawai/{{ $pegawai->id }}/edit" class="btn btn-sm btn-warning"><i class="fas fa-edit fa-sm"></i> Edit</a>
-                            <form action="/pegawai/{{ $pegawai->id }}" method="post" class="d-inline">
-                                @method('delete')
-                                @csrf
-                                <button class="btn btn-sm btn-danger border-0" onclick="return confirm('Apakah kamu yakin?')"><i class="fas fa-trash fa-sm"></i> Delete</button>
-                            </form>
+                            <a href="{{ route('editPegawai', $pegawai->id) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit fa-sm"></i> Edit</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="card-body">
-                <div class="col-12">
-                    <div class="row">
-                        <div class="col-3">
+            <div class="card-body pb-0">
+                    <div class="form-row">
+                        <div class="col-xl-2 col-md-6">
+                        <div class="img-thumbnail modal-dialog-centered justify-content-center bg-light mb-3">
+                            <div style="max-height: 500px; max-width: 250px; overflow: hidden;">
                             @if($pegawai->foto)
-                            <div style="max-height: 300px; max-width: 250px; overflow: hidden;">
-                            <img src="{{asset('storage/' . $pegawai->foto)}}" style="height: 300px; width: 250px;" class="img-thumbnail">
-                            </div>
-                            @else
-                            <div style="max-height: 300px; max-width: 250px; overflow: hidden;">
-                            <img src="{{asset('/assets/img/user_default.png')}}" style="height: 300px; width: 250px;" class="img-thumbnail">
-                            </div>
+                            <img src="{{ asset('storage/' . $pegawai->foto) }}" class="img-preview mb-2" style="height: 300px; width: 250px; overflow: hidden;">
+                            @elseif(!$pegawai->foto)
+                            <img src="{{ asset('assets/img') }}/user_default.png" class="img-preview mb-2" style="height: 300px; width: 250px; overflow: hidden;">
                             @endif
+                            <div class="card text-center">
+                                NIP. {{ $pegawai->nip }}
+                            </div>
+                            </div>
                         </div>
-                        <div class="col-9">
+                        </div>
+                        <div class="col-xl-10 col-md-6">
                             <table class="table small">
                                 <tr>
                                     <th>NIK</th>
@@ -87,31 +107,37 @@
                                     <th>Email</th>
                                     <td>: {{ $pegawai->email }}</td>
                                 </tr>
+                                <tr>
+                                    <th>Status Pernikahan</th>
+                                    <td>: {{ $pegawai->status_pernikahan }}</td>
+                                </tr>
                             </table>
                         </div>
                       </div>
-                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-6">
-                <div class="card shadow mb-4">
+        <div class="form-row">
+            <div class="col-md-6">
+                <div class="card shadow-sm mb-2">
                     <div class="card-header py-3">
                         <div class="row">
                             <div class="col-8 d-flex justify-content-start">
                                 <h6 class="font-weight-bold text-primary mt-auto"><i class="fas fa-briefcase"></i> Detail Jabatan</h6>
                             </div>
+                            <div class="col-4">
+                                <div class="float-right">
+                                @if( $pegawai->riwayatJabatan == null)
+                                @else
+                                <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editModalJabatan{{ $pegawai->riwayatJabatan->id }}"><i class="fas fa-edit fa-sm"></i> Edit</button>
+                                @endif
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="col-12">
-                            <div class="row">
+                            <div class="form-row">
                                 <div class="col">
                                     <table class="table small">
-                                        <tr>
-                                            <th>NIP</th>
-                                            <td>: {{ $pegawai->nip }}</td>
-                                        </tr>
                                         <tr>
                                             <th>Bidang</th>
                                             @if($pegawai->riwayatJabatan === null)
@@ -142,53 +168,55 @@
                                             </td>
                                             @endif
                                         </tr>
-                                        <tr>
+                                        <!-- <tr>
                                             <th>Gaji Pokok</th>
                                             @if($pegawai->riwayatJabatan === null)
                                             <td>: -</td>
                                             @elseif($pegawai->riwayatJabatan)
                                             <td>: Rp. {{ number_format($pegawai->riwayatJabatan->golongan->gaji_pokok, 2,',','.') }},-</td>
                                             @endif
+                                        </tr> -->
+                                        <tr>
+                                            <th>TMT Bekerja</th>
+                                            @if($pegawai->riwayatJabatan === null)
+                                            <td>: -</td>
+                                            @elseif($pegawai->riwayatJabatan)
+                                            <td>: {{ $pegawai->riwayatJabatan->tmt_bekerja }}</td>
+                                            @endif
                                         </tr>
                                         <tr>
-                                            <th>Tanggal Masuk</th>
-                                            <td>: {{ $pegawai->tanggal_masuk }}</td>
-                                        </tr>
-                                        <?php
-                                            $tanggal_masuk = new DateTime("$pegawai->tanggal_masuk");
-                                            $sekarang = new DateTime("today");
-                                            if ($tanggal_masuk > $sekarang) { 
-                                            $thn = "0";
-                                            $bln = "0";
-                                            $tgl = "0";
-                                            }
-                                            $thn = $sekarang->diff($tanggal_masuk)->y;
-                                            $bln = $sekarang->diff($tanggal_masuk)->m;
-                                            $tgl = $sekarang->diff($tanggal_masuk)->d;
-                                        ?>
-                                        <tr>
-                                            <th>Lama Bekerja</th>
-                                            <td>: {{ $thn." tahun ".$bln." bulan ".$tgl." hari" }}</td>
+                                            <th>Scan SK.</th>
+                                            @if($pegawai->riwayatJabatan === null)
+                                            <td>: -</td>
+                                            @elseif($pegawai->riwayatJabatan)                                            
+                                            <td>: <a href="{{asset('storage/' . $pegawai->riwayatJabatan->scan_sk)}}" target="_blank" class="badge badge-sm badge-danger ml-1"><i class="fas fa-file-pdf"></i> Show</a></td>
+                                            @endif
                                         </tr>
                                     </table>
                                 </div>
                               </div>
-                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-6">
-                <div class="card shadow mb-3">
+            <div class="col-md-6">
+                <div class="card shadow-sm mb-2">
                     <div class="card-header py-3">
                         <div class="row">
                             <div class="col-8 d-flex justify-content-start">
                                 <h6 class="font-weight-bold text-primary mt-auto"><i class="fas fa-graduation-cap"></i> Detail Pendidikan</h6>
                             </div>
+                            <div class="col-4">
+                                <div class="float-right">
+                                @if($pegawai->riwayatPendidikan === null)
+                                @else
+                                <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editModalPendidikan{{ $pegawai->riwayatPendidikan->id }}"><i class="fas fa-edit fa-sm"></i> Edit</button>
+                                @endif
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="col-12">
-                            <div class="row">
+                            <div class="form-row">
                                 <div class="col">
                                     <table class="table small">
                                     @if($pegawai->riwayatPendidikan === null)
@@ -208,6 +236,10 @@
                                             <th>Tahun Lulus</th>
                                             <td>: -</td>
                                             </tr>
+                                            <tr>
+                                            <th>Scan Ijazah</th>
+                                            <td>: -</td>
+                                            </tr>
                                     @else
                                         <tr>
                                             <th>Jenjang</th>
@@ -225,17 +257,20 @@
                                             <th>Tahun Lulus</th>
                                             <td>: {{ $pegawai->riwayatPendidikan->tahun_lulus }}</td>
                                         </tr>
+                                        <tr>
+                                            <th>Scan Ijazah</th>
+                                            <td>: <a href="{{asset('storage/' . $pegawai->riwayatPendidikan->scan_ijazah)}}" target="_blank" class="badge badge-sm badge-danger ml-1"><i class="fas fa-file-pdf"></i> Show</a></td>
+                                        </tr>
                                         @endif
                                     </table>
                                 </div>
                               </div>
                         </div>
-                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="card shadow mb-4">
+        <div class="card shadow-sm mb-2">
             <div class="card-header py-3">
                 <div class="row">
                     <div class="col-8 d-flex justify-content-start">
@@ -243,12 +278,13 @@
                     </div>
                     <div class="col-4">
                         <div class="float-right">
-                            <!-- Kosong -->
+                         <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#createModalPendidikan"><i class="fas fa-plus fa-sm"></i> Add</button>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="card-body">
+            <div class="table-responsive">
               <table class="table small">
                     <tr>
                         <th>No</th>
@@ -256,6 +292,7 @@
                         <th>Jurusan</th>
                         <th>Nama Institusi</th>
                         <th>Tahun Lulus</th>
+                        <th>Scan Ijazah</th>
                     </tr>
                     @foreach($data_riwayatPendidikan as $item)
                     <tr>
@@ -264,13 +301,15 @@
                         <td>{{ $item->jurusan }}</td>
                         <td>{{ $item->institusi }}</td>
                         <td>{{ $item->tahun_lulus }}</td>
+                        <td><a href="{{asset('storage/' . $item->scan_ijazah)}}" target="_blank" class="badge badge-sm badge-danger ml-1"><i class="fas fa-file-pdf"></i> Show</a></td>
                     </tr>
                     @endforeach
                 </table>
             </div>
+            </div>
         </div>
 
-        <div class="card shadow mb-4">
+        <div class="card shadow-sm mb-2">
             <div class="card-header py-3">
                 <div class="row">
                     <div class="col-8 d-flex justify-content-start">
@@ -278,12 +317,13 @@
                     </div>
                     <div class="col-4">
                         <div class="float-right">
-                            <!-- Kosong -->
+                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#createModalJabatan"><i class="fas fa-plus fa-sm"></i> Add</button>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="card-body">
+            <div class="table-responsive">
               <table class="table small">
                     <tr>
                         <th>No</th>
@@ -292,6 +332,7 @@
                         <th>Golongan</th>
                         <th>TMT Golongan</th>
                         <th>TMT Bekerja</th>
+                        <th>Scan SK.</th>
                     </tr>
               @foreach($data_riwayatJabatan as $item)
                     <tr>
@@ -301,89 +342,30 @@
                         <td>{{ $item->golongan->golongan . " - " . $item->golongan->status}}</td>
                         <td>{{ $item->tmt_golongan }}</td>
                         <td>{{ $item->tmt_bekerja }}</td>
+                        <td><a href="{{asset('storage/' . $item->scan_sk)}}" target="_blank" class="badge badge-sm badge-danger ml-1"><i class="fas fa-file-pdf"></i> Show</a></td>
                     </tr>
               @endforeach
                 </table>
             </div>
+            </div>
         </div>
-        
-        @if(session()->has('success'))                                
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <small>{{ session('success') }}</small>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        @endif
     <!-- DataTales Example -->
-    <div class="card shadow mb-4">
-        <div class="card-header">
-            <form action="/berkas" method="POST" enctype="multipart/form-data">
-                @csrf
-                <input type="hidden" name="pegawai_id" value="{{$pegawai->id}}">
+    <div class="card shadow-sm mb-4">
+    <div class="card-header py-3">
                 <div class="row">
-                    <div class="col-3">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text">Jenis Berkas</span>
-                            </div>
-                            <select name="jenis_berkas" class="form-control @error('jenis_berkas') is-invalid @enderror" autofocus>
-                                <option value="" selected>--Pilih--</option>
-                                @foreach($jenis_berkas as $item)
-                                <option value="{{ $item }}">{{ $item }}</option>
-                                @endforeach
-                            </select>
-                            @error('jenis_berkas')
-                            <div class="invalid-feedback ml-3">{{ $message }}</div>
-                            @enderror
-                          </div>
+                    <div class="col-8 d-flex justify-content-start">
+                        <h6 class="font-weight-bold text-primary mt-auto"><i class="fas fa-file"></i> Pemberkasan</h6>
                     </div>
-                    <div class="col-3">
-                        <div class="form-group">
-                            <input type="text" class="form-control @error('keterangan') is-invalid @enderror" placeholder="Keterangan" name="keterangan">
+                    <div class="col-4">
+                        <div class="float-right">
+                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#createModalBerkas"><i class="fas fa-plus fa-sm"></i> Add</button>
                         </div>
-                        @error('keterangan')
-                        <div class="invalid-feedback ml-3">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col">
-                        <div class="input-group">
-                            <input type="file" name="file" class="form-control @error('file') is-invalid @enderror">
-                            <div class="input-group-append">
-                            <button class="btn btn-primary" type="submit"><i class="fas fa-upload fa-sm"></i> Upload</button>
-                            </div>
-                            @error('file')
-                            <div class="invalid-feedback ml-3">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
-            </form>
-            <hr class="d-none d-md-block mt-0">
-            <div class="row d-flex justify-content-end">
-                <div class="col-8 d-flex justify-content-start">
-                    <a href="/pegawai/{{ $pegawai->id }}" class="btn btn-primary mr-2"><i class="fas fa-sync fa-sm"></i></a>
-                    <h6 class="font-weight-bold text-primary mt-auto">Data Pemberkasan</h6>
-                </div>
-                <div class="col-4">
-                    <div class="float-right">
-                        <form action="/pegawai/{{ $pegawai->id }}" method="GET">
-                            <div class="input-group"> 
-                                <input type="text" class="form-control small" placeholder="Search for.." name="search" value="{{ request('search') }}">
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary" type="submit">
-                                        <i class="fas fa-search fa-sm"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
-        </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered" width="100%" cellspacing="0">
+        <div class="table-responsive">
+            <table id="myTable" class="small">
                     <thead>
                         <tr class="bg-primary my-font-white">
                             <th>No</th>
@@ -393,9 +375,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($data_berkas as $item)
+                        @foreach($data_jenisBerkas as $item)
                         <tr>
-                            <td>{{ $data_berkas->firstItem() + $loop->index }}</td>
+                            <td>{{ $data_jenisBerkas->firstItem() + $loop->index }}</td>
                             <td>{{ $item->jenis_berkas }}</td>
                             <td>{{ $item->keterangan }}</td>
                             <td style="text-align: center">
@@ -414,7 +396,7 @@
             <div class="row">
                 <div class="col">
                     <div class="d-flex justify-content-end">
-                        {{ $data_berkas->links() }}
+                        {{ $data_jenisBerkas->links() }}
                     </div>
                 </div>
             </div>
@@ -422,4 +404,10 @@
     </div>
     </div>
 </div>
+
+@include('pegawai/modal/create-pendidikan')
+@include('pegawai/modal/create-jabatan')
+@include('pegawai/modal/edit-pendidikan')
+@include('pegawai/modal/edit-jabatan')
+@include('pegawai/modal/create-pemberkasan')
 @endsection

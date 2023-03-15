@@ -27,11 +27,17 @@ class LoginController extends Controller
                 $request->session()->regenerate();
                 return redirect()->intended('/')->with('success', 'Halo selamat datang');
             }
-        }elseif($cariData == true){
+        }elseif($cariData == true ){
             Session::put('pegawai_id', $cariData[0]->id);
             Session::put('nama', $cariData[0]->nama);
             Session::put('foto', $cariData[0]->foto);
             if(Auth::attempt($credentials)){
+                if(Auth::user()->role == 'guest'){
+                    Auth::logout();
+                    $request->session()->invalidate();
+                    $request->session()->regenerateToken();
+                    return back()->with('failed', 'Akun belum diaktivasi.');
+                }
                 $request->session()->regenerate();
                 return redirect()->intended('/')->with('success', 'Halo selamat datang');
             }
@@ -42,11 +48,8 @@ class LoginController extends Controller
 
     public function logout(Request $request){
         Auth::logout();
- 
         $request->session()->invalidate();
-     
         $request->session()->regenerateToken();
-     
         return redirect('/login');
     }
 }

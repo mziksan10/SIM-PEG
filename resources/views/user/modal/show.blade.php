@@ -21,6 +21,11 @@
                 <td>{{ $item->email }}</td>
             </tr>
             <tr>
+                <th>Role</th>
+                <td> : </td>
+                <td>{{ $item->role }}</td>
+            </tr>
+            <tr>
                 <th>Tanggal dibuat</th>
                 <td> : </td>
                 <td>{{ $item->created_at }}</td>
@@ -31,6 +36,17 @@
                 <td>{{ $item->updated_at }}</td>
             </tr>
             </table>
+            @if($item->username != 'admin')
+            <div class="row">
+            <div class="col">
+            <form action="/user/{{ $item->id }}" method="post" class="d-inline">
+                @method('delete')
+                @csrf
+                <button class="btn btn-sm btn-danger" onclick="return confirm('Apakah kamu yakin?')" style="width:100%"><i class="fas fa-trash fa-sm"></i> Delete</button>
+            </form>
+            </div>
+            </div>
+            @endif
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

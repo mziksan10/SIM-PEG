@@ -9,46 +9,34 @@
 <div class="row">
     <div class="col">
         <!-- DataTales Example -->
-        <div class="card shadow mb-4">
-        <div class="card-header">
-                <center>
-                FORMULIR UBAH DATA PEGAWAI <br>
-                POLITEKNIK PIKSI GANESHA
-                </center>
-            </div>
+        <div class="card shadow-sm mb-4">
             <div class="card-body">
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <small>
-                    <b>Perhatian</b>
-                    <ul>
-                        <li>Untuk menambahkan data pegawai lama gunakan fitur import pegawai.</li>
-                        <li>NIP sudah di generate secara otomatis oleh sistem.</li>
-                        <li>Ukuran foto tidak boleh lebih dari 1 MB.</li>
-                        <li>Penulisan nama gelar harus benar.</li>
-                    </ul>
-                </small>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-                <div class="col-lg-8">
-                    <form action="/pegawai/{{ $pegawai->id }}" method="POST" enctype="multipart/form-data">
+            <div class="card mb-3">
+                    <div class="card-header py-3">
+                        <div class="row">
+                            <div class="col-8 d-flex justify-content-start">
+                                <h6 class="font-weight-bold text-primary mt-auto"><i class="fas fa-user"></i> Detail Pribadi</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                    <form action="{{ route('updatePegawai', $pegawai->id) }}" method="POST" enctype="multipart/form-data">
                         @method('put')
                         @csrf
                         <div class="form-row">
-                            @if($pegawai->foto)
-                            <img src="{{ asset('storage/' . $pegawai->foto) }}" class="img-preview img-fluid mb-2" style="max-height: 227px; max-width: 151px; overflow: hidden;">
-                            @elseif(!$pegawai->foto)
-                            <img src="{{ asset('assets/img') }}/user_default.png" class="img-preview img-thumbnail rounded-circle mb-2" style="max-height: 227px; max-width: 151px; overflow: hidden;">
-                            @else
-                            <img class="img-preview img-fluid mb-2" style="max-height: 227px; max-width: 151px; overflow: hidden;">
-                            @endif
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-4">
-                                <label>PAS Foto</label>
-                                <input type="hidden" name="foto_lama" value="{{$pegawai->foto}}">
-                                <input type="file" class="form-control @error('foto') is-invalid @enderror" name="foto" id="foto" autofocus onchange="previewImage()">
+                            <div class="col-md-2">
+                                <div class="img-thumbnail modal-dialog-centered justify-content-center bg-light mb-3">
+                                <div style="max-height: 500px; max-width: 250px; overflow: hidden;">
+                                @if($pegawai->foto)
+                                <img src="{{ asset('storage/' . $pegawai->foto) }}" class="img-preview mb-2" style="height: 300px; width: 250px; overflow: hidden;">
+                                @elseif(!$pegawai->foto)
+                                <img src="{{ asset('assets/img') }}/user_default.png" class="img-preview mb-2" style="height: 300px; width: 250px; overflow: hidden;">
+                                @else
+                                <img class="img-preview mb-2" style="height: 300px; width: 250px; overflow: hidden;">
+                                @endif    
+                                <input type="file" class="form-control @error('foto') is-invalid @enderror" name="foto" id="foto" onchange="previewImage()">
+                                </div>
+                                </div>
                                 @error('foto')
                                 <div class="invalid-feedback ml-3">{{ $message }}</div>
                                 @enderror
@@ -80,7 +68,7 @@
                         </div>
                         </div>
                         <div class="form-row">
-                        <div class="form-group col-md-7">
+                        <div class="form-group col-md-4">
                                 <label>Tempat Lahir</label>
                                 <select name="tempat_lahir" class="form-control @error('tempat_lahir') is-invalid @enderror">
                                     <option value="" selected>Pilih..</option>
@@ -106,8 +94,23 @@
                             <div class="form-group col-md-2">
                                 <label>Jenis Kelamin</label>
                                 <select name="jenis_kelamin" class="form-control @error('jenis_kelamin') is-invalid @enderror">
-                                    @foreach($jenis_kelamin as $item)
+                                    @foreach($jenisKelamin as $item)
                                     @if(old('jenis_kelamin', $pegawai->jenis_kelamin) == $item)
+                                    <option value="{{ $item }}" selected>{{ $item }}</option>
+                                    @else
+                                    <option value="{{ $item }}">{{ $item }}</option>
+                                    @endif
+                                    @endforeach
+                                </select>
+                                @error('pendidikan')
+                                <div class="invalid-feedback ml-3">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label>Status Pernikahan</label>
+                                <select name="status_pernikahan" class="form-control @error('status_pernikahan') is-invalid @enderror">
+                                    @foreach($statusPernikahan as $item)
+                                    @if(old('status_pernikahan', $pegawai->status_pernikahan) == $item)
                                     <option value="{{ $item }}" selected>{{ $item }}</option>
                                     @else
                                     <option value="{{ $item }}">{{ $item }}</option>
@@ -198,7 +201,7 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-3">
+                            <div class="form-group col-md-3">
                                 <label>Tanggal Masuk</label>
                                 <input type="date" class="form-control @error('tanggal_masuk') is-invalid @enderror" name="tanggal_masuk" value="{{ old('tanggal_masuk', $pegawai->tanggal_masuk) }}">
                                 @error('tanggal_masuk')
@@ -206,14 +209,14 @@
                                 @enderror
                             </div>
                             @if($pegawai->status == 2)
-                            <div class="form-group col-3">
+                            <div class="form-group col-md-3">
                                 <label>Status</label>
                                 <select name="status" class="form-control @error('status') is-invalid @enderror">
                                     @foreach($status as $item)
                                     @if(old('status', $pegawai->status) == $item)
-                                    <option value="{{ $item }}" selected>@if($item == 1) Tetap @elseif($item == 2) Kontrak @endif</option>
+                                    <option value="{{ $item }}" selected>@if($item == 1) Tetap @elseif($item == 2) Kontrak @elseif($item == 0) Non Aktif @endif</option>
                                     @else
-                                    <option value="{{ $item }}">@if($item == 1) Tetap @elseif($item == 2) Kontrak @endif</option>
+                                    <option value="{{ $item }}">@if($item == 1) Tetap @elseif($item == 2) Kontrak @elseif($item == 0) Non Aktif @endif</option>
                                     @endif
                                     @endforeach
                                 </select>
@@ -221,12 +224,14 @@
                                 <div class="invalid-feedback ml-3">{{ $message }}</div>
                                 @enderror
                             </div>
+                            @else
+                            <input type="hidden" name="status" value="{{$pegawai->status}}">
                             @endif
                         </div>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                      </form>
-                </div>
             </div>
+        </div>
+                    <button type="submit" class="btn btn-primary float-right col-md-3"><i class="fas fa-save fa-sm"></i> Save</button>
+                </form>
         </div>
         </div>
 </div>

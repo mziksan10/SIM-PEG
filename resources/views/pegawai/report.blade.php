@@ -56,10 +56,10 @@
             <td>Rp. {{ number_format($item->riwayatJabatan->golongan->gaji_pokok, 2,',','.') }}</td>
             @endif
             <td>{{ $item->tanggal_masuk }}</td>
-            @if( $item->status == 'Aktif')
-            <td>Aktif</td>
-            @elseif($item->status == 'Non Aktif')
-            <td>Non Aktif</td>
+            @if( $item->status == 1)
+            <td>Tetap</td>
+            @elseif($item->status == 2)
+            <td>Kontrak</td>
             @endif
         </tr>
         @endforeach

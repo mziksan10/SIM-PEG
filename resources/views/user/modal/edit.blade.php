@@ -21,15 +21,16 @@
             <div class="invalid-feedback ml-3">{{ $message }}</div>
             @enderror
         </div>
+        @if($item->role == 'admin')
+        @else
         <div class="form-group">
         <label>Role</label>
         <select name="role" class="form-control @error('role') is-invalid @enderror">
-            <option value="">Pilih..</option>
-            @foreach($role as $r)
-            @if(old('role', $item->role ) == $r)
-            <option value="{{ $r }}" selected>{{ $r }}</option>
+            @foreach($roles as $role)
+            @if(old('role', $item->role ) == $role)
+            <option value="{{ $role }}" selected>{{ $role }}</option>
             @else
-            <option value="{{ $r }}">{{ $r }}</option>
+            <option value="{{ $role }}">{{ $role }}</option>
             @endif
             @endforeach
         </select>
@@ -37,8 +38,9 @@
         <div class="invalid-feedback ml-3">{{ $message }}</div>
         @enderror
         </div>
+        @endif
         <div class="form-group">
-            <label>Password</label>
+            <label>Password Baru    </label>
             <input type="password" class="form-control form-control-user @error('password') is-invalid @enderror" name="password">
             @error('password')
             <div class="invalid-feedback ml-3">{{ $message }}</div>

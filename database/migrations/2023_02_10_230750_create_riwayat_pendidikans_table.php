@@ -20,6 +20,7 @@ class CreateRiwayatPendidikansTable extends Migration
             $table->string('jurusan');
             $table->string('institusi');
             $table->string('tahun_lulus');
+            $table->string('scan_ijazah');
             $table->timestamps();
         });
     }

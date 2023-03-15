@@ -3,8 +3,6 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
-use Auth;
 
 class CheckRole
 {
@@ -15,17 +13,12 @@ class CheckRole
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle($request, Closure $next, ...$role)
+    public function handle($request, Closure $next, ...$roles)
     {
-        if(in_array($request->user()->role,$role)){
+        if(in_array($request->user()->role,$roles)) {
             return $next($request);
-        }elseif($request->user()->role == "admin"){
-            return $next($request);
-        }elseif($request->user()->role == "guest"){
-            auth()->logout();
-            return redirect('/');
         }
-        return redirect('/');
 
+        return redirect('/login');
     }
 }

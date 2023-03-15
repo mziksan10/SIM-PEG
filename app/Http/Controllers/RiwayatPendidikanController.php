@@ -18,7 +18,7 @@ class RiwayatPendidikanController extends Controller
         return view('riwayat-pendidikan/index', [
             'title' => 'Riwayat Pendidikan',
             'data_riwayatPendidikan' => RiwayatPendidikan::get(),
-            'pendidikan' => RiwayatPendidikan::data_pendidikan(),
+            'jenjang' => RiwayatPendidikan::jenjang(),
         ]);
     }
 
@@ -42,15 +42,19 @@ class RiwayatPendidikanController extends Controller
     {
         $pegawaiId = Pegawai::select('id')->where('nip', $request->nip)->get();
         $validatedData = $request->validate([
-            'nip' => 'required',
             'jenjang' => 'required',
             'jurusan' => 'nullable',
             'institusi' => 'required',
             'tahun_lulus' => 'required',
+            'scan_ijazah' => 'required|mimes:pdf|max:1024',
         ]);
+        if(request()->file('scan_ijazah')){ 
+            $validatedData['scan_ijazah'] = request()->file('scan_ijazah')->store('berkas-pegawai');  
+        }
+        
         $validatedData['pegawai_id'] = $pegawaiId[0]->id;
         RiwayatPendidikan::create($validatedData);
-        return redirect('/riwayat-pendidikan')->with('success', 'Data riwayat pendidikan berhasil diinput!');
+        return back()->with('success', 'Data riwayat pendidikan berhasil diinput!');
     }
 
     /**

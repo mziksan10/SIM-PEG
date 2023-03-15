@@ -16,12 +16,19 @@ class PresensiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function rekapPresensi()
     {
-        return view('presensi/index',[
-                'title' => 'Presensi',
+        return view('presensi/rekap',[
+                'title' => 'Rekap Presensi',
                 'data_presensi' => Presensi::latest()->get(),
-                'aturan_presensi' => AturanPresensi::get(),
+        ]);
+    }
+
+    public function aturanPresensi()
+    {
+        return view('presensi/aturan',[
+                'title' => 'Aturan Presensi',
+                'data_aturanPresensi' => AturanPresensi::get(),
         ]);
     }
 

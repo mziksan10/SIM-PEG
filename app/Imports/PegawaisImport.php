@@ -16,25 +16,29 @@ class PegawaisImport implements ToModel, WithHeadingRow
     */
     public function model(array $row)
     {
+        if($row['status'] == 'TETAP'){
+            $row['status'] = 1;
+        }elseif($row['status'] == 'KONTRAK'){
+            $row['status'] = 2;
+        }elseif($row['status'] == 'MAGANG'){
+            $row['status'] = 3;
+        }
         return new Pegawai([
             'nip' => str_replace("'", "", $row['nip']),
-            'nik' => $row['nik'],
+            'nik' => str_replace("'", "", $row['nik']),
             'nama' => $row['nama'],
             'tempat_lahir' => $row['tempat_lahir'],
             'tanggal_lahir' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['tanggal_lahir']),
             'jenis_kelamin' => $row['jenis_kelamin'],
+            'status_pernikahan' => $row['status_pernikahan'],
             'alamat' => $row['alamat'],
             'desa' => $row['desa'],
             'kecamatan' => $row['kecamatan'],
             'kab_kota' => $row['kab_kota'],
             'provinsi' => $row['provinsi'],
             'kode_pos' => $row['kode_pos'],
-            'no_hp' => $row['no_hp'],
+            'no_hp' => str_replace("'", "", $row['no_hp']),
             'email' => $row['email'],
-            'pendidikan' => $row['pendidikan'],
-            'jurusan' => $row['jurusan'],
-            'bank' => $row['bank'],
-            'no_rekening' => $row['no_rekening'],
             'tanggal_masuk' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['tanggal_masuk']),
             'status' => $row['status'],
         ]);
