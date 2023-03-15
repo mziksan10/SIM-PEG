@@ -20,7 +20,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                    <form action="{{ route('updatePegawai', $pegawai->id) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('updateProfil', $pegawai->id) }}" method="POST" enctype="multipart/form-data">
                         @method('put')
                         @csrf
                         <div class="form-row">
@@ -199,34 +199,6 @@
                                 <div class="invalid-feedback ml-3">{{ $message }}</div>
                                 @enderror
                             </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-3">
-                                <label>Tanggal Masuk</label>
-                                <input type="date" class="form-control @error('tanggal_masuk') is-invalid @enderror" name="tanggal_masuk" value="{{ old('tanggal_masuk', $pegawai->tanggal_masuk) }}">
-                                @error('tanggal_masuk')
-                                <div class="invalid-feedback ml-3">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            @if($pegawai->status == 2)
-                            <div class="form-group col-md-3">
-                                <label>Status</label>
-                                <select name="status" class="form-control @error('status') is-invalid @enderror">
-                                    @foreach($status as $item)
-                                    @if(old('status', $pegawai->status) == $item)
-                                    <option value="{{ $item }}" selected>@if($item == 1) Tetap @elseif($item == 2) Kontrak @elseif($item == 0) Non Aktif @endif</option>
-                                    @else
-                                    <option value="{{ $item }}">@if($item == 1) Tetap @elseif($item == 2) Kontrak @elseif($item == 0) Non Aktif @endif</option>
-                                    @endif
-                                    @endforeach
-                                </select>
-                                @error('status')
-                                <div class="invalid-feedback ml-3">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            @else
-                            <input type="hidden" name="status" value="{{$pegawai->status}}">
-                            @endif
                         </div>
             </div>
         </div>

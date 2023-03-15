@@ -37,12 +37,6 @@ class Pegawai extends Model
     public static function jenisKelamin(){
         return self::$jenisKelamin;
     }
-    
-    // Static jenis berkas
-    private static $jenisBerkas = ['Asli', 'Fotokopi '];
-    public static function jenisBerkas(){
-        return self::$jenisBerkas;
-    }
 
     // Filter
     public function scopeFilter($query, array $filters){

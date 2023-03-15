@@ -8,7 +8,7 @@
 <!-- Content Row -->
 <div class="row">
     <div class="col">
-        <div class="card shadow text-center mb-4">
+        <div class="card shadow-sm text-center mb-4">
         <div class="card-header">
             <small class="text-muted"><i>Hallo {{ ucwords(session()->get('nama')) }}!</i></small>
         </div>
@@ -17,12 +17,12 @@
             <h1 id="jam" class="card-title"></h1>
             <p class="card-text">{{ date('l, d F Y') }}</p>
             @if($presensi == null)
-            <form action="/presensi-pegawai" method="POST">
+            <form action="{{ route('absenMasuk') }}" method="POST">
             @csrf
             <button class="btn btn-primary mb-4" type="submit">Absen Masuk</button>
             </form>
             @elseif($presensi->keterangan == null)
-            <form action="/presensi-pegawai" method="POST">
+            <form action="{{ route('absenPulang') }}" method="POST">
             @method('put')
             @csrf
             <button class="btn btn-danger mb-4" type="submit">Absen Pulang</button>
@@ -65,5 +65,50 @@
         </div>
     </div>
 </div>
+
+<div class="card shadow-sm mb-2">
+            <div class="card-header py-3">
+                <div class="row">
+                    <div class="col-8 d-flex justify-content-start">
+                        <h6 class="font-weight-bold text-primary mt-auto"><i class="fas fa-history"></i> Riwayat Kehadiran Bulan Ini</h6>
+                    </div>
+                    <div class="col-4">
+                        <div class="float-right">
+                        <h6 class="small mt-auto">Total Hadir: <b>{{ $jumlah_kehadiranBulanIni }}</b> Hari.</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+            <div class="table-responsive">
+            <table id="myTable" class="table table-border table-hover">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Tanggal</th>
+                        <th>Jam Masuk</th>
+                        <th>Jam Keluar</th>
+                        <th>Sesi</th>
+                        <th>Status</th>
+                        <th>Keterangan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach($data_kehadiranBulanIni as $item)
+                    <tr>
+                        <td></td>
+                        <td>{{ $item->tanggal }}</td>
+                        <td>{{ $item->jam_masuk }}</td>
+                        <td>{{ $item->jam_keluar }}</td>
+                        <td>{{ $item->sesi }}</td>
+                        <td>{{ $item->status }}</td>
+                        <td>{{ $item->keterangan }}</td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+            </div>
+            </div>
+        </div>
 
 @endsection

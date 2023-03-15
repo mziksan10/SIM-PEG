@@ -21,17 +21,17 @@
 
     @if(auth()->user()->role == 'user')
     <li class="nav-item {{ request()->is('profil*') ? 'active' : '' }}">
-        <a class="nav-link" href="/profil">
+        <a class="nav-link" href="{{ route('profil') }}">
             <i class="fas fa-user"></i>
             <span>Profil</span></a>
     </li>
     <li class="nav-item {{ request()->is('pemberkasan-pegawai*') ? 'active' : '' }}">
-        <a class="nav-link" href="/pemberkasan-pegawai">
+        <a class="nav-link" href="{{ route('pemberkasan') }}">
             <i class="fas fa-folder-open"></i>
             <span>Pemberkasan</span></a>
     </li>
     <li class="nav-item {{ request()->is('presensi-pegawai*') ? 'active' : '' }}">
-        <a class="nav-link" href="/presensi-pegawai">
+        <a class="nav-link" href="{{ route('presensi') }}">
         <i class="fas fa-user-clock"></i>
             <span>Presensi</span></a>
     </li>
@@ -78,8 +78,8 @@
         <div id="presensi" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Sub menu:</h6>
-                <a class="collapse-item" href="#"><i class="fas fa-chevron-circle-right mr-1"></i>Atur Presensi</a>
-                <a class="collapse-item" href="/rekap-presensi"><i class="fas fa-chevron-circle-right mr-1"></i>Rekap Presensi</a>
+                <a class="collapse-item" href="{{ route('aturanPresensi') }}"><i class="fas fa-chevron-circle-right mr-1"></i>Aturan Presensi</a>
+                <a class="collapse-item" href="{{ route('rekapPresensi') }}"><i class="fas fa-chevron-circle-right mr-1"></i>Rekap Presensi</a>
             </div>
         </div>
     </li>
@@ -97,7 +97,6 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Sub menu:</h6>
                 <a class="collapse-item" href="/user"><i class="fas fa-chevron-circle-right mr-1"></i>User & Role</a>
-                <a class="collapse-item" href="#"><i class="fas fa-chevron-circle-right mr-1"></i>Password reset</a>
             </div>
         </div>
     </li>

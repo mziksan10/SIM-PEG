@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use DateTime;
+
 class PegawaiController extends Controller
 {
     /**
@@ -270,14 +271,14 @@ class PegawaiController extends Controller
         }
         return view('/pegawai/show', [
             'pegawai' => $pegawai,           
-            'title' => 'Detail Pegawai',
+            'title' => 'Details Pegawai',
             'data_bidang' => Bidang::all(),
             'data_jabatan' => Jabatan::all(),
             'data_golongan' => Golongan::all(),
             'data_jenisBerkas' => Pegawai::find($pegawai->id)->berkas()->filter(request(['search']))->paginate('5'),
             'data_riwayatJabatan' => Pegawai::find($pegawai->id)->riwayatJabatan_()->get(),
             'data_riwayatPendidikan' => Pegawai::find($pegawai->id)->riwayatPendidikan_()->get(),
-            'jenisBerkas' => Pegawai::jenisBerkas(),
+            'jenisBerkas' => Berkas::jenisBerkas(),
             'lamaBekerja' => [$thn, $bln, $tgl],
             'jenjang' => RiwayatPendidikan::jenjang(),
             'pegawaiBerulangTahun' => $pegawaiBerulangTahun,
@@ -450,6 +451,16 @@ class PegawaiController extends Controller
         Pegawai::destroy($pegawai->id);
         return redirect('/pegawai')->with('success', 'Data pegawai berhasil dihapus!');
     }
+    public function destroyBerkas($id)
+    {
+        $getBerkas = Berkas::select('*')->where('id', $id)->get();
+        foreach($getBerkas as $berkas)
+        if($berkas->file){
+            Storage::delete($berkas->file);
+        }
+        Berkas::destroy($berkas->id);
+        return redirect()->back()->with('success', 'Data berkas berhasil dihapus!');
+    }
 
     public function export() 
     {
@@ -473,47 +484,6 @@ class PegawaiController extends Controller
                                 'data_golongan' => Golongan::all(),
                             ])->setPaper('A4', 'potrait');
     	return $pdf->download('laporan-data-pegawai.pdf');
-    }
-
-    public function show_()
-    {
-        $pegawai = Pegawai::find(session()->get('pegawai_id'));
-        $tanggal_masuk = new DateTime("$pegawai->tanggal_masuk");
-        $sekarang = new DateTime("today");
-        if ($tanggal_masuk > $sekarang) { 
-        $thn = "0";
-        $bln = "0";
-        $tgl = "0";
-        }
-        $thn = $sekarang->diff($tanggal_masuk)->y;
-        $bln = $sekarang->diff($tanggal_masuk)->m;
-        $tgl = $sekarang->diff($tanggal_masuk)->d;
-
-        $pegawaiBerulangTahun = [];
-        $pegawaiNaikGolongan = [];
-        if(date('d F', strtotime($pegawai->tanggal_lahir)) == date('d F', strtotime(now()))){
-            $pegawaiBerulangTahun[] = true;
-        }
-        if($pegawai->riwayatJabatan != null){
-            if($thn > $pegawai->riwayatJabatan->golongan->min_masa_kerja && $thn != $pegawai->riwayatJabatan->golongan->max_masa_kerja){
-                $pegawaiNaikGolongan[] = $pegawai;
-            }
-        }
-        return view('pegawai/pegawai/index',[
-            'title'  => 'Profil',
-            'pegawai' => $pegawai,           
-            'data_bidang' => Bidang::all(),
-            'data_jabatan' => Jabatan::all(),
-            'data_golongan' => Golongan::all(),
-            'data_jenisBerkas' => Pegawai::find($pegawai->id)->berkas()->filter(request(['search']))->paginate('5'),
-            'data_riwayatJabatan' => Pegawai::find($pegawai->id)->riwayatJabatan_()->get(),
-            'data_riwayatPendidikan' => Pegawai::find($pegawai->id)->riwayatPendidikan_()->get(),
-            'jenisBerkas' => Pegawai::jenisBerkas(),
-            'lamaBekerja' => [$thn, $bln, $tgl],
-            'jenjang' => RiwayatPendidikan::jenjang(),
-            'pegawaiBerulangTahun' => $pegawaiBerulangTahun,
-            'pegawaiNaikGolongan' => $pegawaiNaikGolongan,
-        ]);
     }
 
     public function cariKota(Request $request){
@@ -541,7 +511,7 @@ class PegawaiController extends Controller
         $getJenjang = RiwayatPendidikan::select('*')->where('pegawai_id', $getPegawai->id)->latest()->first();
         if($getPegawai->status == 1){
             $status = "Tetap";
-        }elseif($getPegawai->status == 2){
+        }elseif($getPegawai->status == 2 || $getPegawai->status == 3){
             $status = "Kontrak";
         }
         $golongan_id = Golongan::where('jenjang', $getJenjang->jenjang)->where('status', $status)->where('min_masa_kerja', '>=',  $request->get('lama_bekerja'))->get();

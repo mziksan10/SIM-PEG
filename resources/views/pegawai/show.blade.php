@@ -31,8 +31,20 @@
                     </div>
                     <div class="col-xl-11 col-md-10 modal-dialog-centered">
                     <marquee>
+                    <?php
+                        $tanggal_masuk = new DateTime("$pegawai->tanggal_masuk");
+                        $sekarang = new DateTime("today");
+                        if ($tanggal_masuk > $sekarang) { 
+                        $thn = "0";
+                        $bln = "0";
+                        $tgl = "0";
+                        }
+                        $thn = $sekarang->diff($tanggal_masuk)->y;
+                        $bln = $sekarang->diff($tanggal_masuk)->m;
+                        $tgl = $sekarang->diff($tanggal_masuk)->d;
+                    ?> 
                         @if($pegawaiBerulangTahun == false && $pegawaiNaikGolongan == false)
-                        <small>Tidak ada informasi penting.</small>
+                        <small><b>Tanggal Masuk</b> : {{ $pegawai->tanggal_masuk }} | <b>Lama Bekerja</b> : {{ $thn." Tahun " . $bln." Bulan ".$tgl." Hari" }}.</small>
                         @else
                             @if(date('d F', strtotime($pegawai->tanggal_lahir)) == date('d F', strtotime(now())) )
                             <small class="ml-3"><i class="fas fa-gift"></i> Hari ini <b>{{ $pegawai->nama }}</b> Berulang Tahun yang ke- {{ date('Y', strtotime(now())) - date('Y', strtotime($pegawai->tanggal_lahir)) }} Tahun.</small>
@@ -365,9 +377,9 @@
             </div>
         <div class="card-body">
         <div class="table-responsive">
-            <table id="myTable" class="small">
+            <table id="myTable" class="table table-border table-hover">
                     <thead>
-                        <tr class="bg-primary my-font-white">
+                        <tr class="bg-light">
                             <th>No</th>
                             <th>Jenis Berkas</th>
                             <th>Keterangan</th>
@@ -382,7 +394,7 @@
                             <td>{{ $item->keterangan }}</td>
                             <td style="text-align: center">
                                 <a href="{{asset('storage/' . $item->file)}}" class="btn-circle btn-sm btn-primary" target="_blank"><i class="fas fa-eye fa-sm"></i></a>
-                                <form action="/berkas/{{ $item->id }}" method="post" class="d-inline">
+                                <form action="{{ route('destroyBerkas', $item->id) }}" method="post" class="d-inline">
                                     @method('delete')
                                     @csrf
                                     <button class="btn-circle btn-sm btn-danger border-0" onclick="return confirm('Apakah kamu yakin?')"><i class="fas fa-trash fa-sm"></i></button>

@@ -38,31 +38,34 @@
         </center>
         </div>
         <div class="card-body">
-        <div class="table-responsive">
-            <table id="myTable">
-                    <thead>
-                        <tr class="bg-primary my-font-white">
-                            <th style="text-align: center">No</th>
-                            <th style="text-align: center">Kode Bidang</th>
-                            <th style="text-align: center">Nama Bidang</th>
-                            <th style="text-align: center">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($data_bidang as $item)
-                        <tr>
-                            <td style="text-align: center">{{ $loop->iteration }}</td>
-                            <td style="text-align: center">{{ $item->kode_bidang }}</td>
-                            <td style="text-align: center">{{ $item->nama_bidang }}</td>
-                            <td style="text-align: center">
-                            <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#showModal{{ $item->id }}"><i class="fas fa-eye fa-sm"></i> Detail</button>
-                            <button class="btn btn-sm btn-warning"data-toggle="modal" data-target="#editModal{{ $item->id }}"><i class="fas fa-edit fa-sm"></i> Edit</a>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+        <div class="col">
+            <div class="table-responsive">
+            <table id="myTable" class="table table-border table-hover">
+                        <thead>
+                            <tr class="bg-light">
+                                <th style="text-align: center">No</th>
+                                <th style="text-align: center">Kode Bidang</th>
+                                <th style="text-align: center">Nama Bidang</th>
+                                <th style="text-align: center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($data_bidang as $item)
+                            <tr>
+                                <td style="text-align: center">{{ $loop->iteration }}</td>
+                                <td style="text-align: center">{{ $item->kode_bidang }}</td>
+                                <td style="text-align: center">{{ $item->nama_bidang }}</td>
+                                <td style="text-align: center">
+                                <button class="btn btn-sm" data-toggle="modal" data-target="#showModal{{ $item->id }}"><i class="fas fa-eye fa-sm text-primary"></i> Show</button>
+                                |
+                                <button class="btn btn-sm"data-toggle="modal" data-target="#editModal{{ $item->id }}"><i class="fas fa-edit fa-sm text-warning"></i> Edit</button>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+        </div>
         </div>
     </div>
     </div>

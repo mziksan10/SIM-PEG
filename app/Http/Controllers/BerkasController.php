@@ -22,7 +22,7 @@ class BerkasController extends Controller
         return view ('pemberkasan/index',[
             'title' => 'Riwayat Pemberkasan',
             'data_berkas' => Berkas::latest()->get(),
-            'jenis_berkas' => Berkas::data_jenis_berkas(),
+            'jenisBerkas' => Berkas::jenisBerkas(),
         ]);
     }
 
@@ -126,8 +126,8 @@ class BerkasController extends Controller
     {
         return view ('pemberkasan/pegawai/index',[
             'title' => 'Pemberkasan',
-            'data_berkas' => Pegawai::find(session()->get('pegawai_id'))->berkas()->filter(request(['search']))->paginate('5'),
-            'jenis_berkas' => Berkas::data_jenis_berkas(),
+            'data_berkas' => Berkas::where('pegawai_id', session()->get('pegawai_id'))->get(),
+            'jenisBerkas' => Berkas::jenisBerkas(),
         ]);
     }
 

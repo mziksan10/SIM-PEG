@@ -31,15 +31,25 @@
                     </div>
                     <div class="col-xl-11 col-md-10 modal-dialog-centered">
                     <marquee>
-                        @if($pegawaiBerulangTahun == false && $pegawaiNaikGolongan == false)
-                        <small>Tidak ada informasi penting.</small>
+                    <?php
+                        $tanggal_masuk = new DateTime("$pegawai->tanggal_masuk");
+                        $sekarang = new DateTime("today");
+                        if ($tanggal_masuk > $sekarang) { 
+                        $thn = "0";
+                        $bln = "0";
+                        $tgl = "0";
+                        }
+                        $thn = $sekarang->diff($tanggal_masuk)->y;
+                        $bln = $sekarang->diff($tanggal_masuk)->m;
+                        $tgl = $sekarang->diff($tanggal_masuk)->d;
+                    ?>   
+                        @if($pegawaiBerulangTahun == false)
+                        <small><b>Tanggal Masuk</b> : {{ $pegawai->tanggal_masuk }} | <b>Lama Bekerja</b> : {{ $thn." Tahun " . $bln." Bulan ".$tgl." Hari" }}</small>
                         @else
                             @if(date('d F', strtotime($pegawai->tanggal_lahir)) == date('d F', strtotime(now())) )
                             <small class="ml-3"><i class="fas fa-gift"></i> Hari ini anda Berulang Tahun yang ke- {{ date('Y', strtotime(now())) - date('Y', strtotime($pegawai->tanggal_lahir)) }} Tahun.</small>
                             @endif
-                            @if($lamaBekerja[0] > $pegawai->riwayatJabatan->golongan->min_masa_kerja && $lamaBekerja[0] != $pegawai->riwayatJabatan->golongan->max_masa_kerja)
-                            <small class="ml-3">Tahun ini anda harus naik golongan.
-                            @endif
+                        <small><b>Tanggal Masuk</b> : {{ $pegawai->tanggal_masuk }} | <b>Lama Bekerja</b> : {{ $thn." Tahun " . $bln." Bulan ".$tgl." Hari" }}</small>
                         @endif
                     </marquee>
                     </div>
@@ -56,7 +66,7 @@
                     </div>
                     <div class="col-4">
                         <div class="float-right">
-                            <a href="{{ route('editPegawai', $pegawai->id) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit fa-sm"></i> Edit</a>
+                            <a href="{{ route('editProfil', $pegawai->id) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit fa-sm"></i> Edit</a>
                         </div>
                     </div>
                 </div>
@@ -101,7 +111,7 @@
                                 </tr>
                                 <tr>
                                     <th>No. Handphone</th>
-                                    <td>: {{ $pegawai->no_hp }} <a href="https://wa.me/62{{ $pegawai->no_hp }}" class="btn-circle btn-sm btn-success" target="_blank"><i class="fab fa-whatsapp"></i></a></td>
+                                    <td>: {{ $pegawai->no_hp }}</td>
                                 </tr>
                                 <tr>
                                     <th>Email</th>
@@ -126,7 +136,6 @@
                             </div>
                             <div class="col-4">
                                 <div class="float-right">
-                                <!-- <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editModalJabatan{{ $pegawai->riwayatJabatan->id }}"><i class="fas fa-edit fa-sm"></i> Edit</button> -->
                                 </div>
                             </div>
                         </div>
@@ -135,6 +144,10 @@
                             <div class="form-row">
                                 <div class="col">
                                     <table class="table small">
+                                        <tr>
+                                            <th>NIP</th>
+                                            <td>: {{ $pegawai->nip }}</td>
+                                        </tr>
                                         <tr>
                                             <th>Bidang</th>
                                             @if($pegawai->riwayatJabatan === null)
@@ -165,21 +178,13 @@
                                             </td>
                                             @endif
                                         </tr>
-                                        <!-- <tr>
-                                            <th>Gaji Pokok</th>
+                                        <tr>
+                                            <th>TMT Bekerja</th>
                                             @if($pegawai->riwayatJabatan === null)
                                             <td>: -</td>
                                             @elseif($pegawai->riwayatJabatan)
-                                            <td>: Rp. {{ number_format($pegawai->riwayatJabatan->golongan->gaji_pokok, 2,',','.') }},-</td>
-                                            @endif
-                                        </tr> -->
-                                        <tr>
-                                            <th>TMT Bekerja</th>
                                             <td>: {{ $pegawai->riwayatJabatan->tmt_bekerja }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Scan SK.</th>                                            
-                                            <td>: <a href="{{asset('storage/' . $pegawai->riwayatJabatan->scan_sk)}}" target="_blank" class="badge badge-sm badge-danger ml-1"><i class="fas fa-file-pdf"></i> Show</a></td>
+                                            @endif
                                         </tr>
                                     </table>
                                 </div>
@@ -196,7 +201,6 @@
                             </div>
                             <div class="col-4">
                                 <div class="float-right">
-                                <!-- <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editModalPendidikan{{ $pegawai->riwayatPendidikan->id }}"><i class="fas fa-edit fa-sm"></i> Edit</button> -->
                                 </div>
                             </div>
                         </div>
@@ -274,7 +278,6 @@
                         <th>Jurusan</th>
                         <th>Nama Institusi</th>
                         <th>Tahun Lulus</th>
-                        <th>Scan Ijazah</th>
                     </tr>
                     @foreach($data_riwayatPendidikan as $item)
                     <tr>
@@ -283,7 +286,6 @@
                         <td>{{ $item->jurusan }}</td>
                         <td>{{ $item->institusi }}</td>
                         <td>{{ $item->tahun_lulus }}</td>
-                        <td><a href="{{asset('storage/' . $item->scan_ijazah)}}" target="_blank" class="badge badge-sm badge-danger ml-1"><i class="fas fa-file-pdf"></i> Show</a></td>
                     </tr>
                     @endforeach
                 </table>
@@ -314,7 +316,6 @@
                         <th>Golongan</th>
                         <th>TMT Golongan</th>
                         <th>TMT Bekerja</th>
-                        <th>Scan SK.</th>
                     </tr>
               @foreach($data_riwayatJabatan as $item)
                     <tr>
@@ -324,7 +325,6 @@
                         <td>{{ $item->golongan->golongan . " - " . $item->golongan->status}}</td>
                         <td>{{ $item->tmt_golongan }}</td>
                         <td>{{ $item->tmt_bekerja }}</td>
-                        <td><a href="{{asset('storage/' . $item->scan_sk)}}" target="_blank" class="badge badge-sm badge-danger ml-1"><i class="fas fa-file-pdf"></i> Show</a></td>
                     </tr>
               @endforeach
                 </table>

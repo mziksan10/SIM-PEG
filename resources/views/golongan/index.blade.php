@@ -53,9 +53,9 @@
         <div class="tab-pane fade show <?php if ($tab == 'Tetap') { echo 'active';} ?>" id="<?php if ($tab == 'Tetap') { echo 'tetap';} else { echo 'kontrak';} ?>" role="tabpanel" aria-labelledby="<?php if ($tab == 'Tetap') { echo 'tetap-tab';} else { echo 'kontrak-tab';} ?>">
         <div class="card-body">
         <div class="table-responsive">
-            <table id="<?php if ($tab == 'Tetap') { echo 'tetapTable';} else { echo 'kontrakTable';} ?>">
+            <table id="<?php if ($tab == 'Tetap') { echo 'tetapTable';} else { echo 'kontrakTable';} ?>" class="table table-border table-hover">
                 <thead>
-                    <tr class="bg-primary my-font-white">
+                    <tr class="bg-light">
                         <th style="text-align: center">No</th>
                         <th style="text-align: center">Golongan</th>
                         <th style="text-align: center">Jenjang</th>
@@ -74,8 +74,9 @@
                             <td style="text-align: center">{{ $item->jenjang }}</td>
                             <td style="text-align: center">@if($item->max_masa_kerja !== null) {{ $item->min_masa_kerja . ' - ' . $item->max_masa_kerja }} @else {{ $item->min_masa_kerja }} @endif Tahun</td>
                             <td style="text-align: center">
-                            <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#showModal{{ $item->id }}"><i class="fas fa-eye fa-sm"></i> Detail</button>
-                            <button class="btn btn-sm btn-warning"data-toggle="modal" data-target="#editModal{{ $item->id }}"><i class="fas fa-edit fa-sm"></i> Edit</a>
+                            <button class="btn btn-sm" data-toggle="modal" data-target="#showModal{{ $item->id }}"><i class="fas fa-eye fa-sm text-primary"></i> Show</button>
+                            |
+                            <button class="btn btn-sm"data-toggle="modal" data-target="#editModal{{ $item->id }}"><i class="fas fa-edit fa-sm text-warning"></i> Edit</button>
                             </td>
                         </tr>
                     @endif

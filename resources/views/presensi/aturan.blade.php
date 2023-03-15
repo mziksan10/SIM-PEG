@@ -6,23 +6,7 @@
 <h1 class="h3 mb-0 text-gray-800">{{ $title }}</h1>
 </div>
 <div class="form-col">
-<form action="/export/presensi" method="GET">
-@csrf
-<div class="input-group">
-<a href="/rekap-presensi" class="btn btn-primary"><i class="fas fa-sync fa-sm"></i></a>
-<div class="input-group-prepend">
-    <span class="input-group-text ml-2">From</span>
-</div>
-<input type="date" class="form-control col-4" name="fromDate">
-<div class="input-group-prepend">
-    <span class="input-group-text">To</span>
-</div>
-<input type="date" class="form-control col-4" name="toDate">
-<div class="input-group-append">
-<button type="submit" class="btn btn-success"><i class="fas fa-file-excel fa-sm"></i> Export</button>
-</div>
-</div>
-</form> 
+<button type="button" class="btn btn btn-primary shadow ml-1" data-toggle="modal" data-target="#createModal"><i class="fas fa-plus fa-sm"></i> Add</button>
 </div>
 </div>
 
@@ -45,32 +29,55 @@
         </div>
         @endif
     <!-- DataTales Example -->
-    <div class="card shadow mb-4">
+    <div class="card shadow-sm mb-4">
         <div class="card-body">
-        <div class="table-responsive">
-            <table id="myTable">
-                    <thead>
-                        <tr class="bg-primary my-font-white">
-                            <th style="text-align: center">No</th>
-                            <th style="text-align: center">Sesi</th>
-                            <th style="text-align: center">Jam Masuk</th>
-                            <th style="text-align: center">Jam Keluar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($data_aturanPresensi as $item)
-                        <tr>
-                            <td>{{  $loop->iteration }}</td>
-                            <td>{{ $item->sesi }}</td>
-                            <td>{{ $item->jam_masuk }}</td>
-                            <td style="text-align: center">{{ $item->jam_masuk + (0 * 60*0 * 60 * 8) }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+        <div class="row">
+            @foreach($data_aturanPresensi as $item)
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xl font-weight-bold text-primary text-uppercase mb-1">{{ 'Sesi ' . $item->sesi }}</div>
+                                <div class="text-xl font-weight-bold text-gray-800 mb-1">{{ 'Jam Masuk: ' . $item->jam_masuk }}</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-business-time fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                                <center>
+                                    <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#showModalAturan{{ $item->id }}"><i class="fas fa-eye text-primary"></i> Show</small></button>
+                                    |
+                                    <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#editModalAturan{{ $item->id }}"><i class="fas fa-edit text-warning"></i> Edit</small></button>
+                                </center>
+                        </div>
+                </div>
             </div>
+            @endforeach
+        </div>
+        </div>
+    </div>
+    <div class="row">
+    <div class="col">
+        <div class="alert alert-warning alert-dismissible fade show shadow-sm" role="alert">
+            <small>
+                <b>Perhatian</b>
+                <ul>
+                    <li>Validasi berdasarkan jaringan <i>IP Public</i> milik kampus saat ini.</li>
+                    <li>Jika ada <i>trouble</i> segera hubungi <i>developer</i>.</li>
+                </ul>
+            </small>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
         </div>
     </div>
     </div>
+    </div>
 </div>
+@include('presensi/modal/edit-aturan')
+@include('presensi/modal/show-aturan')
 @endsection

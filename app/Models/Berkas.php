@@ -11,9 +11,9 @@ class Berkas extends Model
     protected $guarded = ['id'];
 
     // Static jenis berkas
-    private static $jenis_berkas = ['KTP', 'KK', 'Ijazah', 'Transkrip', 'Sertifikat', 'Lainnya'];
-    public static function data_jenis_berkas(){
-        return self::$jenis_berkas;
+    private static $jenisBerkas = ['Asli', 'Fotokopi '];
+    public static function jenisBerkas(){
+        return self::$jenisBerkas;
     }
 
     // Filter

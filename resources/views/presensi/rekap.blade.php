@@ -47,38 +47,40 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-body">
-        <div class="table-responsive">
-            <table id="myTable">
-                    <thead>
-                        <tr class="bg-primary my-font-white">
-                            <th style="text-align: center">No</th>
-                            <th style="text-align: center">NIP</th>
-                            <th style="text-align: center">Nama</th>
-                            <th style="text-align: center">Tanggal</th>
-                            <th style="text-align: center">Jam Masuk</th>
-                            <th style="text-align: center">Jam Keluar</th>
-                            <th style="text-align: center">Sesi</th>
-                            <th style="text-align: center">Status</th>
-                            <th style="text-align: center">Keterangan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($data_presensi as $item)
-                        <tr>
-                            <td>{{  $loop->iteration }}</td>
-                            <td>{{ $item->pegawai->nip }}</td>
-                            <td>{{ $item->pegawai->nama }}</td>
-                            <td style="text-align: center">{{ date('d/m/Y', strtotime($item->tanggal)) }}</td>
-                            <td style="text-align: center">{{ $item->jam_masuk }}</td>
-                            <td style="text-align: center">{{ $item->jam_keluar }}</td>
-                            <td style="text-align: center">{{ $item->sesi }}</td>
-                            <td style="text-align: center">{{ $item->status }}</td>
-                            <td style="text-align: center">{{ $item->keterangan }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+        <div class="col">
+            <div class="table-responsive">
+                <table id="myTable" class="table table-border table-hover">
+                        <thead>
+                            <tr class="bg-light">
+                                <th style="text-align: center">No</th>
+                                <th style="text-align: center">NIP</th>
+                                <th style="text-align: center">Nama</th>
+                                <th style="text-align: center">Tanggal</th>
+                                <th style="text-align: center">Jam Masuk</th>
+                                <th style="text-align: center">Jam Keluar</th>
+                                <th style="text-align: center">Sesi</th>
+                                <th style="text-align: center">Status</th>
+                                <th style="text-align: center">Keterangan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($data_presensi as $item)
+                            <tr>
+                                <td>{{  $loop->iteration }}</td>
+                                <td>{{ $item->pegawai->nip }}</td>
+                                <td>{{ $item->pegawai->nama }}</td>
+                                <td style="text-align: center">{{ date('d/m/Y', strtotime($item->tanggal)) }}</td>
+                                <td style="text-align: center">{{ $item->jam_masuk }}</td>
+                                <td style="text-align: center">{{ $item->jam_keluar }}</td>
+                                <td style="text-align: center">{{ $item->sesi }}</td>
+                                <td style="text-align: center">{{ $item->status }}</td>
+                                <td style="text-align: center">{{ $item->keterangan }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+        </div>
         </div>
     </div>
     </div>

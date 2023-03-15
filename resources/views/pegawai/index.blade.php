@@ -56,9 +56,9 @@
         <div class="tab-pane fade show <?php if ($tab == 1) { echo 'active';} ?>" id="<?php if ($tab == 1) { echo 'tetap';} elseif ($tab == 2) { echo 'kontrak';} elseif ($tab == 3) { echo 'magang';} ?>" role="tabpanel" aria-labelledby="<?php if ($tab == 1) { echo 'tetap-tab';} elseif ($tab == 2) { echo 'kontrak-tab';} elseif ($tab == 3) { echo 'magang-tab';} ?>">
         <div class="card-body">
         <div class="table-responsive">
-            <table id="<?php if ($tab == 1) { echo 'tetapTable';} elseif ($tab == 2) { echo 'kontrakTable';} else { echo 'magangTable';} ?>">
+            <table id="<?php if ($tab == 1) { echo 'tetapTable';} elseif ($tab == 2) { echo 'kontrakTable';} else { echo 'magangTable';} ?>" class="table table-border table-hover">
                 <thead>
-                    <tr class="bg-primary my-font-white">
+                    <tr class="bg-light">
                         <th style="text-align: center">No</th>
                         <th style="text-align: center">Foto</th>
                         <th style="text-align: center">NIP</th>
@@ -105,9 +105,9 @@
                         <td style="text-align: center">{{ $item->nip }}</td>
                         <td>{{ $item->nama }}</td>
                         @if($item->riwayatJabatan === null)
-                        <td style="text-align: center"><div class="badge badge-warning">Belum Terdaftar</div></td>
-                        <td style="text-align: center"><div class="badge badge-warning">Belum Terdaftar</div></td>
-                        <td style="text-align: center"><div class="badge badge-warning">Belum Terdaftar</div></td>
+                        <td style="text-align: center"><div class="badge badge-warning text-wrap">Belum Terdaftar</div></td>
+                        <td style="text-align: center"><div class="badge badge-warning text-wrap">Belum Terdaftar</div></td>
+                        <td style="text-align: center"><div class="badge badge-warning text-wrap">Belum Terdaftar</div></td>
                         @elseif($item->riwayatJabatan)
                         <td style="text-align: center">{{ ucwords(strtolower($item->riwayatJabatan->bidang->nama_bidang)) }}</td>
                         <td style="text-align: center">{{ ucwords(strtolower($item->riwayatJabatan->jabatan->nama_jabatan)) }}</td>
@@ -115,7 +115,7 @@
                         @endif
                         <td style="text-align: center">{{ $thn." Tahun" }} <br> {{ $bln." Bulan ".$tgl." Hari" }}</td>
                         <td style="text-align: center">
-                            <a href="{{ route('showPegawai', $item->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-eye fa-sm"></i> Detail</a>
+                            <a href="{{ route('showPegawai', $item->id) }}" class="btn btn-sm"><i class="fas fa-eye fa-sm text-primary"></i> Show</a>
                         </td>
                     </tr>
                     @endif
@@ -142,7 +142,7 @@
                 <li>Untuk menambahkan data pegawai lama gunakan fitur import pegawai.</li>
                 <li>NIP sudah di generate secara otomatis oleh sistem.</li>
                 <li>Ukuran foto tidak boleh lebih dari 1 MB.</li>
-                <li>Penulisan nama gelar harus benar.</li>
+                <li>Penulisan nama & gelar harus benar.</li>
             </ul>
         </small>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">

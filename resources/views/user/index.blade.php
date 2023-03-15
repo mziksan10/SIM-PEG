@@ -33,39 +33,46 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-body">
-        <div class="table-responsive">
-            <table id="myTable">
-                    <thead>
-                        <tr class="bg-primary my-font-white">
-                            <th style="text-align: center">No</th>
-                            <th style="text-align: center">Username</th>
-                            <th style="text-align: center">Email</th>
-                            <th style="text-align: center">Status</th>
-                            <th style="text-align: center">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($data_user as $item)
-                        <tr>
-                            <td>{{ $data_user->firstItem() + $loop->index }}</td>
-                            <td>{{ $item->username }}</td>
-                            <td>{{ $item->email }}</td>
-                            <td style="text-align: center">
-                            @if( $item->role == 'admin' || $item->role == 'user' )
-                            <div class="badge badge-success">Aktif</div>
-                            @elseif( $item->role == 'guest' )
-                            <div class="badge badge-danger">Non Aktif</div>
-                            @endif
-                            </td>
-                            <td style="text-align: center">
-                            <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#showModal{{ $item->id }}"><i class="fas fa-eye fa-sm"></i> Detail</button>
-                            <button class="btn btn-sm btn-warning"data-toggle="modal" data-target="#editModal{{ $item->id }}"><i class="fas fa-edit fa-sm"></i> Edit</a>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+        <div class="col">
+            <div class="table-responsive">
+                <table id="myTable" class="table table-border table-hover">
+                        <thead>
+                            <tr class="bg-light">
+                                <th style="text-align: center">No</th>
+                                <th style="text-align: center">Username</th>
+                                <th style="text-align: center">Role</th>
+                                <th style="text-align: center">Status</th>
+                                <th style="text-align: center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($data_user as $item)
+                            <tr style="text-align: center">
+                                <td>{{ $data_user->firstItem() + $loop->index }}</td>
+                                <td>{{ $item->username }}</td>
+                                <td>{{ $item->role }}</td>
+                                <td>
+                                @if( $item->role == 'admin' || $item->role == 'user' )
+                                <div class="badge badge-success">Aktif</div>
+                                @elseif( $item->role == 'guest' )
+                                <div class="badge badge-danger">Non Aktif</div>
+                                @endif
+                                </td>
+                                <td>
+                                @if( $item->role == 'guest' || $item->role == 'user' )
+                                <button class="btn btn-sm" data-toggle="modal" data-target="#showModal{{ $item->id }}"><i class="fas fa-eye fa-sm text-primary"></i> Show</button>
+                                |
+                                <button class="btn btn-sm"data-toggle="modal" data-target="#editModal{{ $item->id }}"><i class="fas fa-edit fa-sm text-warning"></i> Edit</button>
+                                @elseif( $item->role == 'admin' )
+                                <button class="btn btn-sm" data-toggle="modal" data-target="#showModal{{ $item->id }}"><i class="fas fa-eye fa-sm text-primary"></i> Show</button>
+                                @endif
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+        </div>
         </div>
     </div>
     </div>

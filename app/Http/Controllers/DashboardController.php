@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pegawai;
 use App\Models\Bidang;
 use App\Models\RiwayatJabatan;
+use App\Models\Presensi;
 use Illuminate\Http\Request;
 use DateTime;
 
@@ -32,7 +33,7 @@ class DashboardController extends Controller
         $pegawai = Pegawai::all();
         $pegawaiBerulangTahun = [];
         $pegawaiNaikGolongan = [];
-        foreach($pegawai as $item):
+        foreach($pegawai->sortBy('tanggal_lahir') as $item):
             $tanggal_masuk = new DateTime("$item->tanggal_masuk");
             $sekarang = new DateTime("today");
             if ($tanggal_masuk > $sekarang) { 
@@ -47,6 +48,19 @@ class DashboardController extends Controller
             if(date('F', strtotime($item->tanggal_lahir)) == date('F', strtotime(now()))){
                 $pegawaiBerulangTahun[] = $item;
             }
+        }endforeach;
+        foreach($pegawai as $item):
+            $tanggal_masuk = new DateTime("$item->tanggal_masuk");
+            $sekarang = new DateTime("today");
+            if ($tanggal_masuk > $sekarang) { 
+            $thn = "0";
+            $bln = "0";
+            $tgl = "0";
+            }
+            $thn = $sekarang->diff($tanggal_masuk)->y;
+            $bln = $sekarang->diff($tanggal_masuk)->m;
+            $tgl = $sekarang->diff($tanggal_masuk)->d;
+        {
             if($item->riwayatJabatan != null){
                 if($thn > $item->riwayatJabatan->golongan->min_masa_kerja && $thn != $item->riwayatJabatan->golongan->max_masa_kerja){
                     $pegawaiNaikGolongan[] = $item;
@@ -63,6 +77,7 @@ class DashboardController extends Controller
             'series' => $series,
             'pegawaiBerulangTahun' => $pegawaiBerulangTahun,
             'pegawaiNaikGolongan' => $pegawaiNaikGolongan,
+            'jumlah_kehadiranBulanIni' => Presensi::wherePegawaiId(session()->get('pegawai_id'))->whereTanggal(date('m'))->count()
         ]);
     }
 }
