@@ -45,6 +45,7 @@ Route::group(['middleware' => ['auth', 'checkRole:admin']], function (){
     Route::get('/pegawai', [PegawaiController::class, 'index'])->name('pegawai');
     Route::get('/pegawai/create-pegawai-tetap', [PegawaiController::class, 'createPegawaiTetap'])->name('createPegawaiTetap');
     Route::get('/pegawai/create-pegawai-kontrak', [PegawaiController::class, 'createPegawaiKontrak'])->name('createPegawaiKontrak');
+    Route::get('/pegawai/create-pegawai-magang', [PegawaiController::class, 'createPegawaiMagang'])->name('createPegawaiMagang');
     Route::post('/pegawai/store', [PegawaiController::class, 'store'])->name('storePegawai');
     Route::get('/pegawai/show/{id}', [PegawaiController::class, 'show'])->name('showPegawai');
     Route::post('/pegawai/store-riwayat-pendidikan', [PegawaiController::class, 'storeRiwayatPendidikan'])->name('storeRiwayatPendidikan');

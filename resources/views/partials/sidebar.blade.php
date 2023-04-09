@@ -4,9 +4,11 @@
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
         <div class="sidebar-brand-icon">
-            <img src="{{ asset('/assets/img') }}/logo_piksi.png" alt="" class="img" style="height:30px">
+            <img src="{{ asset('/assets/img') }}/logo_piksi.png" alt="" class="img" style="height:40px">
         </div>
-        <div class="sidebar-brand-text mx-3">SIMPEG PIKSI</div>
+        <div class="sidebar-brand-text mx-2">
+        <img src="{{ asset('/assets/img') }}/text-simpeg.png" alt="" class="img" style="width:100%">
+        </div>
     </a>
 
     <!-- Divider -->

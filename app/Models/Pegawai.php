@@ -6,6 +6,7 @@ use App\Models\Berkas;
 use App\Models\Bidang;
 use App\Models\Jabatan;
 use App\Models\Golongan;
+use App\Models\Desa;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -21,7 +22,7 @@ class Pegawai extends Model
     }
 
     // Status pernikahan
-    private static $statusPernikahan = ['Lajang', 'Menikah', 'Cerai'];
+    private static $statusPernikahan = ['Lajang', 'Menikah'];
     public static function statusPernikahan(){
         return self::$statusPernikahan;
     }
@@ -75,11 +76,28 @@ class Pegawai extends Model
         return $this->hasMany(Berkas::class);
     }
 
-    public function cuti(){
-        return $this->hasMany(Cuti::class)->latestOfMany();
-    }
-
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+    public function subdistricts(){
+        return $this->hasOne(Desa::class, 'subdis_id', 'desa');
+    }
+
+    public function provinces(){
+        return $this->hasOne(Provinsi::class, 'prov_id', 'provinsi');
+    }
+    
+    public function cities(){
+        return $this->hasOne(Kota::class, 'city_id', 'kab_kota');
+    }
+
+    public function districts(){
+        return $this->hasOne(Kecamatan::class, 'dis_id', 'kecamatan');
+    }
+
+    public function tempatLahir(){
+        return $this->hasOne(Kota::class, 'city_id', 'tempat_lahir');
+    }
+
 }

@@ -73,10 +73,10 @@
                                 <select name="tempat_lahir" class="form-control @error('tempat_lahir') is-invalid @enderror">
                                     <option value="" selected>Pilih..</option>
                                     @foreach($data_cities as $item)
-                                    @if(old('tempat_lahir', ucwords(strtoupper($pegawai->tempat_lahir))) == $item->city_name)
-                                    <option value="{{ $item->city_name }}" selected>{{ $item->city_name }}</option>
+                                    @if(old('tempat_lahir', $pegawai->tempatLahir->city_id) == $item->city_id)
+                                    <option value="{{ $item->city_id }}" selected>{{ $item->city_name }}</option>
                                     @else
-                                    <option value="{{ $item->city_name }}">{{ $item->city_name }}</option>
+                                    <option value="{{ $item->city_id }}">{{ $item->city_name }}</option>
                                     @endif
                                     @endforeach
                                 </select>
@@ -136,7 +136,7 @@
                                 <label>Provinsi</label>
                                 <select id="provinsi" name="provinsi" class="form-control @error('provinsi') is-invalid @enderror">
                                     @foreach($data_provinces as $item)
-                                    @if(old('provinsi', ucwords(strtoupper($pegawai->provinsi))) == $item->prov_name)
+                                    @if(old('provinsi', $pegawai->provinces->prov_id) == $item->prov_id)
                                     <option value="{{ $item->prov_id }}" selected>{{ $item->prov_name }}</option>
                                     @else
                                     <option value="{{ $item->prov_id }}">{{ $item->prov_name }}</option>
@@ -150,7 +150,7 @@
                             <div class="form-group col-md-4">
                                 <label>Kabupaten/Kota</label>
                                 <select id="kab_kota" name="kab_kota" class="form-control @error('kab_kota') is-invalid @enderror">
-                                    <option value="{{ $pegawai->kab_kota }}" selected>{{ ucwords(strtoupper($pegawai->kab_kota)) }}</option>
+                                    <option value="{{ $pegawai->kab_kota }}" selected>{{ $pegawai->cities->city_name }}</option>
                                 </select>
                                 @error('kab_kota')
                                 <div class="invalid-feedback ml-3">{{ $message }}</div>
@@ -159,7 +159,7 @@
                             <div class="form-group col-md-4">
                                 <label>Kecamatan</label>
                                 <select id="kecamatan" name="kecamatan" class="form-control @error('kecamatan') is-invalid @enderror">
-                                    <option value="{{ $pegawai->kecamatan }}" selected>{{ ucwords(strtoupper($pegawai->kecamatan)) }}</option>
+                                    <option value="{{ $pegawai->kecamatan }}" selected>{{ $pegawai->districts->dis_name }}</option>
                                 </select>
                                 @error('kecamatan')
                                 <div class="invalid-feedback ml-3">{{ $message }}</div>
@@ -170,7 +170,7 @@
                             <div class="form-group col-md-4">
                                 <label>Desa</label>
                                 <select id="desa" name="desa" class="form-control @error('desa') is-invalid @enderror">
-                                    <option value="{{ $pegawai->desa }}" selected>{{ ucwords(strtoupper($pegawai->desa)) }}</option>
+                                    <option value="{{ $pegawai->desa }}" selected>{{ $pegawai->subdistricts->subdis_name }}</option>
                                 </select>
                                 @error('desa')
                                 <div class="invalid-feedback ml-3">{{ $message }}</div>

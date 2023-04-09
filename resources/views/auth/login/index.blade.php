@@ -6,15 +6,15 @@
 
     <div class="col-xl-3 col-lg-6 col-md-9" style="position:absolute; top:50%; transform: translate(0, -50%);">
 
-        <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card o-hidden border-0 shadow-sm my-5">
             <div class="card-body p-0">
                 <!-- Nested Row within Card Body -->
                 <div class="row">
                     <!-- <div class="col-lg-6 d-none d-lg-block login-image"></div> -->
                     <div class="col-lg-12">
                         <div class="p-5">
-                            <div class="text-center mb-3">
-                                <img src="{{ asset('/assets/img') }}/logo_piksi.png" style="max-width: 100px;">
+                            <div class="text-center mb-4">
+                                <img src="{{ asset('/assets/img') }}/logo-simpeg.png" style="max-width: 50%;">
                             </div>
                             @if(session()->has('success'))                                
                             <div class="alert alert-success alert-dismissible fade show" role="alert">

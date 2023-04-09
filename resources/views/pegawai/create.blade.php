@@ -69,7 +69,7 @@
                     <div class="card-body">
                         <input type="hidden" name="status" value="@if(!old('status')) {{ $status }} @else {{ old('status') }} @endif" readonly="readonly">
                         <div class="form-row">
-                            <div class="col-md-2">
+                            <div class="col-lg-2 col-md-6">
                                 <div class="img-thumbnail modal-dialog-centered justify-content-center bg-light mb-3">
                                 <div style="max-height: 500px; max-width: 250px; overflow: hidden;">
                                 <img class="img-preview mb-2" style="height: 300px; width: 240px; overflow: hidden;">
@@ -82,14 +82,14 @@
                             </div>
                         </div>
                         <div class="form-row">
-                        <div class="form-group col-md-2">
+                        <div class="form-group col-lg-2 col-md-6">
                             <label>NIP</label>
                             <input type="text" class="form-control @error('nip') is-invalid @enderror" name="nip" value="@if(!old('nip')) {{ $nip_baru }} @else {{ old('nip') }} @endif" readonly="readonly">
                             @error('nip')
                             <div class="invalid-feedback ml-3">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="form-group col-md-2">
+                        <div class="form-group col-lg-2 col-md-6">
                                 <label>NIK</label>
                                 <input type="number" min="0" class="form-control @error('nik') is-invalid @enderror" name="nik" value="{{ old('nik') }}" autofocus>
                                 @error('nik')
@@ -105,15 +105,15 @@
                         </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-lg-4 col-md-8">
                                 <label>Tempat Lahir</label>
                                 <select name="tempat_lahir" class="form-control @error('tempat_lahir') is-invalid @enderror">
                                     <option value="" selected>Pilih..</option>
                                     @foreach($kota as $item)
-                                    @if(old('tempat_lahir') == $item->city_name)
-                                    <option value="{{ $item->city_name }}" selected>{{ $item->city_name }}</option>
+                                    @if(old('tempat_lahir') == $item->city_id)
+                                    <option value="{{ $item->city_id }}" selected>{{ $item->city_name }}</option>
                                     @else
-                                    <option value="{{ $item->city_name }}">{{ $item->city_name }}</option>
+                                    <option value="{{ $item->city_id }}">{{ $item->city_name }}</option>
                                     @endif
                                     @endforeach
                                 </select>
@@ -121,14 +121,14 @@
                                 <div class="invalid-feedback ml-3">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group col-lg-2 col-md-4">
                                 <label>Tanggal Lahir</label>
                                 <input type="date" class="form-control @error('tanggal_lahir') is-invalid @enderror" name="tanggal_lahir" value="{{ old('tanggal_lahir') }}">
                                 @error('tanggal_lahir')
                                 <div class="invalid-feedback ml-3">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group col-lg-2 col-md-6">
                                 <label>Jenis Kelamin</label>
                                 <select name="jenis_kelamin" class="form-control @error('jenis_kelamin') is-invalid @enderror">
                                     <option value="" selected>Pilih..</option>
@@ -144,7 +144,7 @@
                                 <div class="invalid-feedback ml-3">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group col-lg-2 col-md-6">
                                 <label>Status Pernikahan</label>
                                 <select name="status_pernikahan" class="form-control @error('status_pernikahan') is-invalid @enderror">
                                     <option value="" selected>Pilih..</option>
@@ -171,7 +171,7 @@
                             </div>
                         </div>
                         <div class="form-row">
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-lg-3 col-md-6">
                                 <label>Provinsi</label>
                                 <select id="provinsi" name="provinsi" class="form-control @error('provinsi') is-invalid @enderror">
                                     <option value="" selected>Pilih..</option>
@@ -187,7 +187,7 @@
                                 <div class="invalid-feedback ml-3">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-lg-3 col-md-6">
                                 <label>Kabupaten/Kota</label>
                                 <select id="kab_kota" name="kab_kota" class="form-control @error('kab_kota') is-invalid @enderror">
                                     @if(old('kab_kota'))
@@ -204,7 +204,7 @@
                                 <div class="invalid-feedback ml-3">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-lg-2 col-md-4">
                                 <label>Kecamatan</label>
                                 <select id="kecamatan" name="kecamatan" class="form-control @error('kecamatan') is-invalid @enderror">
                                     @if(old('kecamatan'))
@@ -221,7 +221,7 @@
                                 <div class="invalid-feedback ml-3">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group col-lg-2 col-md-4">
                                 <label>Desa</label>
                                 <select id="desa" name="desa" class="form-control @error('desa') is-invalid @enderror">
                                     @if(old('desa'))
@@ -238,7 +238,7 @@
                                 <div class="invalid-feedback ml-3">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group col-md-1">
+                            <div class="form-group col-lg-2 col-md-4">
                                 <label>Kode Pos</label>
                                 <input type="number" min="0" class="form-control @error('kode_pos') is-invalid @enderror" name="kode_pos" value="{{ old('kode_pos') }}"">
                                 @error('kode_pos')
@@ -247,14 +247,14 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-lg-4 col-md-6">
                                 <label>No. HP</label>
                                 <input type="number" min="0" class="form-control @error('no_hp') is-invalid @enderror" name="no_hp" value="{{ old('no_hp') }}"">
                                 @error('no_hp')
                                 <div class="invalid-feedback ml-3">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-lg-4 col-md-6">
                                 <label>Email</label>
                                 <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}"">
                                 @error('email')
@@ -277,14 +277,14 @@
                     </div>
                     <div class="card-body">
                     <div class="form-row">
-                        <div class="form-group col-md-1">
+                        <div class="form-group col-lg-2 col-md-2">
                             <label>Tahun Lulus</label>
                             <input type="number" class="form-control @error('tahun_lulus') is-invalid @enderror" name="tahun_lulus" value="{{ old('tahun_lulus') }}">
                             @error('tahun_lulus')
                             <div class="invalid-feedback ml-3">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="form-group col-md-2">
+                        <div class="form-group col-lg-2 col-md-4">
                             <label>Jenjang</label>
                             <select id="jenjang" name="jenjang" class="form-control @error('jenjang') is-invalid @enderror">
                                 <option value="" selected>Pilih..</option>
@@ -300,14 +300,16 @@
                             <div class="invalid-feedback ml-3">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="form-group col-md-4">
+                    </div>
+                    <div class="form-row">
+                    <div class="form-group col-lg-4 col-md-6">
                             <label>Jurusan</label>
                             <input type="text" class="form-control @error('jurusan') is-invalid @enderror" name="jurusan" value="{{ old('jurusan') }}">
                             @error('jurusan')
                             <div class="invalid-feedback ml-3">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="form-group col-md-5">
+                        <div class="form-group col-lg-6 col-md-6">
                             <label>Nama Institusi</label>
                             <input type="text" class="form-control @error('institusi') is-invalid @enderror" name="institusi" value="{{ old('institusi') }}">
                             @error('institusi')
@@ -316,7 +318,7 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-lg-4 col-md-6">
                             <label>Upload Scan Ijazah</label>
                             <input type="file" class="form-control @error('scan_ijazah') is-invalid @enderror" name="scan_ijazah">
                             @error('scan_ijazah')
@@ -337,7 +339,7 @@
                     </div>
                     <div class="card-body">
                     <div class="form-row">
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-lg-3 col-md-4">
                             <label>Bidang</label>
                             <select id="bidang_id" name="bidang_id" class="form-control @error('bidang_id') is-invalid @enderror">
                                 <option value="" selected>Pilih..</option>
@@ -353,7 +355,7 @@
                             <div class="invalid-feedback ml-3">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-lg-3 col-md-4">
                             <label>Jabatan</label>
                             <select id="jabatan_id" name="jabatan_id" class="form-control @error('jabatan_id') is-invalid @enderror">
                                 <option value="" selected>Pilih..</option>
@@ -362,13 +364,13 @@
                             <div class="invalid-feedback ml-3">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="form-group col-md-2">
+                        <div class="form-group col-lg-2 col-md-4">
                             <label>TMT Jabatan</label>
                             <input type="date" class="form-control" value="{{date('Y-m-d')}}" disabled>
                         </div>
                         </div>
                         <div class="form-row">
-                        <div class="col-md-4">
+                        <div class="col-lg-4 col-md-6">
                         <label>Upload Scan SK</label>
                         <input type="file"  class="form-control @error('scan_sk') is-invalid @enderror" name="scan_sk" value="{{ old('scan_sk') }}">
                         @error('scan_sk')

@@ -24,7 +24,7 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="/assets/css/sb-admin-2.min.css" rel="stylesheet">
+<link href="/assets/css/sb-admin-2.min.css" rel="stylesheet">
 
     <!-- JQuery autocomplete css -->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">

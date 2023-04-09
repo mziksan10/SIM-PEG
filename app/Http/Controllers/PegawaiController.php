@@ -9,6 +9,10 @@ use App\Models\Golongan;
 use App\Models\RiwayatJabatan;
 use App\Models\RiwayatPendidikan;
 use App\Models\Berkas;
+use App\Models\Provinsi;
+use App\Models\Kota;
+use App\Models\Kecamatan;
+use App\Models\Desa;
 use PDF;
 use Illuminate\Http\Request;
 use App\Exports\PegawaisExport;
@@ -32,7 +36,10 @@ class PegawaiController extends Controller
             'title' => 'Data Pegawai',
             'status' => ['1','2', '3'],
             'data_pegawai' => Pegawai::get()->sortBy('nip'),
-            'golongan' => Golongan::all()
+            'golongan' => Golongan::all(),
+            'data_pegawaiTetap' => Pegawai::where('status', '=' , '1')->count(),
+            'data_pegawaiKontrak' => Pegawai::where('status', '=' , '2')->count(),
+            'data_pegawaiMagang' => Pegawai::where('status', '=' , '3')->count(),
         ]);
     }
 
@@ -56,10 +63,10 @@ class PegawaiController extends Controller
             'jabatan' => Jabatan::all(),
             'golongan' => Golongan::all()->sortBy('golongan'),
             'jenisKelamin' => Pegawai::jenisKelamin(),
-            'provinsi' => DB::select('SELECT * FROM provinces ORDER BY prov_name ASC'),
-            'kota' => DB::select('SELECT * FROM cities ORDER BY city_name ASC'),
-            'kecamatan' => DB::select('SELECT * FROM districts ORDER BY dis_name ASC'),
-            'desa' => DB::select('SELECT * FROM subdistricts ORDER BY subdis_name ASC'),
+            'provinsi' => Provinsi::all()->sortBy('prov_name'),
+            'kota' => Kota::all()->sortBy('city_name'),
+            'kecamatan' => Kecamatan::all()->sortBy('dis_name'),
+            'desa' => Desa::all()->sortBy('subdis_name'),
             'nip_baru' => $createNIP,
             'status' => '1',
             'jenjang' => RiwayatPendidikan::jenjang(),
@@ -82,12 +89,38 @@ class PegawaiController extends Controller
             'jabatan' => Jabatan::all(),
             'golongan' => Golongan::all()->sortBy('golongan'),
             'jenisKelamin' => Pegawai::jenisKelamin(),
-            'provinsi' => DB::select('SELECT * FROM provinces ORDER BY prov_name ASC'),
-            'kota' => DB::select('SELECT * FROM cities ORDER BY city_name ASC'),
-            'kecamatan' => DB::select('SELECT * FROM districts ORDER BY dis_name ASC'),
-            'desa' => DB::select('SELECT * FROM subdistricts ORDER BY subdis_name ASC'),
+            'provinsi' => Provinsi::all(),
+            'kota' => Kota::all(),
+            'kecamatan' => Kecamatan::all(),
+            'desa' => Desa::all(),
             'nip_baru' => $createNIP,
             'status' => '2',
+            'jenjang' => RiwayatPendidikan::jenjang(),
+            'statusPernikahan' => Pegawai::statusPernikahan(),
+        ]);
+    }
+
+    public function createPegawaiMagang()
+    {
+        $selectNIP = Pegawai::select('nip')->where('status', '2')->latest('tanggal_masuk')->first();
+        if($selectNIP == null){
+            $createNIP = '130041' . date('dmy') . '2' . '001'; 
+        }elseif($selectNIP->get()){
+            $createNIP = '130041' . date('dmy') . substr($selectNIP->nip, -4) + 1;
+        }
+        return view('/pegawai/create', [
+            'title' => 'Form Pegawai Magang',
+            'photo' => 'logo_piksi.png',
+            'bidang' => Bidang::all(),
+            'jabatan' => Jabatan::all(),
+            'golongan' => Golongan::all()->sortBy('golongan'),
+            'jenisKelamin' => Pegawai::jenisKelamin(),
+            'provinsi' => Provinsi::all(),
+            'kota' => Kota::all(),
+            'kecamatan' => Kecamatan::all(),
+            'desa' => Desa::all(),
+            'nip_baru' => $createNIP,
+            'status' => '3',
             'jenjang' => RiwayatPendidikan::jenjang(),
             'statusPernikahan' => Pegawai::statusPernikahan(),
         ]);
@@ -102,10 +135,6 @@ class PegawaiController extends Controller
     public function store(Request $request)
     {
         // VALIDASI DATA PRIBADI
-        $getProvinsi = DB::select("SELECT prov_name FROM provinces WHERE prov_id = '$request->provinsi'");
-        $getKota = DB::select("SELECT city_name FROM cities WHERE city_id = '$request->kab_kota'");
-        $getKecamatan = DB::select("SELECT dis_name FROM districts WHERE dis_id = '$request->kecamatan'");
-        $getDesa = DB::select("SELECT subdis_name FROM subdistricts WHERE subdis_id = '$request->desa'");
         $validatedData = $request->validate([
             'nik' => 'required|max:16',
             'nama' => 'required|max:255',
@@ -113,10 +142,10 @@ class PegawaiController extends Controller
             'tanggal_lahir' => 'required',
             'jenis_kelamin' => 'required',
             'alamat' => 'required|max:255',
-            'desa' => 'required|max:60',
-            'kecamatan' => 'required|max:60',
-            'kab_kota' => 'required|max:60',
-            'provinsi' => 'required|max:60',
+            'desa' => 'required',
+            'kecamatan' => 'required',
+            'kab_kota' => 'required',
+            'provinsi' => 'required',
             'kode_pos' => 'required|max:5',
             'no_hp' => 'required|max:20',
             'email' => 'required|max:255|email',
@@ -128,11 +157,6 @@ class PegawaiController extends Controller
                 'foto-profil', $request->nip . '.' . $request->file('foto')->extension()
             );  
         }
-        $validatedData['tempat_lahir'] = ucwords(strtolower($request->tempat_lahir));
-        $validatedData['provinsi'] = ucwords(strtolower($getProvinsi[0]->prov_name));
-        $validatedData['kab_kota'] = ucwords(strtolower($getKota[0]->city_name));
-        $validatedData['kecamatan'] = ucwords(strtolower($getKecamatan[0]->dis_name));
-        $validatedData['desa'] = ucwords(strtolower($getDesa[0]->subdis_name));
         $validatedData['tanggal_masuk'] = date_create()->format('Y-m-d');
         $validatedData['nip'] = $request->nip;
         $validatedData['status'] = $request->status;
@@ -190,10 +214,12 @@ class PegawaiController extends Controller
             'jurusan' => 'nullable',
             'institusi' => 'required',
             'tahun_lulus' => 'required',
-            'scan_ijazah' => 'required|mimes:pdf|max:1024',
+            'scan_ijazah' => 'mimes:pdf|max:1024',
         ]);
         if(request()->file('scan_ijazah')){ 
             $validatedData['scan_ijazah'] = request()->file('scan_ijazah')->store('berkas-pegawai');  
+        }else{
+            $validatedData['scan_ijazah'] = 0;  
         }
         
         $validatedData['pegawai_id'] = $pegawaiId[0]->id;
@@ -207,10 +233,12 @@ class PegawaiController extends Controller
             'golongan_id' => 'required',
             'bidang_id' => 'required',
             'jabatan_id' => 'required',
-            'scan_sk' => 'required|mimes:pdf|max:1024',
+            'scan_sk' => 'mimes:pdf|max:1024',
         ]);
         if(request()->file('scan_sk')){ 
             $validatedData['scan_sk'] = request()->file('scan_sk')->store('berkas-pegawai');  
+        }else{
+            $validatedData['scan_sk'] = 0;  
         }
         if($request->status == 1){
             $status = "Tetap";
@@ -283,6 +311,9 @@ class PegawaiController extends Controller
             'jenjang' => RiwayatPendidikan::jenjang(),
             'pegawaiBerulangTahun' => $pegawaiBerulangTahun,
             'pegawaiNaikGolongan' => $pegawaiNaikGolongan,
+            'provinsi' => Provinsi::select('prov_name')->where('prov_id', $pegawai->provinsi)->get(),
+            'kota' => Kota::select('city_name')->where('city_id', $pegawai->kab_kota)->get(),
+            'kecamatan' => Kecamatan::select('dis_name')->where('dis_id', $pegawai->kecamatan)->get(),
         ]);
     }
 
@@ -305,8 +336,10 @@ class PegawaiController extends Controller
             'status' => Pegawai::status(),
             'statusJenjang' => Pegawai::statusJenjang(),
             'jenisKelamin' => Pegawai::jenisKelamin(),
-            'data_provinces' => DB::select('SELECT * FROM provinces ORDER BY prov_name ASC'),
-            'data_cities' => DB::select('SELECT * FROM cities ORDER BY city_name ASC'),
+            'data_provinces' => Provinsi::all(),
+            'data_cities' => Kota::all(),
+            'data_districts' => Kecamatan::all(),
+            'data_subdistricts' => Desa::all(),
             'statusPernikahan' => Pegawai::statusPernikahan(),
         ]);
     }
@@ -418,7 +451,7 @@ class PegawaiController extends Controller
         }
         if($request->status == 1){
             $status = "Tetap";
-        }elseif($request->status == 2){
+        }elseif($request->status == 2 | $request->status == 3){
             $status = "Kontrak";
         }
         $validatedData['golongan_id'] = Golongan::where('jenjang', $request->jenjang)->where('status', $status)->pluck('id')->first();

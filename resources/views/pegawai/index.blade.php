@@ -42,13 +42,13 @@
         <div class="card-body">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="tetap-tab" data-toggle="tab" data-target="#tetap" type="button" role="tab" aria-controls="tetap" aria-selected="true">Pegawai Tetap</button>
+            <button class="nav-link active" id="tetap-tab" data-toggle="tab" data-target="#tetap" type="button" role="tab" aria-controls="tetap" aria-selected="true"><a href="#" class="badge badge-dark">{{ $data_pegawaiTetap }}</a> | Pegawai Tetap</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="kontrak-tab" data-toggle="tab" data-target="#kontrak" type="button" role="tab" aria-controls="kontrak" aria-selected="false">Pegawai Kontrak</button>
+            <button class="nav-link" id="kontrak-tab" data-toggle="tab" data-target="#kontrak" type="button" role="tab" aria-controls="kontrak" aria-selected="false"><a href="#" class="badge badge-dark">{{ $data_pegawaiKontrak }}</a> | Pegawai Kontrak</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="magang-tab" data-toggle="tab" data-target="#magang" type="button" role="tab" aria-controls="magang" aria-selected="false">Pegawai Magang</button>
+            <button class="nav-link" id="magang-tab" data-toggle="tab" data-target="#magang" type="button" role="tab" aria-controls="magang" aria-selected="false"><a href="#" class="badge badge-dark">{{ $data_pegawaiMagang }}</a> | Pegawai Magang</button>
         </li>
         </ul>
         <div class="tab-content" id="myTabContent">
@@ -115,7 +115,7 @@
                         @endif
                         <td style="text-align: center">{{ $thn." Tahun" }} <br> {{ $bln." Bulan ".$tgl." Hari" }}</td>
                         <td style="text-align: center">
-                            <a href="{{ route('showPegawai', $item->id) }}" class="btn btn-sm"><i class="fas fa-eye fa-sm text-primary"></i> Show</a>
+                            <a href="{{ route('showPegawai', $item->id) }}" class="btn btn-sm @if( $item->riwayatJabatan == null) text-primary @else @if( $thn > $item->riwayatJabatan->golongan->min_masa_kerja && $thn != $item->riwayatJabatan->golongan->min_masa_kerja ) text-white @endif @endif"><i class="fas fa-eye fa-sm @if( $item->riwayatJabatan == null) @else @if( $thn > $item->riwayatJabatan->golongan->min_masa_kerja && $thn != $item->riwayatJabatan->golongan->min_masa_kerja ) text-white @endif @endif"></i> Show</a>
                         </td>
                     </tr>
                     @endif

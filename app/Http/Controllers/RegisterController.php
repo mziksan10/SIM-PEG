@@ -24,6 +24,7 @@ class RegisterController extends Controller
         $validatedData = $request->validate([
             'username' => 'required|max:255|min:3|unique:users',
             'password' => 'required|max:255|min:5',
+            'confirmPassword' => 'required|max:255|min:5|same:password',
         ]);
         $validatedData['pegawai_id'] = $cariData[0]->id;
         $validatedData['email'] = $cariData[0]->email;
@@ -31,5 +32,6 @@ class RegisterController extends Controller
         User::create($validatedData);
 
         return redirect('/login')->with('success', 'Registrasi berhasil! Hubungi admin untuk Aktivasi');
+
     }
 }

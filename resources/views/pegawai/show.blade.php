@@ -101,7 +101,7 @@
                                 </tr>
                                 <tr>
                                     <th>Tempat, Tanggal lahir</th>
-                                    <td>: {{ ucwords(strtolower($pegawai->tempat_lahir)) . ", " . date('d F Y', strtotime($pegawai->tanggal_lahir)) }}</td>
+                                    <td>: {{ ucwords(strtolower($pegawai->tempatLahir->city_name)) . ", " . date('d F Y', strtotime($pegawai->tanggal_lahir)) }}</td>
                                 </tr>
                                 <tr>
                                     <th>Jenis Kelamin</th>
@@ -109,7 +109,7 @@
                                 </tr>
                                 <tr>
                                     <th>Alamat</th>
-                                    <td>: {{ $pegawai->alamat . " " . $pegawai->desa . ", " . $pegawai->kecamatan . " " . $pegawai->kab_kota . " " . $pegawai->provinsi . " " . $pegawai->kode_pos}}</td>
+                                    <td>: {{ $pegawai->alamat . " " . ucwords(strtolower($pegawai->subdistricts->subdis_name)) . ", " . ucwords(strtolower($pegawai->cities->city_name)) . " " . ucwords(strtolower($pegawai->districts->dis_name)) . " " . ucwords(strtolower($pegawai->provinces->prov_name)) . " " . $pegawai->kode_pos  }}</td>
                                 </tr>
                                 <tr>
                                     <th>No. Handphone</th>

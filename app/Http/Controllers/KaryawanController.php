@@ -14,6 +14,7 @@ use App\Models\AturanPresensi;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use DateTime;
+use Carbon\Carbon;
 
 use Illuminate\Http\Request;
 
@@ -174,24 +175,46 @@ class KaryawanController extends Controller
         $data['jam_masuk'] = date('H:i:s');
         $data['tanggal'] = date('Y-m-d');
         $data['pegawai_id'] = session()->get('pegawai_id');
+        $data['sesi'] = null;
 
         $getAturanPresensi = AturanPresensi::get();
         foreach($getAturanPresensi as $item){
-            if(strtotime($data['jam_masuk']) >= strtotime(date('H:i:s', strtotime($item->batas_min))) && strtotime($data['jam_masuk']) < strtotime(date('H:i:s', strtotime($item->jam_masuk)))){
-                $data['sesi'] = $item->sesi;
-                $data['status'] = 'Normal';
-            }elseif(strtotime($data['jam_masuk']) >= strtotime(date('H:i:s', strtotime($item->jam_masuk))) && strtotime($data['jam_masuk']) <= strtotime(date('H:i:s', strtotime($item->late_1)))){
-                $data['sesi'] = $item->sesi;
-                $data['status'] = 'Normal';
-            }elseif(strtotime($data['jam_masuk']) > strtotime(date('H:i:s', strtotime($item->late_1))) && strtotime($data['jam_masuk']) <= strtotime(date('H:i:s', strtotime($item->late_2)))){
-                $data['sesi'] = $item->sesi;
-                $data['status'] = 'Late 1';
-            }elseif(strtotime($data['jam_masuk']) > strtotime(date('H:i:s', strtotime($item->late_2))) && strtotime($data['jam_masuk']) <= strtotime(date('H:i:s', strtotime($item->batas_max)))){
-                $data['sesi'] = $item->sesi;
-                $data['status'] = 'Late 2';  
-            }elseif($item->sesi == 2 && strtotime($data['jam_masuk']) > strtotime(date('H:i:s', strtotime($item->batas_max)))){
-                return redirect()->back()->with('failed','Sesi telah berakhir');
+            if($item->sesi == 1){
+                if(strtotime($data['jam_masuk']) >= strtotime(date('H:i:s', strtotime($item->batas_min))) && strtotime($data['jam_masuk']) < strtotime(date('H:i:s', strtotime($item->jam_masuk)))){
+                    $data['sesi'] = $item->sesi;
+                    $data['status'] = 'Normal';
+                }elseif(strtotime($data['jam_masuk']) >= strtotime(date('H:i:s', strtotime($item->jam_masuk))) && strtotime($data['jam_masuk']) <= strtotime(date('H:i:s', strtotime($item->late_1)))){
+                    $data['sesi'] = $item->sesi;
+                    $data['status'] = 'Normal';
+                }elseif(strtotime($data['jam_masuk']) > strtotime(date('H:i:s', strtotime($item->late_1))) && strtotime($data['jam_masuk']) <= strtotime(date('H:i:s', strtotime($item->late_2)))){
+                    $data['sesi'] = $item->sesi;
+                    $data['status'] = 'Late 1';
+                }elseif(strtotime($data['jam_masuk']) > strtotime(date('H:i:s', strtotime($item->late_2))) && strtotime($data['jam_masuk']) <= strtotime(date('H:i:s', strtotime($item->batas_max)))){
+                    $data['sesi'] = $item->sesi;
+                    $data['status'] = 'Late 2';  
+                }elseif(strtotime($data['jam_masuk']) > strtotime(date('H:i:s', strtotime($item->batas_max))) && $item->sesi == 2){
+                    return back()->with('failed','Sesi telah berakhir 1');
+                }
+            }elseif($item->sesi == 2){
+                if(strtotime($data['jam_masuk']) >= strtotime(date('H:i:s', strtotime($item->batas_min))) && strtotime($data['jam_masuk']) < strtotime(date('H:i:s', strtotime($item->jam_masuk)))){
+                    $data['sesi'] = $item->sesi;
+                    $data['status'] = 'Normal';
+                }elseif(strtotime($data['jam_masuk']) >= strtotime(date('H:i:s', strtotime($item->jam_masuk))) && strtotime($data['jam_masuk']) <= strtotime(date('H:i:s', strtotime($item->late_1)))){
+                    $data['sesi'] = $item->sesi;
+                    $data['status'] = 'Normal';
+                }elseif(strtotime($data['jam_masuk']) > strtotime(date('H:i:s', strtotime($item->late_1))) && strtotime($data['jam_masuk']) <= strtotime(date('H:i:s', strtotime($item->late_2)))){
+                    $data['sesi'] = $item->sesi;
+                    $data['status'] = 'Late 1';
+                }elseif(strtotime($data['jam_masuk']) > strtotime(date('H:i:s', strtotime($item->late_2))) && strtotime($data['jam_masuk']) <= strtotime(date('H:i:s', strtotime($item->batas_max)))){
+                    $data['sesi'] = $item->sesi;
+                    $data['status'] = 'Late 2';  
+                }elseif(strtotime($data['jam_masuk']) > strtotime(date('H:i:s', strtotime($item->batas_max)))){
+                    return back()->with('failed','Sesi telah berakhir 2');
+                }
             }
+        }
+        if($data['sesi'] == null){
+            return back()->with('failed','Sesi telah berakhir');
         }
         Presensi::create($data);
         return redirect()->back()->with('success','Absen masuk berhasil!');
