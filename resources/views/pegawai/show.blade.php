@@ -119,7 +119,7 @@
                                 </tr>
                                 <tr>
                                     <th>Tempat, Tanggal lahir</th>
-                                    <td>: {{ ucwords(strtolower($pegawai->tempatLahir->city_name)) . ", " . date('d F Y', strtotime($pegawai->tanggal_lahir)) }}</td>
+                                    <td>: {{ ucwords(strtolower($pegawai->cities->city_name)) . ", " . date('d F Y', strtotime($pegawai->tanggal_lahir)) }}</td>
                                 </tr>
                                 <tr>
                                     <th>Jenis Kelamin</th>
