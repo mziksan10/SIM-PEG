@@ -63,12 +63,11 @@
                                 </div>
                                 <button class="btn btn-primary btn-user btn-block" type="submit">Register</button>
                             </form>
-                            <hr>
-                            <div class="text-center">
-                                <a class="small" href="/login">Sudah punya akun? Masuk!</a>
-                            </div>
                         </div>
                     </div>
+                </div>
+                <div class="card-footer text-center">
+                <a class="small" href="/login">Sudah punya akun? Masuk!</a>
                 </div>
             </div>
         </div>

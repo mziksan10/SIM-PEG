@@ -1,11 +1,19 @@
 @extends('layouts/main')
 @section('container')
-<!-- Page Heading -->
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-<div class="form-col">
-<h1 class="h3 mb-0 text-gray-800">{{ $title }}</h1>
+<!-- Topbar -->
+<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow-sm">
+
+<!-- Sidebar Toggle (Topbar) -->
+<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+    <i class="fa fa-bars"></i>
+</button>
+
+<div class="col">
+    Home / <a href="#">{{ $title }}</a>
 </div>
-<div class="form-col">
+
+<!-- Topbar Navbar -->
+<ul class="navbar-nav ml-auto">
 <form action="/export/presensi" method="GET">
 @csrf
 <div class="input-group">
@@ -22,9 +30,14 @@
 <button type="submit" class="btn btn-success"><i class="fas fa-file-excel fa-sm"></i> Export</button>
 </div>
 </div>
-</form> 
-</div>
-</div>
+</form>
+</ul>
+
+</nav>
+<!-- End of Topbar -->
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
 
 <!-- Content Row -->
 <div class="row">

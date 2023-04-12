@@ -1,14 +1,27 @@
 @extends('layouts/main')
 @section('container')
-<!-- Page Heading -->
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-<div class="form-col">
-<h1 class="h3 mb-0 text-gray-800">{{ $title }}</h1>
+<!-- Topbar -->
+<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow-sm">
+
+<!-- Sidebar Toggle (Topbar) -->
+<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+    <i class="fa fa-bars"></i>
+</button>
+
+<div class="col">
+    Home / <a href="#">{{ $title }}</a>
 </div>
-<div class="form-col">
-<button type="button" class="btn btn btn-primary shadow ml-1" data-toggle="modal" data-target="#createModal"><i class="fas fa-plus fa-sm"></i> Add</button>
-</div>
-</div>
+
+<!-- Topbar Navbar -->
+<ul class="navbar-nav ml-auto">
+<!-- Belum ada -->
+</ul>
+
+</nav>
+<!-- End of Topbar -->
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
 
 <!-- Content Row -->
 <div class="row">

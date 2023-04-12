@@ -1,9 +1,27 @@
 @extends('layouts/main')
 @section('container')
-<!-- Page Heading -->
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">{{ $title }}</h1>
+<!-- Topbar -->
+<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow-sm">
+
+<!-- Sidebar Toggle (Topbar) -->
+<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+    <i class="fa fa-bars"></i>
+</button>
+
+<div class="col">
+    Home / <a href="#">{{ $title }}</a>
 </div>
+
+<!-- Topbar Navbar -->
+<ul class="navbar-nav ml-auto">
+<!-- belum ada -->
+</ul>
+
+</nav>
+<!-- End of Topbar -->
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
 
 <!-- Content Row -->
 <div class="row">
@@ -13,7 +31,11 @@
             <small class="text-muted"><i>Hallo {{ ucwords(session()->get('nama')) }}!</i></small>
         </div>
         <div class="card-body">
+            @if(session()->get('foto') == null)
+            <img class="img-profile rounded-circle" src="{{asset('/assets/img/user_default.png')}}" width="100">
+            @elseif(session()->get('foto'))
             <img class="img-thumbnail rounded-circle mb-3 mt-3" style="width:100px; height:100px" src="{{asset('storage/' . session()->get('foto'))}}">
+            @endif
             <h1 id="jam" class="card-title"></h1>
             <p class="card-text">{{ date('l, d F Y') }}</p>
             @if($presensi == null)

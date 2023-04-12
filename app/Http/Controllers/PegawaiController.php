@@ -204,7 +204,7 @@ class PegawaiController extends Controller
         $validatedDataJabatan['pegawai_id'] = $pegawaiId[0]->id;
         RiwayatJabatan::create($validatedDataJabatan);
 
-        return back()->with('success', 'Data pegawai berhasil diinput!');
+        return redirect(route('pegawai'))->with('success', 'Data pegawai berhasil diinput!');
     }
 
     public function storeRiwayatPendidikan(Request $request){

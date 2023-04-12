@@ -40,6 +40,8 @@
 
 <body id="page-top">
 
+    @include('partials/navbar')
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -50,11 +52,6 @@
 
             <!-- Main Content -->
             <div id="content">
-
-                @include('partials/navbar')
-
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
 
                     @yield('container')
 

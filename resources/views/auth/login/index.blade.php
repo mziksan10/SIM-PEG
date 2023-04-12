@@ -44,10 +44,9 @@
                                 </div>
                                 <button class="btn btn-primary btn-user btn-block" type="submit">Login</button>
                             </form>
-                            <hr>
-                            <div class="text-center">
-                                <a class="small" href="/register">Buat akun baru!</a>
-                            </div>
+                        </div>
+                        <div class="card-footer text-center">
+                        <a class="small" href="/register">Buat akun baru!</a>
                         </div>
                     </div>
                 </div>

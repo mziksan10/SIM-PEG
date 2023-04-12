@@ -1,25 +1,38 @@
 @extends('layouts/main')
 @section('container')
-    <!-- Page Heading -->
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-<div class="form-col">
-    <h1 class="h3 mb-0 text-gray-800">{{ $title }}</h1>
+<!-- Topbar -->
+<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow-sm">
+
+<!-- Sidebar Toggle (Topbar) -->
+<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+    <i class="fa fa-bars"></i>
+</button>
+
+<div class="col">
+    Home / <a href="#">{{ $title }}</a>
+</div>
+
+<!-- Topbar Navbar -->
+<ul class="navbar-nav ml-auto">
+<form action="{{ route('importPegawai') }}" method="POST" enctype="multipart/form-data">
+@csrf
+<div class="input-group">
+    <div class="input-group-prepend">
+    <span class="input-group-text ml-1">Import</span>
     </div>
-    <div class="form-col-md">
-        <form action="{{ route('importPegawai') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <div class="input-group">
-            <div class="input-group-prepend">
-            <span class="input-group-text ml-1">Import</span>
-            </div>
-            <input type="file" name="file" class="form-control">
-            <div class="input-group-append">
-            <button class="btn btn-warning mr-1" type="submit"><i class="fas fa-upload fa-sm"></i></button>
-            </div>
-        </div>
-        </form>
+    <input type="file" name="file" class="form-control">
+    <div class="input-group-append">
+    <button class="btn btn-warning mr-1" type="submit"><i class="fas fa-upload fa-sm"></i></button>
     </div>
 </div>
+</form>
+</ul>
+
+</nav>
+<!-- End of Topbar -->
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
 
 <!-- Content Row -->
 <div class="row">

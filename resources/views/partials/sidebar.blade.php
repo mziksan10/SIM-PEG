@@ -1,18 +1,18 @@
 <!-- Sidebar -->
-<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+<ul class="navbar-nav bg-gradient-secondary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+    <!-- <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
         <div class="sidebar-brand-icon">
             <img src="{{ asset('/assets/img') }}/logo_piksi.png" alt="" class="img" style="height:40px">
         </div>
         <div class="sidebar-brand-text mx-2">
         <img src="{{ asset('/assets/img') }}/text-simpeg.png" alt="" class="img" style="width:100%">
         </div>
-    </a>
+    </a> -->
 
     <!-- Divider -->
-    <hr class="sidebar-divider my-0">
+    <!-- <hr class="sidebar-divider my-0"> -->
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item {{ request()->is('/*') ? 'active' : '' }}">
