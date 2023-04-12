@@ -119,7 +119,6 @@
                         @if($item->riwayatJabatan === null)
                         <td style="text-align: center"><div class="badge badge-warning text-wrap">Belum Terdaftar</div></td>
                         <td style="text-align: center"><div class="badge badge-warning text-wrap">Belum Terdaftar</div></td>
-                        <td style="text-align: center"><div class="badge badge-warning text-wrap">Belum Terdaftar</div></td>
                         @elseif($item->riwayatJabatan)
                         <td style="text-align: center">{{ ucwords(strtolower($item->riwayatJabatan->bidang->nama_bidang)) }}</td>
                         <td style="text-align: center">{{ ucwords(strtolower($item->riwayatJabatan->jabatan->nama_jabatan)) }}</td>
