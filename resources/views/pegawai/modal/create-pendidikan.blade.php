@@ -64,13 +64,14 @@
                 @enderror
             </div>
         </div>  
-
         <div class="form-row">
-        <div class="col">
-        <button type="submit" class="btn btn-primary" style="width:100%">Submit</button>
+        <div class="col-lg-6 col-md-6">
+        <button type="submit" class="btn btn-primary" style="width:100%"><i class="fas fa-paper-plane"></i> Submit</button>
+        </div>
+        <div class="col-lg-6 col-md-6">
+        <button type="reset" class="btn btn-secondary" style="width:100%"><i class="fas fa-redo"></i> Reset</button>
         </div>
         </div>
-        
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

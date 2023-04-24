@@ -12,12 +12,14 @@ class RiwayatPendidikan extends Model
     protected $guarded = ['id'];
 
     // Static Jenjang
-    private static $jenjang = ['SMA/SMK', 'D1', 'D2', 'D3', 'D4/S1', 'S2', 'S3', 'Lainnya'];
-    public static function jenjang(){
+    private static $jenjang = ['SD', 'SMP', 'SMA/SMK', 'D1', 'D2', 'D3', 'D4/S1', 'S2', 'S3', 'LAINNYA'];
+    public static function jenjang()
+    {
         return self::$jenjang;
     }
 
-    public function pegawai(){
+    public function pegawai()
+    {
         return $this->belongsTo(Pegawai::class);
     }
 }

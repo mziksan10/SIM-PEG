@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignId('golongan_id');
             $table->date('tmt_golongan');
             $table->date('tmt_bekerja');
-            $table->string('scan_sk');
+            $table->string('scan_sk')->nullable();
             $table->timestamps();
         });
     }

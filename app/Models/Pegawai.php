@@ -17,87 +17,103 @@ class Pegawai extends Model
 
     // Static jenis status
     private static $status = ['1', '2', '0'];
-    public static function status(){
+    public static function status()
+    {
         return self::$status;
     }
 
     // Status pernikahan
-    private static $statusPernikahan = ['Lajang', 'Menikah'];
-    public static function statusPernikahan(){
+    private static $statusPernikahan = ['LAJANG', 'MENIKAH'];
+    public static function statusPernikahan()
+    {
         return self::$statusPernikahan;
     }
 
-    // Static jenis jenjang
-    private static $statusJenjang = ['SD', 'SMP', 'SMA/SMK', 'D1', 'D2', 'D3', 'D4/S1', 'S2', 'S3', 'Lainnya'];
-    public static function statusJenjang(){
-        return self::$statusJenjang;
-    }
-
     // Static jenis kelamin
-    private static $jenisKelamin = ['Laki-laki', 'Perempuan'];
-    public static function jenisKelamin(){
+    private static $jenisKelamin = ['LAKI-LAKI', 'PEREMPUAN'];
+    public static function jenisKelamin()
+    {
         return self::$jenisKelamin;
     }
 
+    // Static jenis kelamin
+    private static $statusKepemilikanRumah = ['MANDIRI', 'KOST', 'ORANG TUA', 'LAINNYA'];
+    public static function statusKepemilikanRumah()
+    {
+        return self::$statusKepemilikanRumah;
+    }
+
     // Filter
-    public function scopeFilter($query, array $filters){
-        return $query->when($filters['search'] ?? false, function($query, $search){
+    public function scopeFilter($query, array $filters)
+    {
+        return $query->when($filters['search'] ?? false, function ($query, $search) {
             $query->where('nip', 'like', '%' . $search . '%')->orWhere('nama', 'like', '%' . $search . '%');
         });
 
-        $query->when($filters['search'] ?? false, function($query, $search){
-            return $query->whereHas('berkas', function($query) use($search){
+        $query->when($filters['search'] ?? false, function ($query, $search) {
+            return $query->whereHas('berkas', function ($query) use ($search) {
                 $query->where('jenis_berkas', 'like', '%' . $search . '%');
             });
         });
     }
 
-    public function golongan(){
+    public function golongan()
+    {
         return $this->belongsTo(Golongan::class);
     }
 
-    public function riwayatJabatan(){
+    public function riwayatJabatan()
+    {
         return $this->hasOne(RiwayatJabatan::class)->latestOfMany();
     }
 
-    public function riwayatJabatan_(){
+    public function riwayatJabatan_()
+    {
         return $this->hasMany(RiwayatJabatan::class);
     }
 
-    public function riwayatPendidikan(){
+    public function riwayatPendidikan()
+    {
         return $this->hasOne(RiwayatPendidikan::class)->latestOfMany();
     }
 
-    public function riwayatPendidikan_(){
+    public function riwayatPendidikan_()
+    {
         return $this->hasMany(RiwayatPendidikan::class);
     }
 
-    public function berkas(){
+    public function berkas()
+    {
         return $this->hasMany(Berkas::class);
     }
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function subdistricts(){
+    public function subdistricts()
+    {
         return $this->hasOne(Desa::class, 'subdis_id', 'desa');
     }
 
-    public function provinces(){
+    public function provinces()
+    {
         return $this->hasOne(Provinsi::class, 'prov_id', 'provinsi');
     }
-    
-    public function cities(){
+
+    public function cities()
+    {
         return $this->hasOne(Kota::class, 'city_id', 'kab_kota');
     }
 
-    public function districts(){
+    public function districts()
+    {
         return $this->hasOne(Kecamatan::class, 'dis_id', 'kecamatan');
     }
 
-    public function tempatLahir(){
+    public function tempatLahir()
+    {
         return $this->hasOne(Kota::class, 'city_id', 'tempat_lahir');
     }
-
 }

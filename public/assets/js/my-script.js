@@ -216,3 +216,10 @@ function set(e) {
     e = e < 10 ? '0'+ e : e;
     return e;
 }
+
+// Select 2
+$(document).ready(function() {
+    $('.select2').select2({
+        theme: 'bootstrap4',
+    });
+});

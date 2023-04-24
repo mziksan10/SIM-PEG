@@ -31,15 +31,15 @@ class PegawaiController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {        
+    {
         return view('pegawai/index', [
             'title' => 'Data Pegawai',
-            'status' => ['1','2', '3'],
+            'status' => ['1', '2', '3'],
             'data_pegawai' => Pegawai::get()->sortBy('nip'),
             'golongan' => Golongan::all(),
-            'data_pegawaiTetap' => Pegawai::where('status', '=' , '1')->count(),
-            'data_pegawaiKontrak' => Pegawai::where('status', '=' , '2')->count(),
-            'data_pegawaiMagang' => Pegawai::where('status', '=' , '3')->count(),
+            'data_pegawaiTetap' => Pegawai::where('status', '=', '1')->count(),
+            'data_pegawaiKontrak' => Pegawai::where('status', '=', '2')->count(),
+            'data_pegawaiMagang' => Pegawai::where('status', '=', '3')->count(),
         ]);
     }
 
@@ -51,9 +51,9 @@ class PegawaiController extends Controller
     public function createPegawaiTetap()
     {
         $selectNIP = Pegawai::select('nip')->where('status', '1')->latest('tanggal_masuk')->first();
-        if($selectNIP == null){
-            $createNIP = '130041' . date('dmy') . '1' . '001'; 
-        }elseif($selectNIP->get()){
+        if ($selectNIP == null) {
+            $createNIP = '130041' . date('dmy') . '1' . '001';
+        } elseif ($selectNIP->get()) {
             $createNIP = '130041' . date('dmy') . substr($selectNIP->nip, -4) + 1;
         }
         return view('/pegawai/create', [
@@ -71,15 +71,16 @@ class PegawaiController extends Controller
             'status' => '1',
             'jenjang' => RiwayatPendidikan::jenjang(),
             'statusPernikahan' => Pegawai::statusPernikahan(),
+            'statusKepemilikanRumah' => Pegawai::statusKepemilikanRumah(),
         ]);
     }
 
     public function createPegawaiKontrak()
     {
         $selectNIP = Pegawai::select('nip')->where('status', '2')->latest('tanggal_masuk')->first();
-        if($selectNIP == null){
-            $createNIP = '130041' . date('dmy') . '2' . '001'; 
-        }elseif($selectNIP->get()){
+        if ($selectNIP == null) {
+            $createNIP = '130041' . date('dmy') . '2' . '001';
+        } elseif ($selectNIP->get()) {
             $createNIP = '130041' . date('dmy') . substr($selectNIP->nip, -4) + 1;
         }
         return view('/pegawai/create', [
@@ -97,15 +98,16 @@ class PegawaiController extends Controller
             'status' => '2',
             'jenjang' => RiwayatPendidikan::jenjang(),
             'statusPernikahan' => Pegawai::statusPernikahan(),
+            'statusKepemilikanRumah' => Pegawai::statusKepemilikanRumah(),
         ]);
     }
 
     public function createPegawaiMagang()
     {
         $selectNIP = Pegawai::select('nip')->where('status', '2')->latest('tanggal_masuk')->first();
-        if($selectNIP == null){
-            $createNIP = '130041' . date('dmy') . '2' . '001'; 
-        }elseif($selectNIP->get()){
+        if ($selectNIP == null) {
+            $createNIP = '130041' . date('dmy') . '2' . '001';
+        } elseif ($selectNIP->get()) {
             $createNIP = '130041' . date('dmy') . substr($selectNIP->nip, -4) + 1;
         }
         return view('/pegawai/create', [
@@ -123,6 +125,7 @@ class PegawaiController extends Controller
             'status' => '3',
             'jenjang' => RiwayatPendidikan::jenjang(),
             'statusPernikahan' => Pegawai::statusPernikahan(),
+            'statusKepemilikanRumah' => Pegawai::statusKepemilikanRumah(),
         ]);
     }
 
@@ -142,20 +145,26 @@ class PegawaiController extends Controller
             'tanggal_lahir' => 'required',
             'jenis_kelamin' => 'required',
             'alamat' => 'required|max:255',
+            'status_kepemilikan_rumah' => 'required',
             'desa' => 'required',
             'kecamatan' => 'required',
             'kab_kota' => 'required',
             'provinsi' => 'required',
             'kode_pos' => 'required|max:5',
             'no_hp' => 'required|max:20',
-            'email' => 'required|max:255|email',
+            'email' => 'nullable|max:255|email',
             'foto' => 'image|file|max:1024',
             'status_pernikahan' => 'required',
+            'instansi_sebelumnya' => 'nullable',
+            'pekerjaan_sebelumnya' => 'nullable',
+            'jabatan_sebelumnya' => 'nullable',
+            'masa_jabatan_sebelumnya' => 'nullable',
         ]);
-        if(request()->file('foto')){ 
+        if (request()->file('foto')) {
             $validatedData['foto'] = $request->file('foto')->storeAs(
-                'foto-profil', $request->nip . '.' . $request->file('foto')->extension()
-            );  
+                'foto-profil',
+                $request->nip . '.' . $request->file('foto')->extension()
+            );
         }
         $validatedData['tanggal_masuk'] = date_create()->format('Y-m-d');
         $validatedData['nip'] = $request->nip;
@@ -168,20 +177,20 @@ class PegawaiController extends Controller
             'jurusan' => 'nullable',
             'institusi' => 'required',
             'tahun_lulus' => 'required',
-            'scan_ijazah' => 'required|mimes:pdf|max:1024',
+            'scan_ijazah' => 'mimes:pdf|max:1024',
         ]);
-        if(request()->file('scan_ijazah')){ 
-            $validatedDataPendidikan['scan_ijazah'] = request()->file('scan_ijazah')->store('berkas-pegawai');  
+        if (request()->file('scan_ijazah')) {
+            $validatedDataPendidikan['scan_ijazah'] = request()->file('scan_ijazah')->store('berkas-pegawai');
         }
-        
+
         // VALIDASI DATA JABATAN TERAKHIR
         $validatedDataJabatan = $request->validate([
             'bidang_id' => 'required',
             'jabatan_id' => 'required',
-            'scan_sk' => 'required|mimes:pdf|max:1024',
+            'scan_sk' => 'mimes:pdf|max:1024',
         ]);
-        if(request()->file('scan_sk')){ 
-            $validatedDataJabatan['scan_sk'] = request()->file('scan_sk')->store('berkas-pegawai');  
+        if (request()->file('scan_sk')) {
+            $validatedDataJabatan['scan_sk'] = request()->file('scan_sk')->store('berkas-pegawai');
         }
 
         // TAMBAH PEGAWAI
@@ -193,9 +202,9 @@ class PegawaiController extends Controller
         RiwayatPendidikan::create($validatedDataPendidikan);
 
         // TAMBAH JABATAN TERAKHIR
-        if($request->status == 1){
+        if ($request->status == 1) {
             $status = "Tetap";
-        }elseif($request->status == 2){
+        } elseif ($request->status == 2 || $request->status == 3) {
             $status = "Kontrak";
         }
         $validatedDataJabatan['golongan_id'] = Golongan::where('jenjang', $request->jenjang)->where('status', $status)->pluck('id')->first();
@@ -207,7 +216,8 @@ class PegawaiController extends Controller
         return redirect(route('pegawai'))->with('success', 'Data pegawai berhasil diinput!');
     }
 
-    public function storeRiwayatPendidikan(Request $request){
+    public function storeRiwayatPendidikan(Request $request)
+    {
         $pegawaiId = Pegawai::select('id')->where('nip', $request->nip)->get();
         $validatedData = $request->validate([
             'jenjang' => 'required',
@@ -216,18 +226,19 @@ class PegawaiController extends Controller
             'tahun_lulus' => 'required',
             'scan_ijazah' => 'mimes:pdf|max:1024',
         ]);
-        if(request()->file('scan_ijazah')){ 
-            $validatedData['scan_ijazah'] = request()->file('scan_ijazah')->store('berkas-pegawai');  
-        }else{
-            $validatedData['scan_ijazah'] = 0;  
+        if (request()->file('scan_ijazah')) {
+            $validatedData['scan_ijazah'] = request()->file('scan_ijazah')->store('berkas-pegawai');
+        } else {
+            $validatedData['scan_ijazah'] = 0;
         }
-        
+
         $validatedData['pegawai_id'] = $pegawaiId[0]->id;
         RiwayatPendidikan::create($validatedData);
         return back()->with('success', 'Data riwayat pendidikan berhasil diinput!');
     }
 
-    public function storeRiwayatJabatan(Request $request){
+    public function storeRiwayatJabatan(Request $request)
+    {
         $pegawaiId = Pegawai::select('id')->where('nip', $request->nip)->get();
         $validatedData = $request->validate([
             'golongan_id' => 'required',
@@ -235,14 +246,14 @@ class PegawaiController extends Controller
             'jabatan_id' => 'required',
             'scan_sk' => 'mimes:pdf|max:1024',
         ]);
-        if(request()->file('scan_sk')){ 
-            $validatedData['scan_sk'] = request()->file('scan_sk')->store('berkas-pegawai');  
-        }else{
-            $validatedData['scan_sk'] = 0;  
+        if (request()->file('scan_sk')) {
+            $validatedData['scan_sk'] = request()->file('scan_sk')->store('berkas-pegawai');
+        } else {
+            $validatedData['scan_sk'] = 0;
         }
-        if($request->status == 1){
+        if ($request->status == 1) {
             $status = "Tetap";
-        }elseif($request->status == 2){
+        } elseif ($request->status == 2 || $request->status == 3) {
             $status = "Kontrak";
         }
         $validatedData['tmt_golongan'] = date_create()->format('Y-m-d');
@@ -252,7 +263,8 @@ class PegawaiController extends Controller
         return back()->with('success', 'Data riwayat jabatan berhasil diinput!');
     }
 
-    public function storeBerkas(Request $request){
+    public function storeBerkas(Request $request)
+    {
         $pegawaiId = Pegawai::select('id')->where('nip', $request->nip)->get();
         $validatedData = $request->validate([
             'jenis_berkas' => 'required',
@@ -260,8 +272,8 @@ class PegawaiController extends Controller
             'file' => 'required|mimes:pdf|max:1024',
         ]);
         $validatedData['pegawai_id'] = $pegawaiId[0]->id;
-        if(request()->file('file')){ 
-            $validatedData['file'] = request()->file('file')->store('berkas-pegawai');  
+        if (request()->file('file')) {
+            $validatedData['file'] = request()->file('file')->store('berkas-pegawai');
         }
         Berkas::create($validatedData);
         return back()->with('success', 'Data berkas berhasil diinput!');
@@ -278,10 +290,10 @@ class PegawaiController extends Controller
         $pegawai = Pegawai::find($id);
         $tanggal_masuk = new DateTime("$pegawai->tanggal_masuk");
         $sekarang = new DateTime("today");
-        if ($tanggal_masuk > $sekarang) { 
-        $thn = "0";
-        $bln = "0";
-        $tgl = "0";
+        if ($tanggal_masuk > $sekarang) {
+            $thn = "0";
+            $bln = "0";
+            $tgl = "0";
         }
         $thn = $sekarang->diff($tanggal_masuk)->y;
         $bln = $sekarang->diff($tanggal_masuk)->m;
@@ -289,17 +301,17 @@ class PegawaiController extends Controller
 
         $pegawaiBerulangTahun = [];
         $pegawaiNaikGolongan = [];
-        if(date('d F', strtotime($pegawai->tanggal_lahir)) == date('d F', strtotime(now()))){
+        if (date('d F', strtotime($pegawai->tanggal_lahir)) == date('d F', strtotime(now()))) {
             $pegawaiBerulangTahun[] = true;
         }
-        if($pegawai->riwayatJabatan != null){
-            if($thn > $pegawai->riwayatJabatan->golongan->min_masa_kerja && $thn != $pegawai->riwayatJabatan->golongan->max_masa_kerja){
+        if ($pegawai->riwayatJabatan != null) {
+            if ($thn > $pegawai->riwayatJabatan->golongan->min_masa_kerja && $thn != $pegawai->riwayatJabatan->golongan->max_masa_kerja) {
                 $pegawaiNaikGolongan[] = $pegawai;
             }
         }
         return view('/pegawai/show', [
-            'pegawai' => $pegawai,           
-            'title' => 'Details Pegawai',
+            'pegawai' => $pegawai,
+            'title' => 'Detail Pegawai',
             'data_bidang' => Bidang::all(),
             'data_jabatan' => Jabatan::all(),
             'data_golongan' => Golongan::all(),
@@ -327,20 +339,21 @@ class PegawaiController extends Controller
     {
         $pegawai = Pegawai::find($id);
         return view('/pegawai/edit', [
-            'pegawai' => $pegawai,           
+            'pegawai' => $pegawai,
             'title' => 'Edit Detail Pribadi Pegawai',
             'photo' => 'logo_piksi.png',
             'data_bidang' => Bidang::all(),
             'data_jabatan' => Jabatan::all(),
             'data_golongan' => Golongan::all()->sortBy('golongan'),
             'status' => Pegawai::status(),
-            'statusJenjang' => Pegawai::statusJenjang(),
+            'jenjang' => RiwayatPendidikan::jenjang(),
             'jenisKelamin' => Pegawai::jenisKelamin(),
             'data_provinces' => Provinsi::all(),
             'data_cities' => Kota::all(),
             'data_districts' => Kecamatan::all(),
             'data_subdistricts' => Desa::all(),
             'statusPernikahan' => Pegawai::statusPernikahan(),
+            'statusKepemilikanRumah' => Pegawai::statusKepemilikanRumah(),
         ]);
     }
 
@@ -377,42 +390,43 @@ class PegawaiController extends Controller
             'status_pernikahan' => 'required',
         ];
         $validatedData = $request->validate($rules);
-        if($request->status == 2){
+        if ($request->status == 2) {
             $selectNIP = Pegawai::select('nip')->where('status', '1')->latest('tanggal_masuk')->first();
-            if($selectNIP == null){
-                $createNIP = '130041' . date('dmy') . '1' . '001'; 
-            }else{
+            if ($selectNIP == null) {
+                $createNIP = '130041' . date('dmy') . '1' . '001';
+            } else {
                 $createNIP = '130041' . date('dmy') . substr($selectNIP->nip, -4) + 1;
             }
-            $validatedData['nip'] = $createNIP;  
-            $validatedData['status'] = $request->status;  
-        }elseif($request->status == 0){
-            $validatedData['status'] = $request->status;  
+            $validatedData['nip'] = $createNIP;
+            $validatedData['status'] = $request->status;
+        } elseif ($request->status == 0) {
+            $validatedData['status'] = $request->status;
         }
-        if(request()->file('foto')){ 
-            if($request->foto_lama){
+        if (request()->file('foto')) {
+            if ($request->foto_lama) {
                 Storage::delete($request->foto_lama);
             }
-            $validatedData['foto'] = request()->file('foto')->store('foto-profil');  
+            $validatedData['foto'] = request()->file('foto')->store('foto-profil');
         }
         $validatedData['tempat_lahir'] = ucwords(strtolower($request->tempat_lahir));
-        if($request->provinsi != $pegawai->provinsi){
+        if ($request->provinsi != $pegawai->provinsi) {
             $validatedData['provinsi'] = ucwords(strtolower($getProvinsi[0]->prov_name));
         }
-        if($request->kab_kota != $pegawai->kab_kota){
-        $validatedData['kab_kota'] = ucwords(strtolower($getKota[0]->city_name));
+        if ($request->kab_kota != $pegawai->kab_kota) {
+            $validatedData['kab_kota'] = ucwords(strtolower($getKota[0]->city_name));
         }
-        if($request->kecamatan != $pegawai->kecamatan){
-        $validatedData['kecamatan'] = ucwords(strtolower($getKecamatan[0]->dis_name));
+        if ($request->kecamatan != $pegawai->kecamatan) {
+            $validatedData['kecamatan'] = ucwords(strtolower($getKecamatan[0]->dis_name));
         }
-        if($request->desa != $pegawai->desa){
-        $validatedData['desa'] = ucwords(strtolower($getDesa[0]->subdis_name));
+        if ($request->desa != $pegawai->desa) {
+            $validatedData['desa'] = ucwords(strtolower($getDesa[0]->subdis_name));
         }
         Pegawai::where('id', $pegawai->id)->update($validatedData);
         return redirect(route('showPegawai', $id))->with('success', 'Detail pribadi berhasil diubah!');
     }
 
-    public function updateRiwayatPendidikan(Request $request, $id){
+    public function updateRiwayatPendidikan(Request $request, $id)
+    {
         $riwayatPendidikan = RiwayatPendidikan::find($id);
         $rules = [
             'jenjang' => 'required',
@@ -422,17 +436,18 @@ class PegawaiController extends Controller
             'scan_ijazah' => 'mimes:pdf|max:1024',
         ];
         $validatedData = $request->validate($rules);
-        if(request()->file('scan_ijazah')){ 
-            if($request->scan_ijazah){
+        if (request()->file('scan_ijazah')) {
+            if ($request->scan_ijazah) {
                 Storage::delete($request->scan_ijazah);
             }
-            $validatedData['scan_ijazah'] = request()->file('scan_ijazah')->store('berkas-pegawai');  
+            $validatedData['scan_ijazah'] = request()->file('scan_ijazah')->store('berkas-pegawai');
         }
         RiwayatPendidikan::where('id', $riwayatPendidikan->id)->update($validatedData);
         return back()->with('success', 'Detail pendidikan berhasil diubah!');
     }
 
-    public function updateRiwayatJabatan(Request $request, $id){
+    public function updateRiwayatJabatan(Request $request, $id)
+    {
         $riwayatJabatan = RiwayatJabatan::find($id);
         $rules = [
             'bidang_id' => 'required',
@@ -443,15 +458,15 @@ class PegawaiController extends Controller
             'scan_sk' => 'mimes:pdf|file|max:1024',
         ];
         $validatedData = $request->validate($rules);
-        if(request()->file('scan_sk')){ 
-            if($request->file_lama){
+        if (request()->file('scan_sk')) {
+            if ($request->file_lama) {
                 Storage::delete($request->scan_sk_lama);
             }
-            $validatedData['scan_sk'] = request()->file('scan_sk')->store('berkas-pegawai');  
+            $validatedData['scan_sk'] = request()->file('scan_sk')->store('berkas-pegawai');
         }
-        if($request->status == 1){
+        if ($request->status == 1) {
             $status = "Tetap";
-        }elseif($request->status == 2 | $request->status == 3){
+        } elseif ($request->status == 2 | $request->status == 3) {
             $status = "Kontrak";
         }
         $validatedData['golongan_id'] = Golongan::where('jenjang', $request->jenjang)->where('status', $status)->pluck('id')->first();
@@ -468,17 +483,17 @@ class PegawaiController extends Controller
     public function destroy(Pegawai $pegawai)
     {
         $getBerkas = Pegawai::find($pegawai->id)->berkas;
-        if($getBerkas){
-            foreach($getBerkas as $berkas){
+        if ($getBerkas) {
+            foreach ($getBerkas as $berkas) {
                 Storage::delete($berkas->file);
             }
-            $getBerkas = Pegawai::find($pegawai->id)->berkas()->delete();  
+            $getBerkas = Pegawai::find($pegawai->id)->berkas()->delete();
         }
 
-        if($pegawai->foto){
+        if ($pegawai->foto) {
             Storage::delete($pegawai->foto);
         }
-        
+
         RiwayatPendidikan::where('pegawai_id', $pegawai->id)->delete();
         RiwayatJabatan::where('pegawai_id', $pegawai->id)->delete();
         Pegawai::destroy($pegawai->id);
@@ -487,78 +502,84 @@ class PegawaiController extends Controller
     public function destroyBerkas($id)
     {
         $getBerkas = Berkas::select('*')->where('id', $id)->get();
-        foreach($getBerkas as $berkas)
-        if($berkas->file){
-            Storage::delete($berkas->file);
-        }
+        foreach ($getBerkas as $berkas)
+            if ($berkas->file) {
+                Storage::delete($berkas->file);
+            }
         Berkas::destroy($berkas->id);
         return redirect()->back()->with('success', 'Data berkas berhasil dihapus!');
     }
 
-    public function export() 
+    public function export()
     {
         return Excel::download(new PegawaisExport, 'Ekspor_Data_Pegawai.xlsx');
     }
 
-    public function import() 
+    public function import()
     {
-        if(request()->file('file')){
-            Excel::import(new PegawaisImport, request()->file('file')); 
+        if (request()->file('file')) {
+            Excel::import(new PegawaisImport, request()->file('file'));
             return redirect('/pegawai')->with('success', 'Data pegawais berhasil diimpor!');
-        } 
-        return redirect('/pegawai');       
+        }
+        return redirect('/pegawai');
     }
 
-    public function report(){ 
-    	$pdf = PDF::loadview('pegawai/report',[
-                                'data_pegawai' => Pegawai::all(),
-                                'data_bidang' => Bidang::all(),
-                                'data_jabatan' => Jabatan::all(),
-                                'data_golongan' => Golongan::all(),
-                            ])->setPaper('A4', 'potrait');
-    	return $pdf->download('laporan-data-pegawai.pdf');
+    public function report()
+    {
+        $pdf = PDF::loadview('pegawai/report', [
+            'data_pegawai' => Pegawai::all(),
+            'data_bidang' => Bidang::all(),
+            'data_jabatan' => Jabatan::all(),
+            'data_golongan' => Golongan::all(),
+        ])->setPaper('A4', 'potrait');
+        return $pdf->download('laporan-data-pegawai.pdf');
     }
 
-    public function cariKota(Request $request){
+    public function cariKota(Request $request)
+    {
         $getKota = DB::select("SELECT city_name, city_id FROM cities WHERE prov_id = '$request->provinsi'");
         return response()->json($getKota);
     }
 
-    public function cariKecamatan(Request $request){
+    public function cariKecamatan(Request $request)
+    {
         $getKecamatan = DB::select("SELECT dis_name, dis_id FROM districts WHERE city_id = '$request->kab_kota'");
         return response()->json($getKecamatan);
     }
 
-    public function cariDesa(Request $request){
+    public function cariDesa(Request $request)
+    {
         $getDesa = DB::select("SELECT subdis_name, subdis_id FROM subdistricts WHERE dis_id = '$request->kecamatan'");
         return response()->json($getDesa);
     }
 
-    public function cariJabatan(Request $request){
+    public function cariJabatan(Request $request)
+    {
         $jabatan_id = Jabatan::where('bidang_id', $request->get('bidang_id'))->pluck('nama_jabatan', 'id');
         return response()->json($jabatan_id);
     }
 
-    public function cariGolongan(Request $request){
+    public function cariGolongan(Request $request)
+    {
         $getPegawai = Pegawai::select('*')->where('nip', $request->get('nip'))->first();
         $getJenjang = RiwayatPendidikan::select('*')->where('pegawai_id', $getPegawai->id)->latest()->first();
-        if($getPegawai->status == 1){
+        if ($getPegawai->status == 1) {
             $status = "Tetap";
-        }elseif($getPegawai->status == 2 || $getPegawai->status == 3){
+        } elseif ($getPegawai->status == 2 || $getPegawai->status == 3) {
             $status = "Kontrak";
         }
         $golongan_id = Golongan::where('jenjang', $getJenjang->jenjang)->where('status', $status)->where('min_masa_kerja', '>=',  $request->get('lama_bekerja'))->get();
         return response()->json($golongan_id);
     }
 
-    public function cariPegawai(Request $request){
-        $pegawai = Pegawai::orderby('nama','asc')->select('nip','nama')->where('nip', 'like', '%' .$request->search . '%')->limit(5)->get();
+    public function cariPegawai(Request $request)
+    {
+        $pegawai = Pegawai::orderby('nama', 'asc')->select('nip', 'nama')->where('nip', 'like', '%' . $request->search . '%')->limit(5)->get();
         $response = array();
-        foreach($pegawai as $item){
-           $response[] = array("value"=>$item->nip,"label"=>$item->nip . ' - ' . $item->nama);
+        foreach ($pegawai as $item) {
+            $response[] = array("value" => $item->nip, "label" => $item->nip . ' - ' . $item->nama);
         }
-  
+
         return response()->json($response);
     }
-
 }
